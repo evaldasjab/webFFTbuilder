@@ -1,0 +1,82 @@
+<!-- 'HTML-style' HTML5 -->
+<!DOCTYPE html>
+
+<html lang="en">
+        
+<head>
+        <meta charset="utf-8">
+                
+        <!--[if lt IE 9]>
+                <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+                
+        <title>MyDrop FFT</title>
+        
+        <link href="buildtree.css" rel="stylesheet" type="text/css" />
+        
+</head>
+
+<body>
+        
+
+        
+    <header>
+        <h1>MyDrop FFT</h1>
+    </header>
+    
+    <div id="head_upload">
+        
+        <div id="dvImportSegments" class="fileupload ">  
+                <fieldset>
+                        <legend>Upload your CSV File</legend>
+
+                        <!-- UPLOAD CSV -->
+                                <input type="file" id="csv-file" name="files"/>
+                        <!-- UPLOAD CSV END -->
+
+                </fieldset>
+        </div> 
+    </div>
+    
+    <!-- row of cues -->
+    <div class="horiz_scroll">
+        <div id="cues_list">
+            
+            <!-- here will go html elements from importcsv.js -->
+            
+        </div>
+    </div>
+    <!-- row of cues -->
+    
+    
+    <!-- FFTs -->
+
+    <div id="two_trees">
+        
+        <ul id="tree0" class="trees">
+            <li class="placeholder unsortable">drag'n'drop cues here!</li>
+        </ul>
+
+        <ul id="tree1" class="trees">
+            <li class="placeholder unsortable">drag'n'drop cues here!</li>
+        </ul>
+        
+        
+    </div>
+    
+    <footer>
+       <!-- <p>&copy; 2015 MPIB. All rights reserved.</p> -->
+    </footer>
+    
+    <!-- Bottom of document -->
+    
+    <script type="text/javascript" src="libraries/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="libraries/jquery-ui-1.11.4.min.js"></script>
+    <script type="text/javascript" src="libraries/papaparse.min.js"></script>
+    <script type="text/javascript" src="libraries/jquery.jsPlumb-1.7.4-min.js"></script>
+    
+    <script type="text/javascript" src="buildtree.js"></script>
+    <script type="text/javascript" src="importcsv.js"></script>
+
+</body>
+</html>

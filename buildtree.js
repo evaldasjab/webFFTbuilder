@@ -7,6 +7,26 @@
     
 //    jQuery : $,                                  /* Set's jQuery identifier: */
 
+var orderTree0 = [];  // variable knows what's in the tree0
+var orderTree1 = [];  // variable knows what's in the tree1
+
+var myJsonObject = new Object();
+myJsonObject.tree0 = {};
+myJsonObject.tree0.criterion = '';
+myJsonObject.tree0.cue0 = {'name':'','exit':''};
+myJsonObject.tree0.cue1 = {'name':'','exit':''};
+myJsonObject.tree0.cue2 = {'name':'','exit':''};
+myJsonObject.tree0.cue3 = {'name':'','exit':''};
+myJsonObject.tree0.cue4 = {'name':'','exit':''};
+myJsonObject.tree1 = {};
+myJsonObject.tree1.criterion = '';
+myJsonObject.tree1.cue0 = {'name':'','exit':''};
+myJsonObject.tree1.cue1 = {'name':'','exit':''};
+myJsonObject.tree1.cue2 = {'name':'','exit':''};
+myJsonObject.tree1.cue3 = {'name':'','exit':''};
+myJsonObject.tree1.cue4 = {'name':'','exit':''};
+    
+console.log('JSON initial: ' + JSON.stringify(myJsonObject, null, "  "));
 
 function init() {                        // Function, which initialises methods to be run when page has loaded
     // The method which starts it all...
@@ -50,32 +70,14 @@ function insertExit(exitId) {
 }
 
 function makeSortable() {                 // This function will make the widgets draggable-droppable using the jQuery UI 'sortable' module.
-        
-    var myJsonObject = new Object();
-    myJsonObject.tree0 = {};
-    myJsonObject.tree0.criterion = '';
-    myJsonObject.tree0.cue0 = {'name':'','exit':''};
-    myJsonObject.tree0.cue1 = {'name':'','exit':''};
-    myJsonObject.tree0.cue2 = {'name':'','exit':''};
-    myJsonObject.tree0.cue3 = {'name':'','exit':''};
-    myJsonObject.tree0.cue4 = {'name':'','exit':''};
-    myJsonObject.tree1 = {};
-    myJsonObject.tree1.criterion = '';
-    myJsonObject.tree1.cue0 = {'name':'','exit':''};
-    myJsonObject.tree1.cue1 = {'name':'','exit':''};
-    myJsonObject.tree1.cue2 = {'name':'','exit':''};
-    myJsonObject.tree1.cue3 = {'name':'','exit':''};
-    myJsonObject.tree1.cue4 = {'name':'','exit':''};
-    
-    console.log('JSON initial: ' + JSON.stringify(myJsonObject, null, "  "));
     
     //var newItemId = '';
     var criterCue = '';
     var origCue = '';
     var dragCue = '';
     var dragTree = '';  // variable knows the ID of the dropped tree
-    var orderTree0 = [];  // variable knows what's in the tree0
-    var orderTree1 = [];  // variable knows what's in the tree1
+    //var orderTree0 = [];  // variable knows what's in the tree0
+    //var orderTree1 = [];  // variable knows what's in the tree1
     var d = 10;  // not 0 to have always two characters for removal (3 characters with '-')
         
     $('.horiz_scroll').find('li').draggable({
@@ -211,106 +213,99 @@ function makeSortable() {                 // This function will make the widgets
                         closeExitButton();  // activate the close buttons
                     }
                     
-                    // update JSON dataset
-                    //for (var key in myJsonObjectTree0) {
-                    //    if (myJsonObjectTree0.hasOwnProperty(key)) {
-                    //        console.log('key: ' + key + " -> " + myJsonObjectTree0[key]);
-                    //    }
-                    //for(var i = 0; i < 5; i++) {
-                    
-                    //var name = mydata.meta['fields'][parseInt (orderTree0[0].slice(3,orderTree0[0].length-3)) ];
-                    
-                    
-                    console.log("CALL0 0 N");
-                    myJsonObject.tree0.cue0.name = getName(0,0);
-                    console.log("CALL0 0 E");
-                    myJsonObject.tree0.cue0.exit = getExit(0,0);
-                    console.log("CALL0 1 N");
-                    myJsonObject.tree0.cue1.name = getName(0,1);
-                    console.log("CALL0 1 E");
-                    myJsonObject.tree0.cue1.exit = getExit(0,1);
-                    console.log("CALL0 2 N");
-                    myJsonObject.tree0.cue2.name = getName(0,2);
-                    console.log("CALL0 2 E");
-                    myJsonObject.tree0.cue2.exit = getExit(0,2);
-                    console.log("CALL0 3 N");
-                    myJsonObject.tree0.cue3.name = getName(0,3);
-                    console.log("CALL0 3 E");
-                    myJsonObject.tree0.cue3.exit = getExit(0,3);
-                    console.log("CALL0 4 N");
-                    myJsonObject.tree0.cue4.name = getName(0,4);
-                    console.log("CALL0 4 E");
-                    myJsonObject.tree0.cue4.exit = getExit(0,4);
-                    console.log("CALL0 END");
-                    
-                    myJsonObject.tree1.cue0.name = getName(1,0);
-                    myJsonObject.tree1.cue0.exit = getExit(1,0);
-                    myJsonObject.tree1.cue1.name = getName(1,1);
-                    myJsonObject.tree1.cue1.exit = getExit(1,1);
-                    myJsonObject.tree1.cue2.name = getName(1,2);
-                    myJsonObject.tree1.cue2.exit = getExit(1,2);
-                    myJsonObject.tree1.cue3.name = getName(1,3);
-                    myJsonObject.tree1.cue3.exit = getExit(1,3);
-                    myJsonObject.tree1.cue4.name = getName(1,4);
-                    myJsonObject.tree1.cue4.exit = getExit(1,4);
-                    
-                    function getName(myTree,myId) {
-                        console.log("CALL INSIDE!");
-                        switch (myTree) {
-                            case 0:
-                                var myCue = orderTree0[myId]; console.log('myCue: '+myCue);
-                            break;
-                            case 1:
-                                var myCue = orderTree0[myId]; console.log('myCue: '+myCue);
-                            break;
-                        }
-                        if (myCue != undefined) {
-                            var mySlice = myCue.slice(3,myCue.length-3);
-                            var myInt = parseInt(mySlice);
-                            var myName = mydata.meta['fields'][myInt];
-                        }
-                        return myName;
-                    }
-                    
-                    function getExit(myTree,myId) {
-                        switch (myTree) {
-                            case 0:
-                                var myExit = $('#'+orderTree0[myId]+' #hidden-exit-dir').val();
-                            break;
-                            case 1:
-                                var myExit = $('#'+orderTree1[myId]+' #hidden-exit-dir').val();
-                            break;
-                        }
-                        return myExit;
-                    }
-                    
-                    console.log('JSON updated: ' + JSON.stringify(myJsonObject, null, "  "));
-                    
-                    console.log('TEST: '+mydata.meta['fields'][0]);
-                    //console.log('results fields: ' + mydata.meta['fields']);
-                    
-                    //if (dragTree == "tree0") {
-                    //     $("#"+clonedCueId).append(insertExit(0));
-                    
-                    
-                    //console.log("JSON.stringify: " + JSON.stringify(order1 + order2));
-                    //alert("order1:" + order1 + "\n order2:" + order2); //Just showing update
-        
-                    //$("#info").html(JSON.stringify($("#sortable").sortable('toArray')));
-                    //var params = '{order:"' + str[0].title + ',' + str[1].title + ',' + str[2].title + '"}';
-                    //data : params, // in $.ajax
-                    
-                    //$.ajax({
-                    //    type: "POST",
-                    //    url: "/echo/json/",
-                    //    data: "order1=" + order1 + "&order2=" + order2,
-                    //    dataType: "json",
-                    //    success: function (data) {
-                    //    }
-                    //});
+                    // update JSON dataset for the analysis algorithms
+                    updateJsonDataset();
             
         }
     }).disableSelection();      
+}
+
+function updateJsonDataset() {
+    // update JSON dataset
+    //for (var key in myJsonObjectTree0) {
+    //    if (myJsonObjectTree0.hasOwnProperty(key)) {
+    //        console.log('key: ' + key + " -> " + myJsonObjectTree0[key]);
+    //    }
+    //for(var i = 0; i < 5; i++) {
+    
+    //var name = mydata.meta['fields'][parseInt (orderTree0[0].slice(3,orderTree0[0].length-3)) ];
+    
+    myJsonObject.tree0.cue0.name = getName(0,0);
+    myJsonObject.tree0.cue0.exit = getExit(0,0);
+    myJsonObject.tree0.cue1.name = getName(0,1);
+    myJsonObject.tree0.cue1.exit = getExit(0,1);
+    myJsonObject.tree0.cue2.name = getName(0,2);
+    myJsonObject.tree0.cue2.exit = getExit(0,2);
+    myJsonObject.tree0.cue3.name = getName(0,3);
+    myJsonObject.tree0.cue3.exit = getExit(0,3);
+    myJsonObject.tree0.cue4.name = getName(0,4);
+    myJsonObject.tree0.cue4.exit = getExit(0,4);
+    
+    myJsonObject.tree1.cue0.name = getName(1,0);
+    myJsonObject.tree1.cue0.exit = getExit(1,0);
+    myJsonObject.tree1.cue1.name = getName(1,1);
+    myJsonObject.tree1.cue1.exit = getExit(1,1);
+    myJsonObject.tree1.cue2.name = getName(1,2);
+    myJsonObject.tree1.cue2.exit = getExit(1,2);
+    myJsonObject.tree1.cue3.name = getName(1,3);
+    myJsonObject.tree1.cue3.exit = getExit(1,3);
+    myJsonObject.tree1.cue4.name = getName(1,4);
+    myJsonObject.tree1.cue4.exit = getExit(1,4);
+    
+    function getName(myTree,myId) {
+        console.log("CALL INSIDE!");
+        switch (myTree) {
+            case 0:
+                var myCue = orderTree0[myId]; console.log('myCue: '+myCue);
+            break;
+            case 1:
+                var myCue = orderTree0[myId]; console.log('myCue: '+myCue);
+            break;
+        }
+        if (myCue != undefined) {
+            var mySlice = myCue.slice(3,myCue.length-3);
+            var myInt = parseInt(mySlice);
+            var myName = mydata.meta['fields'][myInt];
+        }
+        return myName;
+    }
+    
+    function getExit(myTree,myId) {
+        switch (myTree) {
+            case 0:
+                var myExit = $('#'+orderTree0[myId]+' #hidden-exit-dir').val();
+            break;
+            case 1:
+                var myExit = $('#'+orderTree1[myId]+' #hidden-exit-dir').val();
+            break;
+        }
+        return myExit;
+    }
+    
+    console.log('JSON updated: ' + JSON.stringify(myJsonObject, null, "  "));
+    
+    console.log('TEST: '+mydata.meta['fields'][0]);
+    //console.log('results fields: ' + mydata.meta['fields']);
+    
+    //if (dragTree == "tree0") {
+    //     $("#"+clonedCueId).append(insertExit(0));
+    
+    
+    //console.log("JSON.stringify: " + JSON.stringify(order1 + order2));
+    //alert("order1:" + order1 + "\n order2:" + order2); //Just showing update
+
+    //$("#info").html(JSON.stringify($("#sortable").sortable('toArray')));
+    //var params = '{order:"' + str[0].title + ',' + str[1].title + ',' + str[2].title + '"}';
+    //data : params, // in $.ajax
+    
+    //$.ajax({
+    //    type: "POST",
+    //    url: "/echo/json/",
+    //    data: "order1=" + order1 + "&order2=" + order2,
+    //    dataType: "json",
+    //    success: function (data) {
+    //    }
+    //});
 }
 
 function addCloseButton(myDragCue) {  
@@ -344,6 +339,9 @@ function closeExitButton() {
         };
         $('#'+myCue+' #hidden-exit-dir').val(newExitDir);
         $('#'+myCue+' .exits').append(insertExit(newExitDir));
+        
+        updateJsonDataset(); // update the changed exit direction
+        
         closeExitButton();  // activate the close button
         
         e.stopPropagation();                                                // Stop event bubbling (don't initiate other actions triggered by "mousedown", e.g. dragging)

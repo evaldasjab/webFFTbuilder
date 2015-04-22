@@ -25,14 +25,79 @@ function handleFileSelect(evt) {
           $("#cues_list").append('\
             <article>\
                 <ul class="cues">\
-                    <li id="cue' +i+ '" class="widget color-orange">\
-                      <input type="hidden" id="hidden-exit-dir" value="2"/> \
-                        <div class="widget-head">\
-                            <h3><span id="title' +i+ '">' +mydata.meta['fields'][i]+ '</span>\
-                            <input type="radio" class="criterion" name="criterion" value="cue' +i+ '" /></h3>\
+                    <li id="cue'+i+'" class="widget color-orange">\
+                      <input type="hidden" id="hidden-exit-yes" value="continue"/> \
+                      <input type="hidden" id="hidden-exit-no" value="continue"/> \
+                        <div class="widget-head h3">\
+                            <input type="radio" class="criterion" name="criterion" value="cue' +i+ '" />\
+                            <span id="title' +i+ '">' +mydata.meta['fields'][i]+ '</span>\
+                            <button id="icons" class="collapse-ui-cue ui-state-default ui-corner-all" title=".ui-icon-carat-2-n-s"><span class="ui-icon ui-icon-carat-2-n-s"></span></button>\
+                            <button id="icons" class="close-ui-cue ui-state-default ui-corner-all" title=".ui-icon-close"><span class="ui-icon ui-icon-close"></span></button>\
                         </div>\
                         <div class="widget-content">\
-                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</p>\
+                            <p>\
+                              <table class="evaluation" style="width:100%">\
+                                  <tr>\
+                                    <td></td>\
+                                    <td></td>\
+                                    <td colspan="3">Criterion</td>\
+                                  </tr>\
+                                  <tr>\
+                                    <th></th>\
+                                    <th></th>\
+                                    <th>NO</th>\
+                                    <th>YES</th>\
+                                    <th>Sum</th>\
+                                  </tr>\
+                                  <tr>\
+                                    <td rowspan="3"><div class="rotate">Prediction</div></td>\
+                                    <th>Negative</td>\
+                                    <td>0</td>\
+                                    <td>0</td>\
+                                    <td>0</td>\
+                                  </tr>\
+                                  <tr>\
+                                    <td>Positive</td>\
+                                    <td>0</td>\
+                                    <td>0</td>\
+                                    <td>0</td>\
+                                  </tr>\
+                                  <tr>\
+                                    <td>Sum</td>\
+                                    <td>0</td>\
+                                    <td>0</td>\
+                                    <td>0</td>\
+                                  </tr>\
+                              </table>\
+                            </p>\
+                            <p>\
+                              <table class="evaluation" style="width:100%">\
+                                  <tr>\
+                                    <th>Prob</th>\
+                                    <th>H</th>\
+                                    <th>FA</th>\
+                                    <th>H-FA</th>\
+                                  </tr>\
+                                  <tr>\
+                                    <th>0</td>\
+                                    <td>0</td>\
+                                    <td>0</td>\
+                                    <td>0</td>\
+                                  </tr>\
+                              </table>\
+                            </p>\
+                            <p>\
+                              <table class="evaluation" style="width:100%">\
+                                  <tr>\
+                                    <th>Frugality</th>\
+                                    <th>d-prime</th>\
+                                  </tr>\
+                                  <tr>\
+                                    <td>0</td>\
+                                    <td>0</td>\
+                                  </tr>\
+                              </table>\
+                            </p>\
                         </div>\
                         <ul class="exits"\
                         </ul>\
@@ -41,6 +106,10 @@ function handleFileSelect(evt) {
             </article>'
           );
         }    
+        
+        //collapseCueButtons(); // activate the collapse buttons (function in buildtree.js)
+        closeCueButtons();  // activate the close buttons (function in buildtree.js)
+        
         
         init();
       });   

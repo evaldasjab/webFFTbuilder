@@ -1,15 +1,5 @@
 /* JS-Enabled CSS */
 
-.widget-head a.remove  {
-    float: right;
-    display: inline;
-    background: url(img/buttons.gif) no-repeat -24px 0;
-    width: 14px;
-    height: 14px;
-    margin: 8px 4px 8px 0;
-    text-indent: -9999em;
-    outline: none;
-}
 
 .widget-head a.edit  {
     float: right;
@@ -22,7 +12,7 @@
     outline: none;
 }
 
-.widget-head a.collapse  {
+a.collapse  {
     float: left;
     display: inline;
     background: url(img/buttons.gif) no-repeat -52px 0;
@@ -40,13 +30,6 @@
     margin: 30px 35px 0 25px;
     margin-left: auto;
     margin-right: auto;
-}
-
-.edit-box {
-    overflow: hidden;
-    background: #333 url(img/widget-content-bg.png) repeat-x;
-    margin-bottom: 2px;
-    padding: 10px 0;
 }
 
 .edit-box li.item {

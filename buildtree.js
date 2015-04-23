@@ -107,23 +107,13 @@ function makeSortable() {                 // This function will make the widgets
                         
             $('#'+dragCue+' .criterion').remove(); // remove the radio button
             
-            //addCloseButton(dragCue);                       // add CLOSE button
-            // FIX THIS!!!
-            //closeCueButtons();  // activate the close button
+            //reactivate CLOSE button - bug workaround?
             activateCloseCueButton(dragCue);
                         
             // add EXIT nodes, depending on which tree is dropped on
-            switch (dragTree) {
-                case 'tree0':
-                    $('#'+dragCue+' .exits').append(insertExit('0'));
-                    $('#'+dragCue+' #hidden-exit-yes').val('exit');  // change the value in cue's hidden input field
-                    break;
-                case 'tree1':
-                    $('#'+dragCue+' .exits').append(insertExit('1'));
-                    $('#'+dragCue+' #hidden-exit-no').val('exit');  // change the value in cue's hidden input field
-                    break;
-            }
-            activateCloseExitButton('#'+dragCue+' .exits');  // activate the close button
+            console.log('on draggable STOP - setExitValues');
+            var dragExits = setExitDirection(dragTree);
+            setExitValues(dragCue, dragExits.yes, dragExits.no);
         }
     });
     
@@ -154,47 +144,177 @@ function makeSortable() {                 // This function will make the widgets
         },
         
         update: function (event,ui) {
-                
-                    // get the order of the cues in the trees
-                    orderTree0 = $('#tree0').sortable('toArray');
-                    orderTree1 = $('#tree1').sortable('toArray');
-                    orderTree0 = orderTree0.filter(function(n){ return n != "" });  // remove empty elements in array
-                    orderTree1 = orderTree1.filter(function(n){ return n != "" });  // remove empty elements in array
-                    console.log('orderTree0: ' + orderTree0.toString());
-                    console.log('orderTree1: ' + orderTree1);
-                    
-                    // for the last cue, add the second EXIT, and for the ex-last cue remove the second EXIT
-                    orderDragTree = $('#'+dragTree).sortable('toArray');  // get the order of active tree
-                    orderDragTree = orderDragTree.filter(function(n){ return n != '' });  // remove empty elements in array
-                    lastCueId = $(orderDragTree).get(-1);                     // get the last cue
-                    
-                    if (dragCue == lastCueId) {                             // if active cue is last cue
-                        
-                        exLastCueId = $(orderDragTree).get(-2);                     // get the cue, which previously was last                    
-                        removeSecondExitNodeOfCue(exLastCueId);
-                        
-                        var exitDir = $('#'+dragCue+' #hidden-exit-dir').val()
-                        
-                        switch (exitDir) {
-                            case '0': $('#'+lastCueId+' .exits').append(insertExit('1')); break;
-                            case '1': $('#'+lastCueId+' .exits').append(insertExit('0')); break;
-                        }
-                        
-                        // remove CLOSE buttons from EXIT nodes of the last cue
-                        //$('#'+lastCueId+' .close-exit').remove();
-                        //$('#'+lastCueId+' .close-ui-exit').button("disable");
-
-                        
-                        // add CLOSE button to the EXIT node of exLastCue
-                        //$('#'+exLastCueId+' .widget-head').append('<div class="close-exit">x</div>');
-                        closeExitButton();  // activate the close buttons
-                    }
-                    
-                    // update JSON dataset for the analysis algorithms
-                    updateJsonDataset();
+                                    
+            // take care of the EXIT nodes
+            updateExitsForLastAndExLastCues(dragTree, dragCue);
+            
+            // update JSON dataset for the analysis algorithms
+            updateJsonDataset();
             
         }
     }).disableSelection();      
+}
+
+function updateExitsForLastAndExLastCues(myTreeId, myCueId) {
+    
+    //var myTreeId = $('#'+myCueId).closest('.trees').attr('id');
+    console.log('EXIT-UPDATE myTreeId: '+myTreeId);
+    console.log('EXIT-UPDATE myCueId: '+myCueId);
+    
+    // get the last and ex-last cue
+    var myTreeArray = $('#'+myTreeId).sortable('toArray');  // get the order of active tree
+    myTreeArray = myTreeArray.filter(function(n){ return n != '' });  // remove empty elements in array
+    var myLastCueId = $(myTreeArray).get(-1);                     // get the last cue
+    var myExLastCueId = $(myTreeArray).get(-2);                     // get the last cue
+    console.log('myLastCueId: '+myLastCueId);
+    console.log('myExLastCueId: '+myExLastCueId);
+    
+    // last cue must have two EXIT nodes, ex-last must have one EXIT node
+    //if (myCueId == myLastCueId) {                             // if active cue is last cue
+                
+        console.log('LAST CUE -> setExitValues');
+        // add the second EXIT node
+        setExitValues(myLastCueId, 'exit', 'exit');              
+        
+        // remove the second EXIT node
+        console.log('EX-LAST CUE -> setExitValues');
+        var dragExits = setExitDirection(myTreeId);
+        setExitValues(myExLastCueId, dragExits.yes, dragExits.no);
+    //}
+}
+
+function setExitDirection(myTree) {
+    switch (myTree) {
+        case 'tree0':
+            var myYes = 'exit';
+            var myNo = 'continue';
+            break;
+        case 'tree1':
+            var myYes = 'exit';
+            var myNo = 'continue';
+            break;
+    }
+    return {
+        yes: myYes,
+        no: myNo
+    }
+}
+
+function setExitValues(myCueId, myYes, myNo) {
+    
+    //get old Exit values
+    var myYesOld = $('#'+myCueId+' #hidden-exit-yes').val();
+    var myNoOld = $('#'+myCueId+' #hidden-exit-no').val();
+    
+    console.log('SETEXITVALUES! '+myCueId+' '+myYes+' '+myNo);
+    console.log('myYesOld: '+myYesOld);
+    console.log('myNoOld: '+myNoOld);
+    
+    if (myYesOld != myYes) {
+        console.log('SETEXITVALUES! myYesOld skiriasi nuo myYes: '+myYesOld+' '+myYes);
+        switch (myYes) {
+            case 'exit':
+                addExitNode(myCueId, 'hidden-exit-yes');
+            break;
+            case 'continue':
+                removeExitNode(myCueId, 'hidden-exit-yes');
+            break;
+        }
+        $('#'+myCueId+' #hidden-exit-yes').val(myYes); // add ".trigger('change')" if you need to track this change and then do something with "$('#hidden-exit-yes').change(function(){do smth. here}"
+    }
+    
+    if (myNoOld != myNo) {
+        console.log('SETEXITVALUES! myNoOld skiriasi nuo myNo: '+myNoOld+' '+myNo);
+        switch (myNo) {
+            case 'exit':
+                addExitNode(myCueId, 'hidden-exit-no');
+            break;
+            case 'continue':
+                removeExitNode(myCueId, 'hidden-exit-no');
+            break;
+        }
+        $('#'+myCueId+' #hidden-exit-no').val(myNo); // add ".trigger('change')" if you need to track this change and then do something with "$('#hidden-exit-yes').change(function(){do smth. here}"
+    }
+
+}
+
+function addExitNode(myCueId, myExitId) {
+    switch(myExitId) {
+        case 'hidden-exit-yes':
+            var myExitClass = 'exit-left';
+            var myExitText = 'Yes';
+            break;
+        case 'hidden-exit-no':
+            var myExitClass = 'exit-right';
+            var myExitText = 'No';
+            break;
+    }
+    var exitNode =  '<li class="'+myExitClass+' exit-widget color-blue">\
+                            <div class="widget-head">\
+                                <h3>EXIT</h3>\
+                                <button id="icons" class="close-ui-exit ui-state-default ui-corner-all" title=".ui-icon-close"><span class="ui-icon ui-icon-close"></span></button>\
+                            </div>\
+                            <div class="widget-content">\
+                                <p>'+myExitText+'</p>\
+                            </div>\
+                        </li>';
+    //$('#'+myCueId+' .exits').append(exitNode);
+    $(exitNode).hide().appendTo('#'+myCueId+' .exits').fadeIn(300);
+    
+    // activate the close button
+    activateCloseExitButton(myCueId, myExitId);  // activate the close button
+}
+
+function activateCloseExitButton(myCueId, myExitId) {
+    
+    console.log('ACTIVATE myCueId: '+myCueId);
+    console.log('ACTIVATE myExitId: '+myExitId);
+    
+    //$('.close-ui-exit').mousedown(function (e) {  // Create new anchor element with class of 'remove'
+    $('#'+myCueId).find('.close-ui-exit').mousedown(function (e) {  // Create new anchor element with class of 'remove'
+                
+        console.log('MOUSEDOWN myExitId: '+myExitId);
+        
+        e.stopPropagation();                                                // Stop event bubbling (don't initiate other actions triggered by "mousedown", e.g. dragging)
+    }).click(function () {
+        removeExitNode(myCueId, myExitId);
+        
+        switchExitDirection(myCueId, myExitId);
+        
+        updateJsonDataset(); // update the changed exit direction
+        
+        return false;                                            // Return false, prevent default action
+    })
+}
+
+function switchExitDirection(myCueId, myExitId) {
+    switch(myExitId) {
+        case 'hidden-exit-yes':
+            setExitValues(myCueId, 'continue', 'exit');
+            break;
+        case 'hidden-exit-no':
+            setExitValues(myCueId, 'exit', 'continue');
+            break;
+    }
+}
+
+function removeExitNode (myCueId, myExitId) {
+    console.log('REMOVE EXIT NODE: '+myCueId+' '+myExitId);
+    switch(myExitId) {
+        case 'hidden-exit-yes':
+            var myExitClass = 'exit-left';
+            break;
+        case 'hidden-exit-no':
+            var myExitClass = 'exit-right';
+            break;
+    }
+    $('#'+myCueId+' .'+myExitClass ).animate({                           // Animate widget to an opacity of 0
+        opacity: 0    
+    },function () {                                                     // When animation (opacity) has finished
+        $(this).wrap('<div/>').parent().slideUp(function () {           // Wrap in DIV (explained below) and slide up
+            $(this).remove();                                           // When sliding up has finished, remove widget from DOM
+        });
+    });
 }
 
 function selectCriterion() {
@@ -208,33 +328,8 @@ function selectCriterion() {
     });
 }
 
-function removeSecondExitNodeOfCue(myCueId) {
-    console.log('myCueId: '+myCueId);
-    var myExitDir = $('#'+myCueId+' #hidden-exit-dir').val()
-    console.log('myExitDir: '+myExitDir);
-    
-    switch (myExitDir) {
-        case '0':
-            removeExitNode('#'+myCueId+' .exit-right');
-        break;
-        case '1':
-            removeExitNode('#'+myCueId+' .exit-left');
-        break;
-    }
-}
-
-function removeExitNode(myExitId) {
-    console.log('myExitId: '+myExitId);
-    $( myExitId ).animate({                           // Animate widget to an opacity of 0
-        opacity: 0    
-    },function () {                                                     // When animation (opacity) has finished
-        $(this).wrap('<div/>').parent().slideUp(function () {           // Wrap in DIV (explained below) and slide up
-            $(this).remove();                                           // When sliding up has finished, remove widget from DOM
-        });
-    });
-}
-
 function updateJsonDataset() {
+        
     // update JSON dataset
     //for (var key in myJsonObjectTree0) {
     //    if (myJsonObjectTree0.hasOwnProperty(key)) {
@@ -249,8 +344,8 @@ function updateJsonDataset() {
     orderTree1 = $('#tree1').sortable('toArray');
     orderTree0 = orderTree0.filter(function(n){ return n != "" });  // remove empty elements in array
     orderTree1 = orderTree1.filter(function(n){ return n != "" });  // remove empty elements in array
-    console.log('orderTree0 NOW: ' + orderTree0.toString());
-    console.log('orderTree1 NOW: ' + orderTree1);
+    console.log('orderTree0 UPDATE: ' + orderTree0.toString());
+    console.log('orderTree1 UPDATE: ' + orderTree1);
     
     myJsonObject.tree0.criterion = mydata.meta['fields'][getInt(criterCue)];
     
@@ -382,6 +477,9 @@ function collapseCueButtons() {
 //}
 
 function activateCloseCueButton(myCueId) {  
+    
+    var myTreeId = $('#'+myCueId).closest('.trees').attr('id');
+    console.log('closeCueButton myTreeId: '+myTreeId);
     console.log('closeCueButton myCueId: '+myCueId);
     
     $('#'+myCueId+' .close-ui-cue').mousedown(function (e) {  // Create new anchor element with class of 'remove'
@@ -392,6 +490,8 @@ function activateCloseCueButton(myCueId) {
         },function () {                                                     // When animation (opacity) has finished
             $(this).wrap('<div/>').parent().slideUp(function () {           // Wrap in DIV (explained below) and slide up
                 $(this).remove();                                           // When sliding up has finished, remove widget from DOM
+                console.log('REMOVED myCueId: '+myCueId);
+                updateExitsForLastAndExLastCues(myTreeId, myCueId); // take care of the EXIT nodes
                 updateJsonDataset(); // update the changed exit direction
             });
         });
@@ -411,54 +511,6 @@ function closeCueButtons() {
                 $(this).remove();                                           // When sliding up has finished, remove widget from DOM
             });
         });
-        return false;                                            // Return false, prevent default action
-    })
-}
-
-function addCloseButton(myDragCue) {  
-
-    $('#'+myDragCue+' .widget-head').append('<div class="close-cue">x</div>');
-    
-    $('.close-cue').mousedown(function (e) {  // Create new anchor element with class of 'remove'
-        e.stopPropagation();                                                // Stop event bubbling (don't initiate other actions triggered by "mousedown", e.g. dragging)
-    }).click(function () {
-        $(this).parents('.widget').animate({                           // Animate widget to an opacity of 0
-            opacity: 0    
-        },function () {                                                     // When animation (opacity) has finished
-            $(this).wrap('<div/>').parent().slideUp(function () {           // Wrap in DIV (explained below) and slide up
-                $(this).remove();                                           // When sliding up has finished, remove widget from DOM
-            });
-        });
-        return false;                                            // Return false, prevent default action
-    })
-}
-
-
-function activateCloseExitButton(myExit) {  
-    
-    //$('.close-ui-exit').mousedown(function (e) {  // Create new anchor element with class of 'remove'
-    $(myExit+' .widget-head .close-ui-exit').mousedown(function (e) {  // Create new anchor element with class of 'remove'
-                
-        // change the direction of EXIT
-        var myCue = $(this).closest('.widget').attr('id');
-        var myExitDir = $('#'+myCue+' #hidden-exit-dir').val();
-        console.log('myCue: '+myCue);
-        console.log('myExit: '+myExitDir);
-        
-        switch (myExitDir) {
-            case '0': newExitDir = '1'; break;
-            case '1': newExitDir = '0'; break;
-        };
-        $('#'+myCue+' #hidden-exit-dir').val(newExitDir);
-        $('#'+myCue+' .exits').append(insertExit(newExitDir));
-        
-        updateJsonDataset(); // update the changed exit direction
-        
-        closeExitButton();  // activate the close button
-        
-        e.stopPropagation();                                                // Stop event bubbling (don't initiate other actions triggered by "mousedown", e.g. dragging)
-    }).click(function () {
-        removeExitNode('#'+myCue+' .exit-widget');
         return false;                                            // Return false, prevent default action
     })
 }

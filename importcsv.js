@@ -45,25 +45,25 @@ function handleFileSelect(evt) {
                                   <tr>\
                                     <th></th>\
                                     <th></th>\
-                                    <th>NO</th>\
-                                    <th>YES</th>\
+                                    <th>Yes</th>\
+                                    <th>No</th>\
                                     <th>Sum</th>\
                                   </tr>\
                                   <tr>\
                                     <td rowspan="3"><div class="rotate">Prediction</div></td>\
-                                    <th>Negative</td>\
+                                    <th>Yes</td>\
                                     <td>0</td>\
                                     <td>0</td>\
                                     <td>0</td>\
                                   </tr>\
                                   <tr>\
-                                    <td>Positive</td>\
+                                    <th>No</td>\
                                     <td>0</td>\
                                     <td>0</td>\
                                     <td>0</td>\
                                   </tr>\
                                   <tr>\
-                                    <td>Sum</td>\
+                                    <th>Sum</th>\
                                     <td>0</td>\
                                     <td>0</td>\
                                     <td>0</td>\
@@ -109,8 +109,7 @@ function handleFileSelect(evt) {
         
         //collapseCueButtons(); // activate the collapse buttons (function in buildtree.js)
         closeCueButtons();  // activate the close buttons (function in buildtree.js)
-        
-        
+                
         init();
       });   
         

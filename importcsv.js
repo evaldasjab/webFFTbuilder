@@ -14,10 +14,9 @@ function handleFileSelect(evt) {
       //console.log("fields, 0: "+results.meta['fields'][0]);
       //console.log("0, case: "+results.data[0]['case']);
       
-      var myObject = results.meta['fields']
-      var noOfFields = Object.keys(myObject).length
+      var myObject = mydata.meta['fields'];
+      var noOfFields = Object.keys(myObject).length;
       console.log("number of fields: "+noOfFields);
-
         
       $(document).ready(function() {
         for (var i = 0; i < noOfFields; i++) {
@@ -35,69 +34,27 @@ function handleFileSelect(evt) {
                             <button id="icons" class="close-ui-cue ui-state-default ui-corner-all" title=".ui-icon-close"><span class="ui-icon ui-icon-close"></span></button>\
                         </div>\
                         <div class="widget-content">\
-                            <p>\
-                              <table class="evaluation" style="width:100%">\
-                                  <tr>\
-                                    <td></td>\
-                                    <td></td>\
-                                    <td colspan="3">Criterion</td>\
-                                  </tr>\
-                                  <tr>\
-                                    <th></th>\
-                                    <th></th>\
-                                    <th>Yes</th>\
-                                    <th>No</th>\
-                                    <th>Sum</th>\
-                                  </tr>\
-                                  <tr>\
-                                    <td rowspan="3"><div class="rotate">Prediction</div></td>\
-                                    <th>Yes</td>\
-                                    <td>0</td>\
-                                    <td>0</td>\
-                                    <td>0</td>\
-                                  </tr>\
-                                  <tr>\
-                                    <th>No</td>\
-                                    <td>0</td>\
-                                    <td>0</td>\
-                                    <td>0</td>\
-                                  </tr>\
-                                  <tr>\
-                                    <th>Sum</th>\
-                                    <td>0</td>\
-                                    <td>0</td>\
-                                    <td>0</td>\
-                                  </tr>\
-                              </table>\
-                            </p>\
-                            <p>\
-                              <table class="evaluation" style="width:100%">\
-                                  <tr>\
-                                    <th>Prob</th>\
-                                    <th>H</th>\
-                                    <th>FA</th>\
-                                    <th>H-FA</th>\
-                                  </tr>\
-                                  <tr>\
-                                    <th>0</td>\
-                                    <td>0</td>\
-                                    <td>0</td>\
-                                    <td>0</td>\
-                                  </tr>\
-                              </table>\
-                            </p>\
-                            <p>\
-                              <table class="evaluation" style="width:100%">\
-                                  <tr>\
-                                    <th>Frugality</th>\
-                                    <th>d-prime</th>\
-                                  </tr>\
-                                  <tr>\
-                                    <td>0</td>\
-                                    <td>0</td>\
-                                  </tr>\
-                              </table>\
-                            </p>\
+                          <p>\
+                            <table class="evaluation">\
+                                <tr><td></td><td></td><td colspan="3">Criterion</td></tr>\
+                                <tr><th></th><th></th><th>Yes</th><th>No</th><th>Und</th></tr>\
+                                <tr><td rowspan="3"><div class="rotate">Prediction</div></td><th>Yes</td><td class="success" id="Xhits">0</td><td class="fail" id="Xfalsealarms">0</td><td class="undecided" id="Xundecided_pos">0</td></tr>\
+                                <tr><th>No</td><td class="fail" id="Xmisses">0</td><td class="success" id="Xcorrectrejections">0</td><td class="undecided" id="Xundecided_neg">0</td></tr>\
+                                <tr><th>Sum</th><td id="Xcrit-yes-sum">0</td><td id="Xcrit-no-sum">0</td><td id="Xcrit-und-sum">0</td></tr>\
+                            </table>\
+                          </p>\
+                          <p>\
+                            <table class="evaluation">\
+                                <tr><th>p(Hits)</th><th>p(FA)</th><th>d"</th><th>Frugality</th></tr>\
+                                <tr><td id="XpHits">0</td><td id="XpFA">0</td><td id="Xdprime">0</td><td id="Xfrugality">0</td></tr>\
+                            </table>\
+                          </p>\
+                          <p>\
+                            <table class="evaluation">\
+                                <tr><th>A"</th><th>B"</th><th>B"</th><th>Bias</th></tr>\
+                                <tr><td id="Xaprime">0</td><td id="Xbprime">0</td><td id="Xbdprime">0</td><td id="Xbias">0</td></tr>\
+                            </table>\
+                          </p>\
                         </div>\
                         <ul class="exits"\
                         </ul>\
@@ -107,14 +64,16 @@ function handleFileSelect(evt) {
           );
         }    
         
-        //collapseCueButtons(); // activate the collapse buttons (function in buildtree.js)
-        closeCueButtons();  // activate the close buttons (function in buildtree.js)
+        collapseCueButtons(); // activate the collapse buttons (function in buildtree.js)
+        
+        $( "li" ).each(function( index ) {
+          var myCueId = $(this).closest('.widget').attr('id');
+          //console.log('IMPORT myCueId: '+myCueId);
+          activateCloseCueButton(myCueId);
+        });
                 
         init();
       });   
-        
-      
-      
     }
   });
 }

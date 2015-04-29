@@ -38,7 +38,7 @@ a {color:black;}
 /* End Head Section */
 
 
-/* Row section */
+/* Row section ****************/
 
 /* This container element gives us the scrollbars we want.*/
 div.horiz_scroll {
@@ -62,36 +62,66 @@ article {
     vertical-align: top;
 }
 
+/* Row section End ***************/
+
+/* Columns *************/
+
+.trees {
+    display: inline-block; 
+    width:150px;
+    height: 600px;
+    vertical-align:top;
+}
+
+#tree0 {
+    background-color: red; 
+}
+
+#tree1 {
+    background-color: green;
+}
+
+.columns {
+    display: inline-block; 
+    background-color: blue; 
+    width:150px;
+    height: 600px;
+}
+
+.placeholder {
+    text-align: center;
+    //opacity: 0.6;
+}
+/* Columns End *************/
 
 
+/* Widgets ***************/
 
-
-.cues .widget {
+.widget {
     width: 150px;
-    margin: 20px 20px 20px 20px;
+    margin: 20px 20px 60px 20px;
+    margin-left: auto;
+    margin-right: auto;
     padding: 2px;
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
+    position: relative;
+    z-index: 5;
 }
-.cues .widget .widget-head {
+.widget .widget-head {
     color: #000;
     overflow: hidden;
     width: 100%;
     height: 30px;
     line-height: 30px;
-}
-
-.widget-head {
     position: relative;
-    font-weight: bold;
 }
-
-.cues .widget .widget-head h3 {
+.widget .widget-head h3 {
     padding: 0 5px;
-    text-align: left;
+    text-align: center;
 }
 
-.cues .widget .widget-content {
+.widget .widget-content {
     background: #333 url(img/widget-content-bg.png) repeat-x;
     padding: 10px 5px;
     color: #DDD;
@@ -101,14 +131,42 @@ article {
     -webkit-border-bottom-right-radius: 2px;
     line-height: 1.2em;
     overflow: hidden;
+    position: absolute;
+    z-index: 6;
+}
+.widget-placeholder { border: 2px dashed #999;}
+#two_trees .widget-placeholder {
+    width: 160px;
+    height: 160 px;
+    margin: 30px 35px 0 25px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.evaluation, th, td {
-    border: 1px solid grey;
-    border-spacing: 0px;
-    font-size: 10px;
-    margin: 0px 0px 4px 0px;
+.exit-widget {
+    width: 100px;
+    margin: 30px 20px 0 20px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 2px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
 }
+.exit-left {
+    position: absolute;
+    left: -150px;
+    bottom: -100px;
+    
+}
+.exit-right {
+    position: absolute;
+    right: -150px;
+    bottom: -100px;
+    
+}
+/* Widgets End ***************/
+
+/* Statistics ***************/
 
 .rotate {
              filter:  progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083);  /* IE6,IE7 */
@@ -120,11 +178,47 @@ article {
           transform: rotate(-90.0deg);  /* Standard */
 	  width: 1.2em;
 }
+.evaluation, th, td {
+    border: 1px solid grey;
+    border-spacing: 0px;
+    margin: 0px 0px 4px 0px;
+    font-size: 10px;
+    text-align: center;
+}
 
-/* Row section End */
+.success{
+    text-align: center;
+    color: white;
+    background-color: green;
+}
 
+.fail{
+    text-align: center;
+    color: white;
+    background-color: red;
+}
 
-/* Icons----------------------------------*/
+.undecided{
+    text-align: center;
+    color: white;
+    background-color: dodgerblue;
+}
+
+/* Statistics End ***************/
+
+/* Icons *************************************/
+.collapse-ui-cue, .collapse-ui-exit {
+  position: absolute;
+  right: 20px;
+  top: 0px;
+}
+
+.close-ui-cue, .close-ui-exit {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+}
+
 #icons {
 	margin: 0;
 	padding: 0;
@@ -216,124 +310,3 @@ article {
 .ui-icon-carat-2-n-s { background-position: -128px 0; }
 .ui-icon-close { background-position: -80px -128px; }
 
-/* Columns section */
-
-.placeholder {
-    text-align: center;
-    //opacity: 0.6;
-}
-
-#two_trees #tree0 {
-    display: inline-block; 
-    background-color: red; 
-    width:49%;
-    vertical-align:top;
-}
-
-#two_trees #tree1 {
-    display: inline-block;
-    background-color: green;
-    width:49%;
-    vertical-align:top;
-}
-
-#two_trees .widget {
-    width: 150px;
-    margin: 20px 20px 60px 20px;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 2px;
-    -moz-border-radius: 4px;
-    -webkit-border-radius: 4px;
-    position: relative;
-}
-#two_trees .widget .widget-head {
-    color: #000;
-    overflow: hidden;
-    width: 100%;
-    height: 30px;
-    line-height: 30px;
-    position:relative;
-}
-#two_trees .widget .widget-head h3 {
-    padding: 0 5px;
-    text-align: center;
-}
-
-#two_trees .widget .widget-content {
-    background: #333 url(img/widget-content-bg.png) repeat-x;
-    padding: 10px 5px;
-    color: #DDD;
-    -moz-border-radius-bottomleft: 2px;
-    -moz-border-radius-bottomright: 2px;
-    -webkit-border-bottom-left-radius: 2px;
-    -webkit-border-bottom-right-radius: 2px;
-    line-height: 1.2em;
-    overflow: hidden;
-}
-
-.exit-left {
-    position: absolute;
-    left: -150px;
-    bottom: -100px;
-    
-}
-
-.exit-right {
-    position: absolute;
-    right: -150px;
-    bottom: -100px;
-    
-}
-
-.exit-widget {
-    width: 100px;
-    margin: 30px 20px 0 20px;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 2px;
-    -moz-border-radius: 4px;
-    -webkit-border-radius: 4px;
-    
-}
-
-.collapse-ui-cue, .collapse-ui-exit {
-  position: absolute;
-  right: 20px;
-  top: 0px;
-}
-
-.close-ui-cue, .close-ui-exit {
-  position: absolute;
-  right: 0px;
-  top: 0px;
-}
-
-.close-cue, .close-exit {
-    background: rgba(255,255,255,0.1);
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    -ms-border-radius: 50%;
-    -o-border-radius: 50%;
-    border-radius: 50%;
-    -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4),inset 0 -1px 2px rgba(255,255,255,0.25);
-    -moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4),inset 0 -1px 2px rgba(255,255,255,0.25);
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4),inset 0 -1px 2px rgba(255,255,255,0.25);
-    color: #FFFFFF;
-    cursor: pointer;
-    font-size: 17px;
-    font-weight: normal;
-    height: 22px;
-    line-height: 24px;
-    position: absolute;
-    right: 5px;
-    top: 5px;
-    text-align: center;
-    -webkit-transition: color 0.2s ease-in-out;
-    -moz-transition: color 0.2s ease-in-out;
-    -o-transition: color 0.2s ease-in-out;
-    transition: color 0.2s ease-in-out;
-    width: 22px;
-}
-
-/* End Columns section */

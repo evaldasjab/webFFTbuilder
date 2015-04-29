@@ -74,16 +74,16 @@ article {
 }
 
 #tree0 {
-    background-color: red; 
+    background-color: LightGrey; 
 }
 
 #tree1 {
-    background-color: green;
+    background-color: LightGrey;
 }
 
 .columns {
     display: inline-block; 
-    background-color: blue; 
+    background-color: white; 
     width:150px;
     height: 600px;
 }

@@ -87,7 +87,7 @@ function updateDatasetView() {
     DATASET.records[0].ordinaryCues.forEach(function (c) {
         datasetInfo += "<th>" + c.cueName + "</th>";
     });
-    datasetInfo += "<th>Case evaluation</th>";
+    datasetInfo += "<th>Case eval_table</th>";
     datasetInfo += "</tr>";
     DATASET.records.forEach(function (k) {
         datasetInfo += "<tr>";

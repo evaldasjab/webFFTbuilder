@@ -85,7 +85,6 @@ article {
     display: inline-block; 
     background-color: white; 
     width:150px;
-    height: 600px;
 }
 
 .placeholder {
@@ -131,7 +130,7 @@ article {
     -webkit-border-bottom-right-radius: 2px;
     line-height: 1.2em;
     overflow: hidden;
-    position: absolute;
+    position: relative;
     z-index: 6;
 }
 .widget-placeholder { border: 2px dashed #999;}
@@ -164,9 +163,27 @@ article {
     bottom: -100px;
     
 }
+
+.cue_canvas {
+    position: absolute;
+    left: 0px;
+    top: 25px;
+    
+}
+
+.exit_canvas {
+    position: absolute;
+    left: -60px;
+    top: -70px; 
+}
+
 /* Widgets End ***************/
 
 /* Statistics ***************/
+
+.stats {
+  display: inline-block; 
+}
 
 .rotate {
              filter:  progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083);  /* IE6,IE7 */
@@ -178,7 +195,7 @@ article {
           transform: rotate(-90.0deg);  /* Standard */
 	  width: 1.2em;
 }
-.evaluation, th, td {
+.eval_table, th, td {
     border: 1px solid grey;
     border-spacing: 0px;
     margin: 0px 0px 4px 0px;

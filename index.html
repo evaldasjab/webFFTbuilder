@@ -54,7 +54,7 @@
                         </div>
                         <div class="widget-content">
                             <p>
-                              <table class="evaluation" style="width:100%">
+                              <table class="eval_table" style="width:100%">
                                   <tr>
                                     <td></td>
                                     <td></td>
@@ -89,7 +89,7 @@
                               </table>
                             </p>
                             <p>
-                              <table class="evaluation" style="width:100%">
+                              <table class="eval_table" style="width:100%">
                                   <tr>
                                     <th>Prob</th>
                                     <th>H</th>
@@ -105,7 +105,7 @@
                               </table>
                             </p>
                             <p>
-                              <table class="evaluation" style="width:100%">
+                              <table class="eval_table" style="width:100%">
                                   <tr>
                                     <th>Frugality</th>
                                     <th>d-prime</th>
@@ -135,7 +135,7 @@
                         </div>
                         <div class="widget-content">
                             <p>
-                              <table class="evaluation" style="width:100%">
+                              <table class="eval_table" style="width:100%">
                                   <tr>
                                     <td></td>
                                     <td></td>
@@ -170,7 +170,7 @@
                               </table>
                             </p>
                             <p>
-                              <table class="evaluation" style="width:100%">
+                              <table class="eval_table" style="width:100%">
                                   <tr>
                                     <th>Prob</th>
                                     <th>H</th>
@@ -186,7 +186,7 @@
                               </table>
                             </p>
                             <p>
-                              <table class="evaluation" style="width:100%">
+                              <table class="eval_table" style="width:100%">
                                   <tr>
                                     <th>Frugality</th>
                                     <th>d-prime</th>
@@ -216,7 +216,7 @@
                         </div>
                         <div class="widget-content">
                             <p>
-                              <table class="evaluation" style="width:100%">
+                              <table class="eval_table" style="width:100%">
                                   <tr>
                                     <td></td>
                                     <td></td>
@@ -251,7 +251,7 @@
                               </table>
                             </p>
                             <p>
-                              <table class="evaluation" style="width:100%">
+                              <table class="eval_table" style="width:100%">
                                   <tr>
                                     <th>Prob</th>
                                     <th>H</th>
@@ -267,7 +267,7 @@
                               </table>
                             </p>
                             <p>
-                              <table class="evaluation" style="width:100%">
+                              <table class="eval_table" style="width:100%">
                                   <tr>
                                     <th>Frugality</th>
                                     <th>d-prime</th>
@@ -290,29 +290,6 @@
     </div>
     <!-- row of cues -->
     
-    <div class="treestats">
-        <p>
-          <table class="evaluation">
-              <tr><td></td><td></td><td colspan="3">Criterion</td></tr>
-              <tr><th></th><th></th><th>Yes</th><th>No</th><th>Und</th></tr>
-              <tr><td rowspan="3"><div class="rotate">Prediction</div></td><th>Yes</td><td class="success" id='hits'>0</td><td class="fail" id='falsealarms'>0</td><td class="undecided" id="undecided_pos">0</td></tr>
-              <tr><th>No</td><td class="fail" id='misses'>0</td><td class="success" id='correctrejections'>0</td><td class="undecided" id="undecided_neg">0</td></tr>
-              <tr><th>Sum</th><td id='crit-yes-sum'>0</td><td id='crit-no-sum'>0</td><td id='crit-und-sum'>0</td></tr>
-          </table>
-        </p>
-        <p>
-          <table class="evaluation">
-              <tr><th>p(Hits)</th><th>p(FA)</th><th>d'</th><th>Frugality</th></tr>
-              <tr><td id="pHits">0</td><td id="pFA">0</td><td id="dprime">0</td><td id="frugality">0</td></tr>
-          </table>
-        </p>
-        <p>
-          <table class="evaluation">
-              <tr><th>A'</th><th>B'</th><th>B''</th><th>Bias</th></tr>
-              <tr><td id="aprime">0</td><td id="bprime">0</td><td id="bdprime">0</td><td id="bias">0</td></tr>
-          </table>
-        </p>
-    </div>
     
     <!-- FFTs -->
 
@@ -321,7 +298,30 @@
         <ul class="columns">
         </ul>
         <ul id="tree0" class="trees">
-            <li class="placeholder unsortable">drag'n'drop cues here!</li>
+                <div>
+                    <div>Stats of this Tree:</div>  
+                    <p>
+                      <table class="eval_table">
+                          <tr><td></td><td></td><td colspan="3">Prediction</td></tr>
+                          <tr><th></th><th></th><th>Yes</th><th>No</th><th>Und</th><th>Sum</th></tr>
+                          <tr><td rowspan="3"><div class="rotate">Criterion</div></td><th>Yes</td><td class="success" id="hits">0</td><td class="fail" id="misses">0</td><td class="undecided" id="undecided_pos">0</td><td id="crit_yes_sum">0</td></tr>
+                          <tr><th>No</td><td class="fail" id="falsealarms">0</td><td class="success" id="correctrejections">0</td><td class="undecided" id="undecided_neg">0</td><td id="crit_no_sum">0</td></tr>
+                          <tr><th>Sum</th><td id="pred_yes_sum">0</td><td id="pred_no_sum">0</td><td id="pred_und_sum">0</td><td id="pred_sum_sum">0</td></tr>
+                      </table>
+                    </p>
+                    <p>
+                      <table class="eval_table">
+                          <tr><th>p(Hits)</th><th>p(FA)</th><th>d"</th><th>Frugality</th></tr>
+                          <tr><td id="pHits">0</td><td id="pFA">0</td><td id="dprime">0</td><td id="frugality">0</td></tr>
+                      </table>
+                    </p>
+                    <p>
+                      <table class="eval_table">
+                          <tr><th>A"</th><th>B"</th><th>B""</th><th>Bias</th></tr>
+                          <tr><td id="aprime">0</td><td id="bprime">0</td><td id="bdprime">0</td><td id="bias">0</td></tr>
+                      </table>
+                    </p>
+                </div>
         </ul>
         <ul class="columns">
         </ul>
@@ -329,7 +329,30 @@
         <ul class="columns">
         </ul>
         <ul id="tree1" class="trees">
-            <li class="placeholder unsortable">drag'n'drop cues here!</li>
+                <div>
+                    <div>Stats of this Tree:</div>  
+                    <p>
+                      <table class="eval_table">
+                          <tr><td></td><td></td><td colspan="3">Prediction</td></tr>
+                          <tr><th></th><th></th><th>Yes</th><th>No</th><th>Und</th><th>Sum</th></tr>
+                          <tr><td rowspan="3"><div class="rotate">Criterion</div></td><th>Yes</td><td class="success" id="hits">0</td><td class="fail" id="misses">0</td><td class="undecided" id="undecided_pos">0</td><td id="crit_yes_sum">0</td></tr>
+                          <tr><th>No</td><td class="fail" id="falsealarms">0</td><td class="success" id="correctrejections">0</td><td class="undecided" id="undecided_neg">0</td><td id="crit_no_sum">0</td></tr>
+                          <tr><th>Sum</th><td id="pred_yes_sum">0</td><td id="pred_no_sum">0</td><td id="pred_und_sum">0</td><td id="pred_sum_sum">0</td></tr>
+                      </table>
+                    </p>
+                    <p>
+                      <table class="eval_table">
+                          <tr><th>p(Hits)</th><th>p(FA)</th><th>d"</th><th>Frugality</th></tr>
+                          <tr><td id="pHits">0</td><td id="pFA">0</td><td id="dprime">0</td><td id="frugality">0</td></tr>
+                      </table>
+                    </p>
+                    <p>
+                      <table class="eval_table">
+                          <tr><th>A"</th><th>B"</th><th>B""</th><th>Bias</th></tr>
+                          <tr><td id="aprime">0</td><td id="bprime">0</td><td id="bdprime">0</td><td id="bias">0</td></tr>
+                      </table>
+                    </p>
+                </div>
         </ul>
         <ul class="columns">
         </ul>
@@ -346,6 +369,7 @@
     <script type="text/javascript" src="libraries/jquery-ui-1.11.4.min.js"></script>
     <script type="text/javascript" src="libraries/papaparse.min.js"></script>
     <script type="text/javascript" src="libraries/jquery.jsPlumb-1.7.4-min.js"></script>
+    <script type="text/javascript" src="libraries/jcanvas-14.09.27.min.js"></script>
     
     <!-- evaldas -->
     <script type="text/javascript" src="buildtree.js"></script>

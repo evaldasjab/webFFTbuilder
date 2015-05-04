@@ -35,7 +35,7 @@ function handleFileSelect(evt) {
                         </div>\
                         <div class="widget-content">\
                           <ul class="stats stat_cue_header">Stats of this Cue\
-                            <li class="stats stat_cue">\
+                            <li class="stat_cue">\
                               <p>\
                                 <table class="eval_table">\
                                     <tr><td></td><td></td><td colspan="3">Prediction</td></tr>\
@@ -47,7 +47,7 @@ function handleFileSelect(evt) {
                               </p>\
                               <p>\
                                 <table class="eval_table">\
-                                    <tr><th>p(Hits)</th><th>p(FA)</th><th>d"</th><th>Frugality</th></tr>\
+                                    <tr><th>p(Hits)</th><th>p(FA)</th><th>d"</th><th>Frug</th></tr>\
                                     <tr><td id="pHits">0</td><td id="pFA">0</td><td id="dprime">0</td><td id="frugality">0</td></tr>\
                                 </table>\
                               </p>\
@@ -60,7 +60,7 @@ function handleFileSelect(evt) {
                             </li>\
                           </ul>\
                           <ul class="stats stat_tree_header">Tree up to this Cue:\
-                            <li class="stats stat_tree">\
+                            <li class="stat_tree">\
                               <p>\
                                 <table class="eval_table">\
                                     <tr><td></td><td></td><td colspan="3">Prediction</td></tr>\
@@ -72,7 +72,7 @@ function handleFileSelect(evt) {
                               </p>\
                               <p>\
                                 <table class="eval_table">\
-                                    <tr><th>p(Hits)</th><th>p(FA)</th><th>d"</th><th>Frugality</th></tr>\
+                                    <tr><th>p(Hits)</th><th>p(FA)</th><th>d"</th><th>Frug</th></tr>\
                                     <tr><td id="pHits">0</td><td id="pFA">0</td><td id="dprime">0</td><td id="frugality">0</td></tr>\
                                 </table>\
                               </p>\
@@ -102,7 +102,7 @@ function handleFileSelect(evt) {
         // FIX THIS!
         //$('.stat_cue_header').hide();
         $('.stat_tree_header').hide();
-        $('.stat_tree').hide();
+        //$('.stat_tree').hide();
         
         // activate CLOSE buttons
         $( "li" ).each(function( index ) {

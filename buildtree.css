@@ -133,6 +133,11 @@ article {
     position: relative;
     z-index: 6;
 }
+
+.trees .widget .widget-content {
+    width: 300px;
+}
+
 .widget-placeholder { border: 2px dashed #999;}
 #two_trees .widget-placeholder {
     width: 160px;

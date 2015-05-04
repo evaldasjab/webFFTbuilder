@@ -9,7 +9,7 @@
 
 var d = 9;  // for unique cue IDs, not 0 to have always two characters for removal (3 characters with '-')
 var c = 9;  // for unique exit IDs, not 0 to have always two characters for removal (3 characters with '-')
-
+var criterCue = '';
 /*
 
 var orderTree0 = [];  // variable knows what's in the tree0
@@ -93,7 +93,11 @@ function createTreeObj(myTreeId, myTreeCuesArray) {
     myTreeObj.tree = myTreeId;
     
     //myTreeObj.criterion = 'cue1'; // ONLY FOR TESTING!!!
-    myTreeObj.criterion = myDataset.meta['fields'][getInt(criterCue)];  // get the name of criterion cue by id
+    if (criterCue != '') {
+        myTreeObj.criterion = myDataset.meta['fields'][getInt(criterCue)];  // get the name of criterion cue by id
+    } else {
+        myTreeObj.criterion = '';
+    }
     
     myTreeObj.cues = [];
         
@@ -201,7 +205,6 @@ function getExitValue(myCueId, myDir) {
 function makeSortable() {                 // This function will make the widgets draggable-droppable using the jQuery UI 'sortable' module.
     
     //var newItemId = '';
-    var criterCue = '';
     var origCue = '';
     var dragCue = '';
     var dragTreeId = '';  // variable knows the ID of the dropped tree

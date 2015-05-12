@@ -1,0 +1,334 @@
+/* Declaring HTML5 elements */
+article,aside,details,figcaption,figure,footer,header,hgroup,nav,section,summary{
+  display: block;
+  }
+
+/* Reset */
+body,p,h1,h2,h3,h4,h5,h6,ul,ol {margin:0; padding:0; list-style:none; border:none;}
+/* End Reset */
+
+body {font-size:0.8em; font-family:Arial,Verdana,Sans-Serif; background: white;}
+a {color:black;}
+
+/* Colors */
+.color-yellow {background:#f2bc00;}
+.color-red    {background:#dd0000;}
+.color-blue   {background:#148ea4;}
+.color-white  {background:#dfdfdf;}
+.color-orange {background:#f66e00;}
+.color-green  {background:#8dc100;}
+.color-yellow h3,
+.color-white h3,
+.color-green h3
+	{color:black;}
+.color-red h3,
+.color-blue h3,
+.color-orange h3
+	{color:white;}
+/* End Colors */
+
+/* Head section */
+#head h1 {
+    line-height: 100px;
+    color: #FFF;
+    text-align: center;
+    background: url(img/buildtree.png) no-repeat center;
+    text-indent: -9999em
+}
+/* End Head Section */
+
+
+/* Row section ****************/
+
+/* This container element gives us the scrollbars we want.*/
+div.horiz_scroll {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+
+/* table-layout: fixed does a lot of the magic, here. It makes sure that the "table cells" retain the pixel dimensions you want.*/
+.cues_list {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+}
+
+/* Arranging your content inside the "cells" is as simple as using the vertical-align and text-align properties. Floats work, too.*/
+article {
+    width: 170px;
+    height: auto;
+    display: table-cell;
+    vertical-align: top;
+}
+
+/* Row section End ***************/
+
+/* Columns *************/
+
+.trees {
+    display: inline-block; 
+    width:150px;
+    height: 600px;
+    vertical-align:top;
+}
+
+#tree0 {
+    background-color: LightGrey; 
+}
+
+#tree1 {
+    background-color: LightGrey;
+}
+
+.columns {
+    display: inline-block; 
+    background-color: white; 
+    width:150px;
+}
+
+.placeholder {
+    text-align: center;
+    //opacity: 0.6;
+}
+/* Columns End *************/
+
+
+/* Widgets ***************/
+
+.widget {
+    width: 150px;
+    margin: 20px 20px 60px 20px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 2px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    position: relative;
+    z-index: 5;
+}
+.widget .widget-head {
+    color: #000;
+    overflow: hidden;
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    position: relative;
+}
+.widget .widget-head h3 {
+    padding: 0 5px;
+    text-align: center;
+}
+
+.widget .widget-content {
+    background: #333 url(img/widget-content-bg.png) repeat-x;
+    padding: 10px 5px;
+    color: #DDD;
+    -moz-border-radius-bottomleft: 2px;
+    -moz-border-radius-bottomright: 2px;
+    -webkit-border-bottom-left-radius: 2px;
+    -webkit-border-bottom-right-radius: 2px;
+    line-height: 1.2em;
+    overflow: hidden;
+    position: relative;
+    z-index: 6;
+}
+
+.trees .widget .widget-content {
+    width: 300px;
+}
+
+.widget-placeholder { border: 2px dashed #999;}
+#two_trees .widget-placeholder {
+    width: 160px;
+    height: 160 px;
+    margin: 30px 35px 0 25px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.exit-widget {
+    width: 100px;
+    margin: 30px 20px 0 20px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 2px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+}
+.exit-left {
+    position: absolute;
+    left: -150px;
+    bottom: -100px;
+    
+}
+.exit-right {
+    position: absolute;
+    right: -150px;
+    bottom: -100px;
+    
+}
+
+.cue_canvas {
+    position: absolute;
+    left: 0px;
+    top: 25px;
+    
+}
+
+.exit_canvas {
+    position: absolute;
+    left: -60px;
+    top: -70px; 
+}
+
+/* Widgets End ***************/
+
+/* Statistics ***************/
+
+.stats {
+  display: inline-block; 
+}
+
+.rotate {
+             filter:  progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083);  /* IE6,IE7 */
+         -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083)"; /* IE8 */
+     -moz-transform: rotate(-90.0deg);  /* FF3.5+ */
+      -ms-transform: rotate(-90.0deg);  /* IE9+ */
+       -o-transform: rotate(-90.0deg);  /* Opera 10.5 */
+  -webkit-transform: rotate(-90.0deg);  /* Safari 3.1+, Chrome */
+          transform: rotate(-90.0deg);  /* Standard */
+	  width: 1.2em;
+}
+.eval_table, th, td {
+    border: 1px solid grey;
+    border-spacing: 0px;
+    margin: 0px 0px 4px 0px;
+    font-size: 10px;
+    text-align: center;
+}
+
+.success{
+    text-align: center;
+    color: white;
+    background-color: green;
+}
+
+.fail{
+    text-align: center;
+    color: white;
+    background-color: red;
+}
+
+.undecided{
+    text-align: center;
+    color: white;
+    background-color: dodgerblue;
+}
+
+/* Statistics End ***************/
+
+/* Icons *************************************/
+.collapse-ui-cue, .collapse-ui-exit {
+  position: absolute;
+  right: 20px;
+  top: 0px;
+}
+
+.close-ui-cue, .close-ui-exit {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+}
+
+#icons {
+	margin: 0;
+	padding: 0;
+}
+#icons li {
+	margin: 2px;
+	position: relative;
+	padding: 4px 0;
+	cursor: pointer;
+	float: left;
+	list-style: none;
+}
+#icons span.ui-icon {
+	float: left;
+	margin: 0 0px;
+}
+/* Interaction states
+----------------------------------*/
+.ui-state-default,
+.ui-widget-content .ui-state-default,
+.ui-widget-header .ui-state-default {
+	border: 1px solid #cccccc;
+	background: #f6f6f6 url("images/ui-bg_glass_100_f6f6f6_1x400.png") 50% 50% repeat-x;
+	font-weight: bold;
+	color: #1c94c4;
+}
+.ui-state-default a,
+.ui-state-default a:link,
+.ui-state-default a:visited {
+	color: #1c94c4;
+	text-decoration: none;
+}
+/* Corner radius */
+.ui-corner-all,
+.ui-corner-top,
+.ui-corner-left,
+.ui-corner-tl {
+	border-top-left-radius: 4px;
+}
+.ui-corner-all,
+.ui-corner-top,
+.ui-corner-right,
+.ui-corner-tr {
+	border-top-right-radius: 4px;
+}
+.ui-corner-all,
+.ui-corner-bottom,
+.ui-corner-left,
+.ui-corner-bl {
+	border-bottom-left-radius: 4px;
+}
+.ui-corner-all,
+.ui-corner-bottom,
+.ui-corner-right,
+.ui-corner-br {
+	border-bottom-right-radius: 4px;
+}
+/* states and images */
+.ui-icon {
+	width: 16px;
+	height: 16px;
+}
+.ui-icon,
+.ui-widget-content .ui-icon {
+	background-image: url("images/ui-icons_222222_256x240.png");
+}
+.ui-widget-header .ui-icon {
+	background-image: url("images/ui-icons_ffffff_256x240.png");
+}
+.ui-state-default .ui-icon {
+	background-image: url("images/ui-icons_ef8c08_256x240.png");
+}
+.ui-state-hover .ui-icon,
+.ui-state-focus .ui-icon {
+	background-image: url("images/ui-icons_ef8c08_256x240.png");
+}
+.ui-state-active .ui-icon {
+	background-image: url("images/ui-icons_ef8c08_256x240.png");
+}
+.ui-state-highlight .ui-icon {
+	background-image: url("images/ui-icons_228ef1_256x240.png");
+}
+.ui-state-error .ui-icon,
+.ui-state-error-text .ui-icon {
+	background-image: url("images/ui-icons_ffd27a_256x240.png");
+}
+
+/* positioning */
+.ui-icon-carat-2-n-s { background-position: -128px 0; }
+.ui-icon-close { background-position: -80px -128px; }
+

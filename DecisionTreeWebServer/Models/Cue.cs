@@ -6,14 +6,14 @@ using System.Web;
 
 namespace DecisionTreeWeb.Model
 {
-    [DataContract]
+    [DataContract(IsReference=true)]
     public class Cue
     {
-        [DataMember]
+        [DataMember(IsRequired = true)]
         public string name { get; set; }
-        [DataMember]
+        [DataMember(IsRequired = true)]
         public string yes { get; set; }
-        [DataMember]
+        [DataMember(IsRequired = true)]
         public string no { get; set; }
 
         public Cue() {}

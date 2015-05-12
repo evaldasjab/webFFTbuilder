@@ -22,7 +22,15 @@ namespace DecisionTreeWeb.Model
 
         public ABCDBContext()
         {
-            base.Database.Connection.ConnectionString = local;            
+            switch (Environment.MachineName)
+            {
+                case "JOHANNES-PC":
+                    base.Database.Connection.ConnectionString = local;
+                    break;
+                default:
+                    base.Database.Connection.ConnectionString = server;
+                    break;
+            }
         }
 
         public void SaveTree(DecisionTree tree)

@@ -18,6 +18,7 @@ namespace DecisionTreeWebServer.Controllers
             return View("Index");
         }
 
+        [HttpPost]
         public bool SaveTree(Tree tree)
         {
             if (validateTree(tree))

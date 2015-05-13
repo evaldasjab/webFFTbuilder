@@ -8,356 +8,95 @@
         <!--[if lt IE 9]>
                 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
-        <title>MyDrop FFT</title>
+        <title>Grow a FAST-and-FRUGAL Tree</title>
         <link href="buildtree.css" rel="stylesheet" type="text/css" />
+        <link href='http://fonts.googleapis.com/css?family=Offside' rel='stylesheet' type='text/css'>
 </head>
 
 <body>
         
-
+<div id="blue_area">
         
     <header>
-        <h1>MyDrop FFT</h1>       
+        <h1>Grow a FAST-and-FRUGAL Tree</h1>       
     </header>
     
-    <div id="head_upload">
-        
-        <div id="dvImportSegments" class="fileupload ">  
-                <fieldset>
-                        <legend>Upload your CSV File</legend>
-
-                        <!-- UPLOAD CSV -->
-                                <input type="file" id="csv-file" name="files"/>
-                        <!-- UPLOAD CSV END -->
-
-                </fieldset>
-        </div> 
-    </div>
+    <input type="file" id="csv-file" name="files"> 
+    <label for="csv-file" class="button_upload_csv" >Upload CSV file</label>
     
+    <button class="button_training">Training</button>
+    <button class="button_testing">Testing</button>
+
     <!-- row of cues -->
     <div class="horiz_scroll">
         <div id="cues_list">
             
             <!-- here will go html elements from importcsv.js -->
             
-            <!-- FOR TESTING ONLY! BEGIN --
-            <article>
-                <ul class="cues">
-                    <li id="cue0" class="widget color-orange">
-                      <input type="hidden" id="hidden-exit-yes" value="continue"/>
-                      <input type="hidden" id="hidden-exit-no" value="continue"/>
-                        <div class="widget-head h3">
-                            <input type="radio" class="criterion" name="criterion" value="cue' +i+ '" />
-                            <span id="title' +i+ '">ABC</span>
-                            <button id="icons" class="collapse-ui-cue ui-state-default ui-corner-all" title=".ui-icon-carat-2-n-s"><span class="ui-icon ui-icon-carat-2-n-s"></span></button>
-                            <button id="icons" class="close-ui-cue ui-state-default ui-corner-all" title=".ui-icon-close"><span class="ui-icon ui-icon-close"></span></button>
-                        </div>
-                        <div class="widget-content">
-                            <p>
-                              <table class="eval_table" style="width:100%">
-                                  <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td colspan="3">Criterion</td>
-                                  </tr>
-                                  <tr>
-                                    <th></th>
-                                    <th></th>
-                                    <th>Yes</th>
-                                    <th>No</th>
-                                    <th>Sum</th>
-                                  </tr>
-                                  <tr>
-                                    <td rowspan="3"><div class="rotate">Prediction</div></td>
-                                    <th>Yes</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                  </tr>
-                                  <tr>
-                                    <th>No</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                  </tr>
-                                  <tr>
-                                    <th>Sum</th>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                  </tr>
-                              </table>
-                            </p>
-                            <p>
-                              <table class="eval_table" style="width:100%">
-                                  <tr>
-                                    <th>Prob</th>
-                                    <th>H</th>
-                                    <th>FA</th>
-                                    <th>H-FA</th>
-                                  </tr>
-                                  <tr>
-                                    <th>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                  </tr>
-                              </table>
-                            </p>
-                            <p>
-                              <table class="eval_table" style="width:100%">
-                                  <tr>
-                                    <th>Frugality</th>
-                                    <th>d-prime</th>
-                                  </tr>
-                                  <tr>
-                                    <td>0</td>
-                                    <td>0</td>
-                                  </tr>
-                              </table>
-                            </p>
-                        </div>
-                        <ul class="exits"
-                        </ul>
-                    </li>
-                </ul>
-            </article>
-            <article>
-                <ul class="cues">
-                    <li id="cue1" class="widget color-orange">
-                      <input type="hidden" id="hidden-exit-yes" value="continue"/>
-                      <input type="hidden" id="hidden-exit-no" value="continue"/>
-                        <div class="widget-head h3">
-                            <input type="radio" class="criterion" name="criterion" value="cue' +i+ '" />
-                            <span id="title' +i+ '">DEF</span>
-                            <button id="icons" class="collapse-ui-cue ui-state-default ui-corner-all" title=".ui-icon-carat-2-n-s"><span class="ui-icon ui-icon-carat-2-n-s"></span></button>
-                            <button id="icons" class="close-ui-cue ui-state-default ui-corner-all" title=".ui-icon-close"><span class="ui-icon ui-icon-close"></span></button>
-                        </div>
-                        <div class="widget-content">
-                            <p>
-                              <table class="eval_table" style="width:100%">
-                                  <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td colspan="3">Criterion</td>
-                                  </tr>
-                                  <tr>
-                                    <th></th>
-                                    <th></th>
-                                    <th>Yes</th>
-                                    <th>No</th>
-                                    <th>Sum</th>
-                                  </tr>
-                                  <tr>
-                                    <td rowspan="3"><div class="rotate">Prediction</div></td>
-                                    <th>Yes</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                  </tr>
-                                  <tr>
-                                    <th>No</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                  </tr>
-                                  <tr>
-                                    <th>Sum</th>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                  </tr>
-                              </table>
-                            </p>
-                            <p>
-                              <table class="eval_table" style="width:100%">
-                                  <tr>
-                                    <th>Prob</th>
-                                    <th>H</th>
-                                    <th>FA</th>
-                                    <th>H-FA</th>
-                                  </tr>
-                                  <tr>
-                                    <th>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                  </tr>
-                              </table>
-                            </p>
-                            <p>
-                              <table class="eval_table" style="width:100%">
-                                  <tr>
-                                    <th>Frugality</th>
-                                    <th>d-prime</th>
-                                  </tr>
-                                  <tr>
-                                    <td>0</td>
-                                    <td>0</td>
-                                  </tr>
-                              </table>
-                            </p>
-                        </div>
-                        <ul class="exits"
-                        </ul>
-                    </li>
-                </ul>
-            </article>
-            <article>
-                <ul class="cues">
-                    <li id="cue2" class="widget color-orange">
-                      <input type="hidden" id="hidden-exit-yes" value="continue"/>
-                      <input type="hidden" id="hidden-exit-no" value="continue"/>
-                        <div class="widget-head h3">
-                            <input type="radio" class="criterion" name="criterion" value="cue' +i+ '" />
-                            <span id="title' +i+ '">GHI</span>
-                            <button id="icons" class="collapse-ui-cue ui-state-default ui-corner-all" title=".ui-icon-carat-2-n-s"><span class="ui-icon ui-icon-carat-2-n-s"></span></button>
-                            <button id="icons" class="close-ui-cue ui-state-default ui-corner-all" title=".ui-icon-close"><span class="ui-icon ui-icon-close"></span></button>
-                        </div>
-                        <div class="widget-content">
-                            <p>
-                              <table class="eval_table" style="width:100%">
-                                  <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td colspan="3">Criterion</td>
-                                  </tr>
-                                  <tr>
-                                    <th></th>
-                                    <th></th>
-                                    <th>Yes</th>
-                                    <th>No</th>
-                                    <th>Sum</th>
-                                  </tr>
-                                  <tr>
-                                    <td rowspan="3"><div class="rotate">Prediction</div></td>
-                                    <th>Yes</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                  </tr>
-                                  <tr>
-                                    <th>No</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                  </tr>
-                                  <tr>
-                                    <th>Sum</th>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                  </tr>
-                              </table>
-                            </p>
-                            <p>
-                              <table class="eval_table" style="width:100%">
-                                  <tr>
-                                    <th>Prob</th>
-                                    <th>H</th>
-                                    <th>FA</th>
-                                    <th>H-FA</th>
-                                  </tr>
-                                  <tr>
-                                    <th>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                  </tr>
-                              </table>
-                            </p>
-                            <p>
-                              <table class="eval_table" style="width:100%">
-                                  <tr>
-                                    <th>Frugality</th>
-                                    <th>d-prime</th>
-                                  </tr>
-                                  <tr>
-                                    <td>0</td>
-                                    <td>0</td>
-                                  </tr>
-                              </table>
-                            </p>
-                        </div>
-                        <ul class="exits"
-                        </ul>
-                    </li>
-                </ul>
-            </article>
-            FOR TESTING ONLY! END -->
+            <!-- FOR TESTING ONLY! BEGIN -->
+
+            <!-- FOR TESTING ONLY! END -->
             
         </div>
     </div>
-    <!-- row of cues -->
     
+    
+    <!-- row of cues -->
+</div>
+
+
     
     <!-- FFTs -->
 
-    <div id="two_trees">
-        
-        <ul class="columns">
-        </ul>
-        <ul id="tree0" class="trees">
-                <div>
-                    <div>Stats of this Tree:</div>  
-                    <p>
-                      <table class="eval_table">
-                          <tr><td></td><td></td><td colspan="3">Prediction</td></tr>
-                          <tr><th></th><th></th><th>Yes</th><th>No</th><th>Und</th><th>Sum</th></tr>
-                          <tr><td rowspan="3"><div class="rotate">Criterion</div></td><th>Yes</td><td class="success" id="hits">0</td><td class="fail" id="misses">0</td><td class="undecided" id="undecided_pos">0</td><td id="crit_yes_sum">0</td></tr>
-                          <tr><th>No</td><td class="fail" id="falsealarms">0</td><td class="success" id="correctrejections">0</td><td class="undecided" id="undecided_neg">0</td><td id="crit_no_sum">0</td></tr>
-                          <tr><th>Sum</th><td id="pred_yes_sum">0</td><td id="pred_no_sum">0</td><td id="pred_und_sum">0</td><td id="pred_sum_sum">0</td></tr>
-                      </table>
-                    </p>
-                    <p>
-                      <table class="eval_table">
-                          <tr><th>p(Hits)</th><th>p(FA)</th><th>d"</th><th>Frug</th></tr>
-                          <tr><td id="pHits">0</td><td id="pFA">0</td><td id="dprime">0</td><td id="frugality">0</td></tr>
-                      </table>
-                    </p>
-                    <p>
-                      <table class="eval_table">
-                          <tr><th>A"</th><th>B"</th><th>B""</th><th>Bias</th></tr>
-                          <tr><td id="aprime">0</td><td id="bprime">0</td><td id="bdprime">0</td><td id="bias">0</td></tr>
-                      </table>
-                    </p>
-                </div>
-        </ul>
-        <ul class="columns">
-        </ul>
-
-        <ul class="columns">
-        </ul>
-        <ul id="tree1" class="trees">
-                <div>
-                    <div>Stats of this Tree:</div>  
-                    <p>
-                      <table class="eval_table">
-                          <tr><td></td><td></td><td colspan="3">Prediction</td></tr>
-                          <tr><th></th><th></th><th>Yes</th><th>No</th><th>Und</th><th>Sum</th></tr>
-                          <tr><td rowspan="3"><div class="rotate">Criterion</div></td><th>Yes</td><td class="success" id="hits">0</td><td class="fail" id="misses">0</td><td class="undecided" id="undecided_pos">0</td><td id="crit_yes_sum">0</td></tr>
-                          <tr><th>No</td><td class="fail" id="falsealarms">0</td><td class="success" id="correctrejections">0</td><td class="undecided" id="undecided_neg">0</td><td id="crit_no_sum">0</td></tr>
-                          <tr><th>Sum</th><td id="pred_yes_sum">0</td><td id="pred_no_sum">0</td><td id="pred_und_sum">0</td><td id="pred_sum_sum">0</td></tr>
-                      </table>
-                    </p>
-                    <p>
-                      <table class="eval_table">
-                          <tr><th>p(Hits)</th><th>p(FA)</th><th>d"</th><th>Frug</th></tr>
-                          <tr><td id="pHits">0</td><td id="pFA">0</td><td id="dprime">0</td><td id="frugality">0</td></tr>
-                      </table>
-                    </p>
-                    <p>
-                      <table class="eval_table">
-                          <tr><th>A"</th><th>B"</th><th>B""</th><th>Bias</th></tr>
-                          <tr><td id="aprime">0</td><td id="bprime">0</td><td id="bdprime">0</td><td id="bias">0</td></tr>
-                      </table>
-                    </p>
-                </div>
-        </ul>
-        <ul class="columns">
-        </ul>
-        
+<div id="white_area">
+    
+    <ul class="columns">
+    </ul>
+    <ul id="tree0" class="trees">
+            
+    </ul>
+    <ul class="columns">
+    </ul>
+    <div class="stat_columns">
+        <table class="eval_table">
+            <tr><th></th><th></th><td class="table_header" colspan="4">STATISTICS OF TREE 1</td></tr>
+            <tr><th class="cell_narrow"></th><th></th><td class="table_header cell_grey" colspan="4">PREDICTION</td></tr>
+            <tr><th></th><th></th><th>yes</th><th>no</th><th>und</th><th>sum</th></tr>
+            <tr><td class="table_header_rotated" rowspan="3"><div class="rotate">CRITERION</div></td><th class="cell_narrow">yes</td><td class="success" id="hits">Hit</td><td class="fail" id="misses">Miss</td><td class="undecided" id="undecided_pos">0</td><td class="cell_grey" id="crit_yes_sum">0</td></tr>
+            <tr><th class="cell_narrow">no</td><td class="fail" id="falsealarms">FA</td><td class="success" id="correctrejections">CR</td><td class="undecided" id="undecided_neg">0</td><td class="cell_grey" id="crit_no_sum">0</td></tr>
+            <tr><th class="cell_narrow">sum</th><td class="cell_grey" id="pred_yes_sum">0</td><td class="cell_grey" id="pred_no_sum">0</td><td class="cell_grey" id="pred_und_sum">0</td><td class="cell_grey" id="pred_sum_sum">0</td></tr>
+            <tr><th></th></tr>
+            <tr><th></th><th></th><th>p(Hits)</th><th>p(FA)</th><th>d"</th><th>Frug</th></tr>
+            <tr><th></th><th></th><td class="cell_grey" id="pHits">0</td><td class="cell_grey" id="pFA">0</td><td class="cell_grey" id="dprime">0</td><td class="cell_grey" id="frugality">0</td></tr>
+            <tr><th></th></tr>
+            <tr><th></th><th></th><th colspan="4"><button class="button_upload_tree">Upload Tree 1 to Server</button></th></tr>
+        </table>
     </div>
+    <div class="stat_columns">
+        <table class="eval_table">
+            <tr><th></th><th></th><td class="table_header" colspan="4">STATISTICS OF TREE 2</td></tr>
+            <tr><th class="cell_narrow"></th><th></th><td class="table_header cell_grey" colspan="4">PREDICTION</td></tr>
+            <tr><th></th><th></th><th>yes</th><th>no</th><th>und</th><th>sum</th></tr>
+            <tr><td class="table_header_rotated" rowspan="3"><div class="rotate">CRITERION</div></td><th class="cell_narrow">yes</td><td class="success" id="hits">0</td><td class="fail" id="misses">0</td><td class="undecided" id="undecided_pos">0</td><td class="cell_grey" id="crit_yes_sum">0</td></tr>
+            <tr><th class="cell_narrow">no</td><td class="fail" id="falsealarms">0</td><td class="success" id="correctrejections">0</td><td class="undecided" id="undecided_neg">0</td><td class="cell_grey" id="crit_no_sum">0</td></tr>
+            <tr><th class="cell_narrow">sum</th><td class="cell_grey" id="pred_yes_sum">0</td><td class="cell_grey" id="pred_no_sum">0</td><td class="cell_grey" id="pred_und_sum">0</td><td class="cell_grey" id="pred_sum_sum">0</td></tr>
+            <tr><th></th></tr>
+            <tr><th></th><th></th><th>p(Hits)</th><th>p(FA)</th><th>d"</th><th>Frug</th></tr>
+            <tr><th></th><th></th><td class="cell_grey" id="pHits">0</td><td class="cell_grey" id="pFA">0</td><td class="cell_grey" id="dprime">0</td><td class="cell_grey" id="frugality">0</td></tr>
+            <tr><th></th></tr>
+            <tr><th></th><th></th><th colspan="4"><button class="button_upload_tree">Upload Tree 1 to Server</button></th></tr>
+        </table>
+    </div>
+    <ul class="columns">
+    </ul>
+    <ul id="tree1" class="trees">
+            
+    </ul>
+    <ul class="columns">
+    </ul>
+    
+    
+</div>
     
     <footer>
        <!-- <p>&copy; 2015 MPIB. All rights reserved.</p> -->
@@ -365,10 +104,9 @@
     
     <!-- Bottom of document -->
     
-    <script type="text/javascript" src="libraries/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="libraries/jquery-1.11.3.min.js"></script>
     <script type="text/javascript" src="libraries/jquery-ui-1.11.4.min.js"></script>
     <script type="text/javascript" src="libraries/papaparse.min.js"></script>
-    <script type="text/javascript" src="libraries/jquery.jsPlumb-1.7.4-min.js"></script>
     <script type="text/javascript" src="libraries/jcanvas-14.09.27.min.js"></script>
     
     <!-- evaldas -->

@@ -10,41 +10,75 @@ body,p,h1,h2,h3,h4,h5,h6,ul,ol {margin:0; padding:0; list-style:none; border:non
 body {font-size:0.8em; font-family:Arial,Verdana,Sans-Serif; background: white;}
 a {color:black;}
 
-/* Colors */
-.color-yellow {background:#f2bc00;}
-.color-red    {background:#dd0000;}
-.color-blue   {background:#148ea4;}
-.color-white  {background:#dfdfdf;}
-.color-orange {background:#f66e00;}
-.color-green  {background:#8dc100;}
-.color-yellow h3,
-.color-white h3,
-.color-green h3
-	{color:black;}
-.color-red h3,
-.color-blue h3,
-.color-orange h3
-	{color:white;}
-/* End Colors */
 
-/* Head section */
-#head h1 {
-    line-height: 100px;
-    color: #FFF;
-    text-align: center;
-    background: url(img/buildtree.png) no-repeat center;
-    text-indent: -9999em
-}
-/* End Head Section */
 
 
 /* Row section ****************/
 
+#blue_area {
+  background:#50ADE1;  /* Special BLUE */
+  height: auto;
+  padding: 20px 20px 20px 20px;
+}
+#blue_area h1 {
+  font-family: 'Offside', Arial, Sans-Serif;
+  font-size: 50px;
+  color: white;
+  margin: 0px 0px 10px 0px;
+}
+
+input[type=file] {
+    display: none;
+}
+.button_upload_csv {
+  cursor: pointer;
+  width: 120px;
+  height: 20px;
+  border-radius: 10px;
+  border: 0px solid black;
+  background: grey;
+  position: absolute;
+  font-family: 'Offside', Arial, Sans-Serif;
+  font-size: 12px;
+  color: White;
+  text-align: center;
+}
+
+.button_training {
+  cursor: pointer;
+  width: 120px;
+  height: 20px;
+  border-radius: 10px;
+  border: 0px solid black;
+  background: grey;
+  position: relative;
+  left: 200px;
+  font-family: 'Offside', Arial, Sans-Serif;
+  font-size: 12px;
+  color: White;
+  text-align: center;
+  z-index: 1;
+}
+.button_testing {
+  cursor: pointer;
+  width: 120px;
+  height: 20px;
+  border-radius: 10px;
+  border: 0px solid black;
+  background: White;
+  position: relative;
+  left: 180px;
+  font-family: 'Offside', Arial, Sans-Serif;
+  font-size: 12px;
+  color: Black;
+  text-align: center;
+}
+
 /* This container element gives us the scrollbars we want.*/
 div.horiz_scroll {
-    width: 100%;
-    height: 100%;
-    overflow: auto;
+  margin: 20px 0px 0px 0px;
+  width: 100%;
+  height: 100%;
 }
 
 /* table-layout: fixed does a lot of the magic, here. It makes sure that the "table cells" retain the pixel dimensions you want.*/
@@ -56,40 +90,57 @@ div.horiz_scroll {
 
 /* Arranging your content inside the "cells" is as simple as using the vertical-align and text-align properties. Floats work, too.*/
 article {
-    width: 170px;
+    width: auto;
     height: auto;
     display: table-cell;
     vertical-align: top;
+    padding: 0px 20px 0px 0px;
+}
+
+.cues .undecided{
+    background: White;
+    color: Black;
 }
 
 /* Row section End ***************/
 
 /* Columns *************/
 
+#white_area {
+  background: white;
+  padding: 20px 0px 0px 0px;
+}
+
 .trees {
-    display: inline-block; 
-    width:150px;
-    height: 600px;
-    vertical-align:top;
+  width:120px;
+  display: inline-block; 
+  height: 600px;
+  vertical-align:top;
 }
 
 #tree0 {
-    background-color: LightGrey; 
+  background-color: LightGrey; 
 }
 
 #tree1 {
-    background-color: LightGrey;
+  background-color: LightGrey;
 }
 
 .columns {
-    display: inline-block; 
-    background-color: white; 
-    width:150px;
+  width:120px;
+  display: inline-block; 
+  background-color: white;  
+}
+
+.stat_columns {
+  width:230px;
+  display: inline-block; 
+  background-color: white;  
 }
 
 .placeholder {
     text-align: center;
-    //opacity: 0.6;
+    opacity: 0.6;
 }
 /* Columns End *************/
 
@@ -97,89 +148,146 @@ article {
 /* Widgets ***************/
 
 .widget {
-    width: 150px;
-    margin: 20px 20px 60px 20px;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 2px;
-    -moz-border-radius: 4px;
-    -webkit-border-radius: 4px;
-    position: relative;
-    z-index: 5;
+  height: auto !important;
+  position: relative;
 }
-.widget .widget-head {
-    color: #000;
-    overflow: hidden;
-    width: 100%;
-    height: 30px;
-    line-height: 30px;
-    position: relative;
+.trees .widget {
+  margin: 0px 0px 40px 0px;
 }
-.widget .widget-head h3 {
-    padding: 0 5px;
-    text-align: center;
+.widget_placeholder {
+  border: 2px dashed #A9A9A9;
+  width: 120px;
+  height: 40px;
+  border-radius: 20px;
+  margin: 0px 0px 40px 0px;
 }
 
-.widget .widget-content {
-    background: #333 url(img/widget-content-bg.png) repeat-x;
-    padding: 10px 5px;
-    color: #DDD;
-    -moz-border-radius-bottomleft: 2px;
-    -moz-border-radius-bottomright: 2px;
-    -webkit-border-bottom-left-radius: 2px;
-    -webkit-border-bottom-right-radius: 2px;
-    line-height: 1.2em;
-    overflow: hidden;
-    position: relative;
-    z-index: 6;
+.widget_head {
+  cursor: move;
+  width: 120px;
+  height: 40px;
+  border-radius: 20px;
+  background: White;
+}
+.trees .widget_head {
+  background: #50ADE1;
 }
 
-.trees .widget .widget-content {
+.widget_title {
+  width: 60px;
+  line-height: 40px;
+  margin-left: auto;
+  margin-right: auto;
+  color: black;
+  font-family: 'Offside', Arial, Sans-Serif;
+  font-size: 20px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.widget_content {
+  position: relative;
+  right: 60px;
+}
+.trees .widget_content {
     width: 300px;
 }
 
-.widget-placeholder { border: 2px dashed #999;}
-#two_trees .widget-placeholder {
-    width: 160px;
-    height: 160 px;
-    margin: 30px 35px 0 25px;
-    margin-left: auto;
-    margin-right: auto;
+label {
+  cursor: pointer;
 }
 
-.exit-widget {
-    width: 100px;
-    margin: 30px 20px 0 20px;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 2px;
-    -moz-border-radius: 4px;
-    -webkit-border-radius: 4px;
+.button_expand {
+  cursor: pointer;
+  background: transparent;
+  border: none !important;
+  color: grey;
+  font-size: 16px;
+  position: absolute;
+  left: 3px;
+  top: 7px;
 }
-.exit-left {
-    position: absolute;
-    left: -150px;
-    bottom: -100px;
-    
+.trees .button_expand {
+  color: white;
 }
-.exit-right {
+
+.button_close {
+  cursor: pointer;
+  background: transparent;
+  border: none !important;
+  color: White;
+  font-size: 16px;
+  position: absolute;
+  left: 91px;
+  top: 9px;
+}
+.button_close_exit {
+  cursor: pointer;
+  background: transparent;
+  border: none !important;
+  color: White;
+  font-size: 16px;
+  position: absolute;
+  right: 6px;
+  top: 9px;
+}
+
+input[type=radio] {
+    display: none;
+}
+input[type="radio"] + label {
+    color: grey;
+    font-size: 22px;
     position: absolute;
-    right: -150px;
-    bottom: -100px;
-    
+    left: 93px;
+    top: 3px;
+}
+input[type=radio]:checked + label:before{
+    content: "\26AB";
+    color: grey;
+    position: absolute;
+}
+
+.exit_widget {
+    width: 80px;
+    height: 40px;
+    border-radius: 20px;
+}
+.exit_widget_title {
+  width: 60px;
+  line-height: 40px;
+  color: black;
+  font-family: 'Offside', Arial, Sans-Serif;
+  font-size: 20px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.exit_left {
+  position: absolute;
+  left: -100px;
+  bottom: -80px;
+  background: #2ECC71; /* green */
+}
+.exit_right {
+    position: absolute;
+    left: 140px;
+    bottom: -80px;
+    background: #E74C3C;  /* red */
 }
 
 .cue_canvas {
     position: absolute;
-    left: 0px;
-    top: 25px;
+    left: 40px;
+    bottom: -40px;
     
 }
 
 .exit_canvas {
     position: absolute;
-    left: -60px;
-    top: -70px; 
+    left: -40px;
+    top: -45px; 
 }
 
 /* Widgets End ***************/
@@ -190,6 +298,34 @@ article {
   display: inline-block; 
 }
 
+.eval_table {
+  border-spacing: 0px;
+  border: 0px solid black;
+}
+
+th, td {
+  height: 20px;
+  font-size: 10px;
+  text-align: center;
+  border: 0px solid black;
+}
+
+th {
+  font-family: 'Offside', Arial, Sans-Serif;
+}
+
+.table_header{
+  font-family: 'Offside', Arial, Sans-Serif;
+  font-size: 12px;
+}
+
+.table_header_rotated{
+  font-family: 'Offside', Arial, Sans-Serif;
+  font-size: 12px;
+  background: LightGrey;
+
+}
+
 .rotate {
              filter:  progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083);  /* IE6,IE7 */
          -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083)"; /* IE8 */
@@ -198,137 +334,51 @@ article {
        -o-transform: rotate(-90.0deg);  /* Opera 10.5 */
   -webkit-transform: rotate(-90.0deg);  /* Safari 3.1+, Chrome */
           transform: rotate(-90.0deg);  /* Standard */
-	  width: 1.2em;
+  -webkit-transform-origin: 100% 100%;
+  -moz-transform-origin: 100% 100%;
+     -o-transform-origin: 100% 100%; 
+  width: 20px;
 }
-.eval_table, th, td {
-    border: 1px solid grey;
-    border-spacing: 0px;
-    margin: 0px 0px 4px 0px;
-    font-size: 10px;
-    text-align: center;
+
+.cell_narrow{
+  width: 20px;
+}
+
+.cell_grey{
+  background: LightGrey;
+  width: 40px;
 }
 
 .success{
     text-align: center;
     color: white;
-    background-color: green;
+    background-color: #2ECC71;   /* green */
 }
 
 .fail{
     text-align: center;
     color: white;
-    background-color: red;
+    background-color: #E74C3C;  /* red */
 }
 
 .undecided{
     text-align: center;
     color: white;
-    background-color: dodgerblue;
+    background-color: #50ADE1;   /* blue */
+}
+
+.button_upload_tree {
+  cursor: pointer;
+  width: 166px;
+  height: 20px;
+  border-radius: 10px;
+  border: 0px solid black;
+  background: grey;
+  font-family: 'Offside', Arial, Sans-Serif;
+  font-size: 12px;
+  color: white;
+  text-align: center;
 }
 
 /* Statistics End ***************/
-
-/* Icons *************************************/
-.collapse-ui-cue, .collapse-ui-exit {
-  position: absolute;
-  right: 20px;
-  top: 0px;
-}
-
-.close-ui-cue, .close-ui-exit {
-  position: absolute;
-  right: 0px;
-  top: 0px;
-}
-
-#icons {
-	margin: 0;
-	padding: 0;
-}
-#icons li {
-	margin: 2px;
-	position: relative;
-	padding: 4px 0;
-	cursor: pointer;
-	float: left;
-	list-style: none;
-}
-#icons span.ui-icon {
-	float: left;
-	margin: 0 0px;
-}
-/* Interaction states
-----------------------------------*/
-.ui-state-default,
-.ui-widget-content .ui-state-default,
-.ui-widget-header .ui-state-default {
-	border: 1px solid #cccccc;
-	background: #f6f6f6 url("images/ui-bg_glass_100_f6f6f6_1x400.png") 50% 50% repeat-x;
-	font-weight: bold;
-	color: #1c94c4;
-}
-.ui-state-default a,
-.ui-state-default a:link,
-.ui-state-default a:visited {
-	color: #1c94c4;
-	text-decoration: none;
-}
-/* Corner radius */
-.ui-corner-all,
-.ui-corner-top,
-.ui-corner-left,
-.ui-corner-tl {
-	border-top-left-radius: 4px;
-}
-.ui-corner-all,
-.ui-corner-top,
-.ui-corner-right,
-.ui-corner-tr {
-	border-top-right-radius: 4px;
-}
-.ui-corner-all,
-.ui-corner-bottom,
-.ui-corner-left,
-.ui-corner-bl {
-	border-bottom-left-radius: 4px;
-}
-.ui-corner-all,
-.ui-corner-bottom,
-.ui-corner-right,
-.ui-corner-br {
-	border-bottom-right-radius: 4px;
-}
-/* states and images */
-.ui-icon {
-	width: 16px;
-	height: 16px;
-}
-.ui-icon,
-.ui-widget-content .ui-icon {
-	background-image: url("images/ui-icons_222222_256x240.png");
-}
-.ui-widget-header .ui-icon {
-	background-image: url("images/ui-icons_ffffff_256x240.png");
-}
-.ui-state-default .ui-icon {
-	background-image: url("images/ui-icons_ef8c08_256x240.png");
-}
-.ui-state-hover .ui-icon,
-.ui-state-focus .ui-icon {
-	background-image: url("images/ui-icons_ef8c08_256x240.png");
-}
-.ui-state-active .ui-icon {
-	background-image: url("images/ui-icons_ef8c08_256x240.png");
-}
-.ui-state-highlight .ui-icon {
-	background-image: url("images/ui-icons_228ef1_256x240.png");
-}
-.ui-state-error .ui-icon,
-.ui-state-error-text .ui-icon {
-	background-image: url("images/ui-icons_ffd27a_256x240.png");
-}
-
-/* positioning */
-.ui-icon-carat-2-n-s { background-position: -128px 0; }
-.ui-icon-close { background-position: -80px -128px; }
 

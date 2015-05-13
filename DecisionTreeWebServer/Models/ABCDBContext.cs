@@ -7,26 +7,27 @@ using System.Runtime.Serialization;
 using System.Web;
 using ABCUniverse.DataStorage;
 using ABCUniverse.Portable.Trees;
+using ABCUniverse.DataAccess;
+using System.Data.SqlClient;
 
 namespace DecisionTreeWeb.Model
 {
-    public class ABCDBContext : DbContext
+    public class ABCDBContext : ABCServerContext
     {
-        public DbSet<AttributeInfo> AttributeInfos { get; set; }
-        public DbSet<WorldInfo> WorldInfos { get; set; }
-        public DbSet<DatasetInfo> DatasetInfos { get; set; }
-        public DbSet<TreeInfo> TreeInfos { get; set; }
+        const string local = "Server=JOHANNES-PC\\JOHANNESWORKDB;Database=DecisionWebTest;user id=TestUser;password=testuser;";
+        const string server = "Server=188.64.60.180;Database=DotWebResearch;user id=dotwebresearch_public;password=dotwebUSER#1;Trusted_Connection=False";
 
-        private string local = "Server=JOHANNES-PC\\JOHANNESWORKDB;Database=DecisionWebTest;user id=TestUser;password=testuser;";
-        private string server = "Server=188.64.60.180;Database=DotWebResearch;user id=dotwebresearch_public;password=dotwebUSER#1;Trusted_Connection=False";
+        static ABCDBContext() {
+            Database.SetInitializer<ABCDBContext>(new CustomInitliazer());
+        }
 
         public ABCDBContext()
         {
             switch (Environment.MachineName)
             {
-                case "JOHANNES-PC":
-                    base.Database.Connection.ConnectionString = local;
-                    break;
+                //case "JOHANNES-PC":
+                //    base.Database.Connection.ConnectionString = local;
+                //    break;
                 default:
                     base.Database.Connection.ConnectionString = server;
                     break;
@@ -62,6 +63,38 @@ namespace DecisionTreeWeb.Model
             catch (Exception e)
             {
                 Console.WriteLine(e.StackTrace);
+            }
+        }
+
+        public static bool ServerConnectionAvailable()
+        {
+            if (!System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
+                return false;
+
+            try
+            {
+                using (var c = new SqlConnection(server))
+                {
+                    c.Open();
+                }
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        private class CustomInitliazer : IDatabaseInitializer<ABCDBContext>
+        {
+
+            public void InitializeDatabase(ABCDBContext context)
+            {
+                // do nothing
+                if (context.Database.Exists())
+                {
+                    return;
+                }
             }
         }
     }

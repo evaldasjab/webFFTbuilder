@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using ABCUniverse.Portable.Trees;
 using DecisionTreeWeb.Model;
+using ABCUniverse.DataAccess;
 
 namespace DecisionTreeWebServer.Controllers
 {
@@ -21,6 +22,8 @@ namespace DecisionTreeWebServer.Controllers
         [HttpPost]
         public bool SaveTree(Tree tree)
         {
+            if (!ABCDBContext.ServerConnectionAvailable()) return false;
+            
             if (validateTree(tree))
             {
                 try
@@ -43,7 +46,7 @@ namespace DecisionTreeWebServer.Controllers
                         else
                         {
                             n.ParentNode = prnt;
-                            if (c.yes == "exit")
+                            if (c.yes == "exit" && c.no != "exit")
                             {
                                 t.AppendChildren(new Exit(), n);
                             }

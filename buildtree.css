@@ -118,14 +118,6 @@ article {
   vertical-align:top;
 }
 
-#tree0 {
-  background-color: LightGrey; 
-}
-
-#tree1 {
-  background-color: LightGrey;
-}
-
 .columns {
   width:120px;
   display: inline-block; 
@@ -367,13 +359,13 @@ th {
     background-color: #50ADE1;   /* blue */
 }
 
-.button_upload_tree {
+.button_export {
   cursor: pointer;
   width: 166px;
   height: 20px;
   border-radius: 10px;
   border: 0px solid black;
-  background: grey;
+  background: Grey;
   font-family: 'Offside', Arial, Sans-Serif;
   font-size: 12px;
   color: white;

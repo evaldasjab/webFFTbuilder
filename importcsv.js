@@ -67,6 +67,9 @@ function handleFileSelect(evt) {
         //collapseCueButtons(); // activate the collapse buttons (function in buildtree.js)
         expandButtons(); // activate the expand buttons (function in buildtree.js)
         
+        // activare EXPORT TO SERVERS buttons under the statistics tables
+        exportToServerButtons();
+        
         // FIX THIS!
         //$('.stat_cue_header').hide();
         //$('.stat_tree_header').hide();

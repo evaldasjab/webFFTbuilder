@@ -203,6 +203,7 @@ function getExitValue(myCueId, myDir) {
 }
 
 function makeSortable() {                 // This function will make the widgets draggable-droppable using the jQuery UI 'sortable' module.
+    console.log('SORTABLE!');
     
     //var newItemId = '';
     var origCue = '';
@@ -674,6 +675,38 @@ function activateCloseCueButton(myCueId) {
         });
         return false;                                            // Return false, prevent default action
     })
+}
+
+function exportToServerButtons() {
+    
+    $('.button_export').mouseup(function (e) {  // Create new anchor with a class of 'collapse'
+        console.log('EXPORT TO SERVER!');
+        
+        var myTreeId = $(this).attr('value');
+        console.log('myTreeId: '+myTreeId);
+        
+        var myTreeObj = updateJsonDataset(myTreeId);
+        console.log('myTreeObj: '+JSON.stringify(myTreeObj, null, "  "));
+        
+        //remove properties used for statistics
+        delete myTreeObj.tree;
+        myTreeObj.cues.forEach(function(obj){
+            delete obj.id;
+            delete obj.hits;
+            delete obj.miss;
+            delete obj.fals;
+            delete obj.corr;
+            delete obj.un_p;
+            delete obj.un_n;
+            delete obj.step;
+        });
+        
+        console.log('myTreeObj DELETED: '+JSON.stringify(myTreeObj, null, "  "));
+        
+        // Johannes code
+        DecisionWebTree.Common.SaveTree(myTreeObj);  
+    
+    });
 }
 
 

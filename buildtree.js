@@ -207,7 +207,7 @@ function makeSortable() {                 // This function will make the widgets
     
     //var newItemId = '';
     var origCue = '';
-    var dragCue = '';
+    var dragCueId = '';
     var dragTreeId = '';  // variable knows the ID of the dropped tree
     //var orderTree0 = [];  // variable knows what's in the tree0
     //var orderTree1 = [];  // variable knows what's in the tree1
@@ -229,36 +229,39 @@ function makeSortable() {                 // This function will make the widgets
         },
         stop: function(event,ui){
             //assign ID to clone
-            d++; // prepare for the next dragCue
-            dragCue = origCue+'-'+d;  // make the new ID for the cloned cue
+            d++; // prepare for the next dragCueId
+            dragCueId = origCue+'-'+d;  // make the new ID for the cloned cue
             //console.log('d: '+d);
-            ui.helper.attr('id',dragCue);  // rename the cloned cue
-            //console.log('dragCue: ' + dragCue);
+            ui.helper.attr('id',dragCueId);  // rename the cloned cue
+            //console.log('dragCueId: ' + dragCueId);
                         
             // replace the radio button with close button
-            $('#'+dragCue+' .criterion_class').remove(); // remove the radio button
-            $('#'+dragCue+' .criterion_label').remove(); // remove the radio button label
-            $('#'+dragCue+' .widget_head').append( closeButtonHtml() );  // add close button
-            activateExpandButton(dragCue);  // reactivate EXPAND BUTTON - bug workaround
-            activateCloseCueButton(dragCue); // activate close button
+            $('#'+dragCueId+' .criterion_class').remove(); // remove the radio button
+            $('#'+dragCueId+' .criterion_label').remove(); // remove the radio button label
+            $('#'+dragCueId+' .widget_head').append( closeButtonHtml() );  // add close button
+            activateExpandButton(dragCueId);  // reactivate EXPAND BUTTON - bug workaround
+            activateCloseCueButton(dragCueId); // activate close button
             
             //hide the content, if expanded
-            //$('#'+dragCue).find('.widget_content').hide();
+            //$('#'+dragCueId).find('.widget_content').hide();
                         
             // add EXIT nodes, depending on which tree is dropped on
-            $('#'+dragCue+' #hidden-exit_yes').val('continue'); // 'reset' exit values - bug workaround
-            $('#'+dragCue+' #hidden-exit_no').val('continue'); // 'reset' exit values - bug workaround
+            $('#'+dragCueId+' #hidden-exit_yes').val('continue'); // 'reset' exit values - bug workaround
+            $('#'+dragCueId+' #hidden-exit_no').val('continue'); // 'reset' exit values - bug workaround
             var dragExits = setExitDirection(dragTreeId);
-            setExitValues(dragCue, dragExits.yes, dragExits.no);
+            setExitValues(dragCueId, dragExits.yes, dragExits.no);
             
             // FIX THIS!!!
+            //$('#'+dragCueId).find('.stat_cue_header').show();
+            //$('#'+dragCueId).find('.stat_tree_header').show();
+            //$('#'+dragCueId).find('.stat_tree').show();
+            //activateStatsSlideToggle(dragCueId);
+
             // add "TREE up to this cue" statistics table
-            $('#'+dragCue).find('.stat_cue_header').show();
-            $('#'+dragCue).find('.stat_tree_header').show();
-            //$('#'+dragCue).find('.stat_tree').show();
-            
-            // FIX THIS!!!
-            activateStatsSlideToggle(dragCue);
+            $('#'+dragCueId+' .stats_header').text('THIS CUE');    // rename the table to "stats of this cue"
+            $('#'+dragCueId+' .stat_cue_header').append( statTreeUpToThisCueHtml() ); // add the table "stats of the tree up to this cue"
+            $('#'+dragCueId+' .widget_content').prepend( statButtonHtml() ); // add the button "stats of"
+            activateStatButton(dragCueId);            // activate the button "stats of"
         }
     });
     
@@ -279,34 +282,51 @@ function makeSortable() {                 // This function will make the widgets
         forcePlaceholderSize: 'true',
         items: 'li:not(.unsortable)',
         revert: true,
-        start: function(event,ui){
-        },
-        over: function() {
-            //$('#'+dragTreeId+' .placeholder').show();  //show or hide the text "drag'n'drop cues here"
-            
-        },
-        out: function() {
-            //$('#'+dragTreeId+' .placeholder').show();  //show or hide the text "drag'n'drop cues here"
-        },
-        stop: function() {
-            //$('#'+dragTreeId+' .placeholder').show();  //show or hide, or remove the text "drag'n'drop cues here"
-        },
-        
         update: function (event,ui) {
                               
             //console.log('SORTABLE UPDATE!');
                   
             // take care of the EXIT nodes
-            updateExitsForLastAndExLastCues(dragTreeId, dragCue);
-            
-            // draw lines between CUES and EXIT nodes
-            //connectNodes(dragCue);
+            updateExitsForLastAndExLastCues(dragTreeId, dragCueId);
                         
             // update JSON dataset for the analysis algorithms
             updateJsonDataset(dragTreeId);
             
         }
     }).disableSelection();      
+}
+
+function statButtonHtml() {
+    var myHtml = '<button class="button_stat">STATISTICS OF</button>';
+    return myHtml;
+}
+
+function statTreeUpToThisCueHtml() {
+    var myHtml = '<li class="stats stat_tree">\
+                    <table class="eval_table"> \
+                        <tr><td></td><td></td><td class="table_header" colspan="4">TREE UP TO THIS CUE</td></tr> \
+                        <tr><td class="cell_narrow"></td><td></td><td class="table_header cell_grey" colspan="4">PREDICTION</td></tr> \
+                        <tr><td></td><td></td><th>yes</th><th>no</th><th>und</th><th>sum</th></tr> \
+                        <tr><td class="table_header_rotated" rowspan="3"><div class="rotate">CRITERION</div></td><th class="cell_narrow">yes</td><td class="success" id="hits">0</td><td class="fail" id="misses">0</td><td class="undecided" id="undecided_pos">0</td><td class="cell_grey" id="crit_yes_sum">0</td></tr> \
+                        <tr><th class="cell_narrow">no</th><td class="fail" id="falsealarms">0</td><td class="success" id="correctrejections">0</td><td class="undecided" id="undecided_neg">0</td><td class="cell_grey" id="crit_no_sum">0</td></tr> \
+                        <tr><th class="cell_narrow">sum</th><td class="cell_grey" id="pred_yes_sum">0</td><td class="cell_grey" id="pred_no_sum">0</td><td class="cell_grey" id="pred_und_sum">0</td><td class="cell_grey" id="pred_sum_sum">0</td></tr> \
+                        <tr><th></th></tr> \
+                        <tr><td></td><td></td><th>p(Hits)</th><th>p(FA)</th><th>d"</th><th>Frug</th></tr> \
+                        <tr><td></td><td></td><td class="cell_grey" id="pHits">0</td><td class="cell_grey" id="pFA">0</td><td class="cell_grey" id="dprime">0</td><td class="cell_grey" id="frugality">0</td></tr> \
+                    </table> \
+                  </li>';
+    return myHtml;
+}
+
+function activateStatButton(myCueId) {
+    // hide the statistics of the tree
+    $('#'+myCueId).find('.stat_tree').hide();
+    
+    // on mouse click, toggle between cue and tree statistics
+    $('#'+myCueId+' .button_stat').mouseup(function() {
+        $(this).parent().find('.stat_cue').animate({width: 'toggle'});
+        $(this).parent().find('.stat_tree').animate({width: 'toggle'});
+    });
 }
 
 function updateExitsForLastAndExLastCues(myTreeId, myCueId) {
@@ -424,7 +444,7 @@ function addExitNode(myCueId, myHiddenExitId) {
             break;
     }
     
-    c++; // prepare for the next dragCue
+    c++; // prepare for the next dragCueId
     var myExitNodeId = 'exit_'+d+'-'+c;  // d - the same as cueID, c - unique for exit nodes
     
     var exitNode =  '<li id='+myExitNodeId+' class="'+myExitClass+' exit_widget unsortable">\

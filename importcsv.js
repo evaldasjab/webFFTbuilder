@@ -36,10 +36,10 @@ function handleFileSelect(evt) {
                         </div> \
                       </div> \
                       <div class="widget_content"> \
-                            <ul class="stats stat_cue_header"> \
-                              <li class="stat_cue">\
-                                <table class="eval_table"> \
-                                    <tr><td></td><td></td><td class="table_header" colspan="4">STATS OF SINGLE CUE TREE</td></tr> \
+                            <ul class="stat_cue_header"> \
+                              <li class="stats stat_cue">\
+                                <table class="eval_table" id="stat_cue'+i+'"> \
+                                    <tr><td></td><td></td><td class="stats_header table_header" colspan="4">STATS OF SINGLE CUE TREE</td></tr> \
                                     <tr><td class="cell_narrow"></td><td></td><td class="table_header cell_grey" colspan="4">PREDICTION</td></tr> \
                                     <tr><td></td><td></td><th>yes</th><th>no</th><th>und</th><th>sum</th></tr> \
                                     <tr><td class="table_header_rotated" rowspan="3"><div class="rotate">CRITERION</div></td><th class="cell_narrow">yes</td><td class="success" id="hits">0</td><td class="fail" id="misses">0</td><td class="undecided" id="undecided_pos">0</td><td class="cell_grey" id="crit_yes_sum">0</td></tr> \

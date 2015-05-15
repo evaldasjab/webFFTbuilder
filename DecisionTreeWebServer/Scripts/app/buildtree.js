@@ -206,7 +206,7 @@ function makeSortable() {                 // This function will make the widgets
     
     //var newItemId = '';
     var origCue = '';
-    var dragCue = '';
+    var dragCueId = '';
     var dragTreeId = '';  // variable knows the ID of the dropped tree
     //var orderTree0 = [];  // variable knows what's in the tree0
     //var orderTree1 = [];  // variable knows what's in the tree1
@@ -225,34 +225,34 @@ function makeSortable() {                 // This function will make the widgets
         },
         stop: function(event,ui){
             //assign ID to clone
-            d++; // prepare for the next dragCue
-            dragCue = origCue+'-'+d;  // make the new ID for the cloned cue
+            d++; // prepare for the next dragCueId
+            dragCueId = origCue+'-'+d;  // make the new ID for the cloned cue
             //console.log('d: '+d);
-            ui.helper.attr('id',dragCue);  // rename the cloned cue
-            console.log('dragCue: ' + dragCue);
+            ui.helper.attr('id',dragCueId);  // rename the cloned cue
+            console.log('dragCueId: ' + dragCueId);
                         
-            $('#'+dragCue+' .criterion').remove(); // remove the radio button
+            $('#'+dragCueId+' .criterion').remove(); // remove the radio button
             
             //hide the content, if expanded
-            //$('#'+dragCue).find('.widget-content').hide();
+            //$('#'+dragCueId).find('.widget-content').hide();
             
             //reactivate CLOSE button - bug workaround?
-            activateCloseCueButton(dragCue);
+            activateCloseCueButton(dragCueId);
                         
             // add EXIT nodes, depending on which tree is dropped on
-            $('#'+dragCue+' #hidden-exit-yes').val('continue'); // 'reset' exit values - bug workaround
-            $('#'+dragCue+' #hidden-exit-no').val('continue'); // 'reset' exit values - bug workaround
+            $('#'+dragCueId+' #hidden-exit-yes').val('continue'); // 'reset' exit values - bug workaround
+            $('#'+dragCueId+' #hidden-exit-no').val('continue'); // 'reset' exit values - bug workaround
             var dragExits = setExitDirection(dragTreeId);
-            setExitValues(dragCue, dragExits.yes, dragExits.no);
+            setExitValues(dragCueId, dragExits.yes, dragExits.no);
             
             // FIX THIS!!!
             // add "TREE up to this cue" statistics table
-            $('#'+dragCue).find('.stat_cue_header').show();
-            $('#'+dragCue).find('.stat_tree_header').show();
-            //$('#'+dragCue).find('.stat_tree').show();
+            $('#'+dragCueId).find('.stat_cue_header').show();
+            $('#'+dragCueId).find('.stat_tree_header').show();
+            //$('#'+dragCueId).find('.stat_tree').show();
             
             // FIX THIS!!!
-            activateStatsSlideToggle(dragCue);
+            activateStatsSlideToggle(dragCueId);
         }
     });
     
@@ -299,13 +299,13 @@ function makeSortable() {                 // This function will make the widgets
             //console.log('SORTABLE UPDATE!');
                   
             // take care of the EXIT nodes
-            updateExitsForLastAndExLastCues(dragTreeId, dragCue);
+            updateExitsForLastAndExLastCues(dragTreeId, dragCueId);
             
             // draw lines between CUES and EXIT nodes
-            //connectNodes(dragCue);
+            //connectNodes(dragCueId);
             
             // update connecting lines!
-            jsPlumb.draggable(dragCue);
+            jsPlumb.draggable(dragCueId);
             
             // update JSON dataset for the analysis algorithms
             updateJsonDataset(dragTreeId);
@@ -429,7 +429,7 @@ function addExitNode(myCueId, myHiddenExitId) {
             break;
     }
     
-    c++; // prepare for the next dragCue
+    c++; // prepare for the next dragCueId
     var myExitNodeId = 'exit-'+d+'-'+c;  // d - the same as cueID, c - unique for exit nodes
     
     var exitNode =  '<li id='+myExitNodeId+' class="'+myExitClass+' exit-widget unsortable color-blue">\

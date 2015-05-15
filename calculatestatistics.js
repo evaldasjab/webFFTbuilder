@@ -152,7 +152,7 @@ function analyzeDataset(myTreeObj) {
     PRED_UND_SUM = UNDECIDED_POS + UNDECIDED_NEG;
     PRED_SUM_SUM = CRIT_YES_SUM + CRIT_NO_SUM;
     
-    updateAnalysisView(myTreeId);
+    updateAnalysisView('stat_'+myTreeId);
     
     // do it only for the tree analysis (not individual cues in the cue list)
     if ( (myTreeId=='tree0') || (myTreeId=='tree1') ) {

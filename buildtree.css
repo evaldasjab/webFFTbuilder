@@ -115,13 +115,15 @@ article {
   width:120px;
   display: inline-block; 
   height: 600px;
-  vertical-align:top;
+  vertical-align: top;
 }
 
 .columns {
   width:120px;
   display: inline-block; 
-  background-color: white;  
+  background-color: white;
+  position: relative;
+  vertical-align: top;
 }
 
 .stat_columns {
@@ -130,9 +132,11 @@ article {
   background-color: white;  
 }
 
-.placeholder {
-    text-align: center;
-    opacity: 0.6;
+.drophere {
+  width: 120px;
+  position: absolute;
+  left: 130px;
+  top: 14px;
 }
 /* Columns End *************/
 
@@ -179,10 +183,10 @@ article {
 }
 .widget_content {
   position: relative;
-  right: 60px;
+  left: -70px;
 }
 .trees .widget_content {
-    width: 300px;
+    width: 260px;
 }
 
 label {
@@ -286,6 +290,20 @@ input[type=radio]:checked + label:before{
 
 /* Statistics ***************/
 
+.button_stat {
+  cursor: pointer;
+  width: 170px;
+  height: 20px;
+  border-radius: 10px;
+  border: 0px solid black;
+  background: grey;
+  font-family: 'Offside', Arial, Sans-Serif;
+  font-size: 12px;
+  color: White;
+  text-align: center;
+  margin: 20px 0px 0px 45px;
+}
+
 .stats {
   display: inline-block; 
 }
@@ -309,6 +327,7 @@ th {
 .table_header{
   font-family: 'Offside', Arial, Sans-Serif;
   font-size: 12px;
+  white-space: nowrap;
 }
 
 .table_header_rotated{

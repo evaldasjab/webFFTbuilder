@@ -9,6 +9,7 @@ function handleFileSelect(evt) {
     header: true,
     dynamicTyping: true,
     complete: function(results) {
+      
       myDataset = results;
       console.log(JSON.stringify(myDataset, null, "  "));
       //console.log("fields, 0: "+results.meta['fields'][0]);
@@ -28,12 +29,18 @@ function handleFileSelect(evt) {
                       <div class="widget_head"> \
                         <input type="hidden" id="hidden-exit_yes" value="exit"/> \
                         <input type="hidden" id="hidden-exit_no" value="exit"/> \
-                        <button class="button_expand">&#9661</button> \
-                        <input type="radio" id="button_radio_'+i+'" class="criterion_class" name="criterion_name" value="cue'+i+'" /> \
-                        <label for="button_radio_'+i+'" class="criterion_label">&#9898</label> \
+                        <svg class="button_expand" height="20" width="20"> \
+                          <polyline points="3 8,10 15,17 8"/> \
+                        </svg> \
                         <div class="widget_title" > \
                           <span id="title'+i+'">'+myDataset.meta['fields'][i]+'</span> \
                         </div> \
+                        <input type="radio" id="button_radio_'+i+'" class="criterion_class" name="criterion_name" value="cue'+i+'" /> \
+                        <label for="button_radio_'+i+'" class="criterion_label"> \
+                          <svg class="button_radio" height="20" width="20"> \
+                            <circle cx="10" cy="10" r="6"/> \
+                          </svg> \
+                        </label> \
                       </div> \
                       <div class="widget_content"> \
                             <ul class="stat_cue_header"> \
@@ -62,6 +69,20 @@ function handleFileSelect(evt) {
             </article>'
           );
         }    
+        
+        //split the results equally for TRAINING and TESTING
+        var myLength = myDataset.data.length;
+        var myHalf = Math.round(myLength/2);
+        console.log('myLength: '+myLength+', myHalf: '+myHalf);
+        myDataForTraining = myDataset.data.slice(0,myHalf);
+        //console.log('myDataForTraining: '+JSON.stringify(myDataForTraining, null, "  "));
+        myDataForTesting = myDataset.data.slice(myHalf,myLength);
+        //console.log('myDataForTesting: '+JSON.stringify(myDataForTesting, null, "  "));
+        
+        // in the beginning, show statistics with TRAINING data
+        myData = myDataForTraining;
+        // activate buttons to switch the data
+        trainingTestingButtons();        
         
         //DISABLE FOR TESTING!!!
         //collapseCueButtons(); // activate the collapse buttons (function in buildtree.js)

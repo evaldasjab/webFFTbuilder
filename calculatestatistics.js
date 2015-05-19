@@ -12,7 +12,7 @@ function analyzeDataset(myTreeObj) {
     //console.log('myCriterCueId: '+myCriterionName);
     
     var DATASET = {};
-    DATASET.records = myDataset.data;
+    DATASET.records = myData;
     //console.log('DATASET: '+ JSON.stringify(DATASET, null, "  "));
     
     var TREE = {};

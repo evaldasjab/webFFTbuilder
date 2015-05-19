@@ -24,8 +24,8 @@
     <input type="file" id="csv-file" name="files"> 
     <label for="csv-file" class="button_upload_csv" >Upload CSV file</label>
     
-    <button class="button_training">Training</button>
-    <button class="button_testing">Testing</button>
+    <button class="button_training button_t_on" id="button_training_id">Training</button>
+    <button class="button_testing button_t_off" id="button_testing_id">Testing</button>
 
     <!-- row of cues -->
     <div class="horiz_scroll">
@@ -50,7 +50,7 @@
 
 <div id="white_area">
     
-    <ul class="columns">
+    <ul class="columns">        
         <li class="drophere" id="drophere_tree0">Drop the cues here!</li>
     </ul>
     <ul class="trees" id="tree0">

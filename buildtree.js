@@ -59,29 +59,6 @@ function updateJsonDataset(myTreeId) {
     analyzeDataset(myTreeObj);
     
     return myTreeObj;
-        
-    //console.log('TEST: '+myDataset.meta['fields'][0]);
-    //console.log('results fields: ' + myDataset.meta['fields']);
-    
-    //if (dragTreeId == "tree0") {
-    //     $("#"+clonedCueId).append(insertExit(0));
-    
-    
-    //console.log("JSON.stringify: " + JSON.stringify(order1 + order2));
-    //alert("order1:" + order1 + "\n order2:" + order2); //Just showing update
-
-    //$("#info").html(JSON.stringify($("#sortable").sortable('toArray')));
-    //var params = '{order:"' + str[0].title + ',' + str[1].title + ',' + str[2].title + '"}';
-    //data : params, // in $.ajax
-    
-    //$.ajax({
-    //    type: "POST",
-    //    url: "/echo/json/",
-    //    data: "order1=" + order1 + "&order2=" + order2,
-    //    dataType: "json",
-    //    success: function (data) {
-    //    }
-    //});
 }
 
 function createTreeObj(myTreeId, myTreeCuesArray) {
@@ -138,10 +115,9 @@ function selectCriterion() {
         //$('.horiz_scroll .widget').draggable('enable'); // ENABLE dragging of all cues
         //$('.horiz_scroll #'+criterCue).draggable('disable'); // DISABLE draggable of the cue, which is selected as criterion
         
-        updateJsonDataset('tree0'); // update JSON object because we have a criterion
-        updateJsonDataset('tree1'); // update JSON object because we have a criterion
-        
-        updateStatisticsForSingleCues();
+        updateJsonDataset('tree0'); // update JSON object and tree statistics
+        updateJsonDataset('tree1'); // update JSON object and tree statistics
+        updateStatisticsForSingleCues(); //update statistics in the blue area
     });
 }
 
@@ -203,7 +179,6 @@ function getExitValue(myCueId, myDir) {
 }
 
 function makeSortable() {                 // This function will make the widgets draggable-droppable using the jQuery UI 'sortable' module.
-    console.log('SORTABLE!');
     
     //var newItemId = '';
     var origCue = '';
@@ -437,30 +412,38 @@ function addExitNode(myCueId, myHiddenExitId) {
         case 'hidden-exit_yes':
             var myExitClass = 'exit_left';
             var myExitText = 'Yes';
+            var myArrowHtml =  '<line x1="0" y1="45" x2="45" y2="0"/> \
+                                <line x1="0" y1="25" x2="0" y2="45"/> \
+                                <line x1="0" y1="45" x2="20" y2="45"/> \
+                                <text x="15" y="25" stroke-width="1" stroke="none" fill="black">yes</text>';
             break;
         case 'hidden-exit_no':
             var myExitClass = 'exit_right';
             var myExitText = 'No';
+            var myArrowHtml =  '<line x1="0" y1="0" x2="45" y2="45"/> \
+                                <line x1="45" y1="25" x2="45" y2="45"/> \
+                                <line x1="25" y1="45" x2="45" y2="45"/> \
+                                <text x="17" y="25" stroke-width="1" stroke="none" fill="black">no</text>';
             break;
     }
     
     c++; // prepare for the next dragCueId
     var myExitNodeId = 'exit_'+d+'-'+c;  // d - the same as cueID, c - unique for exit nodes
     
-    var exitNode =  '<li id='+myExitNodeId+' class="'+myExitClass+' exit_widget unsortable">\
+    var exitNode =  '<li id='+myExitNodeId+' class="'+myExitClass+' exit_widget unsortable"> \
                         '+closeExitButtonHtml()+' \
-                        <div class="exit_widget_title">\
-                            <span>EXIT</span>\
-                        </div>\
-                        <div>\
-                            <canvas class="exit_canvas" width="160" height="50"></canvas>\
-                        </div>\
+                        <div class="exit_widget_title"> \
+                            <span>EXIT</span> \
+                        </div> \
+                        <svg class="exit_arrow" height="45" width="45"> \
+                          '+myArrowHtml+' \
+                        </svg> \
                     </li>';
     //$('#'+myCueId+' .exits').append(exitNode);
     $(exitNode).hide().appendTo('#'+myCueId+' .exits').fadeIn(300);
     
     //draw arrow to the Exit Node
-    drawArrowToExit(myExitNodeId, myExitClass);
+    //drawArrowToExit(myExitNodeId, myExitClass);
     
     // activate the close button
     activateCloseExitButton(myCueId);  // activate the close button
@@ -547,6 +530,15 @@ function drawArrowToNextCue(myCueId) {
         break;
     }
     
+    var myHtml =  '<svg class="cue_arrow" height="40" width="40"> \
+                        <line x1="20" y1="0" x2="20" y2="40"/> \
+                        <line x1="10" y1="10" x2="20" y2="40"/> \
+                        <line x1="20" y1="40" x2="30" y2="30"/> \
+                        <text x="17" y="25" stroke-width="1" stroke="none" fill="black">no</text> \
+                    </svg>';
+    
+    $('#'+myCueId+' .widget_content').append( myHtml );
+    
     $('#'+myCueId+' .cue_canvas').drawText({
         fillStyle: '#000',
         //strokeStyle: 'white',
@@ -559,7 +551,10 @@ function drawArrowToNextCue(myCueId) {
 }
 
 function closeButtonHtml() {
-    var myHtml = '<button class="button_close">&#10005</button>'
+    var myHtml = '<svg class="button_close" height="20" width="20"> \
+                          <line x1="6" y1="6" x2="15" y2="15"/> \
+                          <line x1="6" y1="15" x2="15" y2="6"/> \
+                        </svg>'
     return myHtml;
 }
 
@@ -633,9 +628,38 @@ function removeExitNode (myCueId, myHiddenExitId) {
     });
 }
 
+function trainingTestingButtons() {
+    
+    $('.button_training').mouseup(function (e) {  // Create new anchor with a class of 'collapse'
+        console.log('TRAINING!');
+        // switch the data
+        myData = myDataForTraining;
+        // change the look of the buttons
+        document.getElementById('button_training_id').className = "button_training button_t_on";
+        document.getElementById('button_testing_id').className = "button_testing button_t_off";
+        
+        updateJsonDataset('tree0'); // update JSON object and tree statistics
+        updateJsonDataset('tree1'); // update JSON object and tree statistics
+        updateStatisticsForSingleCues(); //update statistics in the blue area
+    });
+    
+     $('.button_testing').mouseup(function (e) {  // Create new anchor with a class of 'collapse'
+        console.log('TESTING!');
+        // switch the data
+        myData = myDataForTesting;
+        // change the look of the buttons
+        document.getElementById('button_training_id').className = "button_training button_t_off";
+        document.getElementById('button_testing_id').className = "button_testing button_t_on";
+        
+        updateJsonDataset('tree0'); // update JSON object and tree statistics
+        updateJsonDataset('tree1'); // update JSON object and tree statistics
+        updateStatisticsForSingleCues(); //update statistics in the blue area
+    });
+}
+
 function expandButtons() {
     
-    console.log('ACTIVATE EXPANSION!');
+    //console.log('ACTIVATE EXPANSION!');
     
     $('.button_expand').mouseup(function (e) {  // Create new anchor with a class of 'collapse'
         console.log('EXPAND!');

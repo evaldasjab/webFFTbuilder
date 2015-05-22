@@ -112,8 +112,9 @@ function selectCriterion() {
     $('.criterion_class').change(function(){
         criterCue = $( 'input:radio[name=criterion_name]:checked' ).val();
         console.log('criterCue: ' + criterCue);
-        //$('.horiz_scroll .widget').draggable('enable'); // ENABLE dragging of all cues
-        //$('.horiz_scroll #'+criterCue).draggable('disable'); // DISABLE draggable of the cue, which is selected as criterion
+        // ENABLE dragging of all cues
+        $('.widget').draggable('enable'); 
+        $('#'+criterCue).draggable('disable'); // DISABLE draggable of the cue, which is selected as criterion
         
         updateJsonDataset('tree0'); // update JSON object and tree statistics
         updateJsonDataset('tree1'); // update JSON object and tree statistics
@@ -181,7 +182,7 @@ function getExitValue(myCueId, myDir) {
 function makeSortable() {                 // This function will make the widgets draggable-droppable using the jQuery UI 'sortable' module.
     
     //var newItemId = '';
-    var origCue = '';
+    var origCueId = '';
     var dragCueId = '';
     var dragTreeId = '';  // variable knows the ID of the dropped tree
     //var orderTree0 = [];  // variable knows what's in the tree0
@@ -199,17 +200,45 @@ function makeSortable() {                 // This function will make the widgets
             //$(this).find('.widget_content').hide();
             
             //get ID form draggable item 
-            origCue = $(this).attr('id');
-            //console.log("origCue: " + origCue);
+            origCueId = $(this).attr('id');
+            //console.log("origCueId: " + origCueId);
         },
         stop: function(event,ui){
-            //assign ID to clone
+            // no good, fires even when the dragged object is returned/reverted (not dropped)!!!
+            //assign ID to the clone
             d++; // prepare for the next dragCueId
-            dragCueId = origCue+'-'+d;  // make the new ID for the cloned cue
-            //console.log('d: '+d);
+            dragCueId = origCueId+'-'+d;  // make the new ID for the cloned cue
+            console.log('dragCueId: '+dragCueId);
             ui.helper.attr('id',dragCueId);  // rename the cloned cue
-            //console.log('dragCueId: ' + dragCueId);
-                        
+        }
+    }).disableSelection();
+    
+    // DISABLE dragging of all cues, until a criterion is selected
+    $('.widget').draggable('disable'); // DISABLE FOR TESTING!!!
+      
+    $('.trees').droppable({
+        over : function(event, ui) {
+            dragTreeId = $(this).attr('id');  // get the ID of the dropped-over tree
+            console.log('dragTreeId: ' + dragTreeId);
+        },
+        drop : function(event, ui) {
+            // no good, fires twice!!!
+        }
+    });
+        
+    $('.trees').sortable({
+        //connectWith: '.trees',
+        helper: 'clone',
+        handle: '.widget_title',        // Set the handle to the top bar
+        placeholder: 'widget_placeholder',
+        forcePlaceholderSize: 'true',
+        items: 'li:not(.unsortable)',
+        revert: true,
+        beforeStop: function (event, ui) {
+            // no good, fires when rearranging cues inside the tree!!!
+        },
+        receive: function(event,ui) {
+            
             // replace the radio button with close button
             $('#'+dragCueId+' .criterion_class').remove(); // remove the radio button
             $('#'+dragCueId+' .criterion_label').remove(); // remove the radio button label
@@ -223,8 +252,11 @@ function makeSortable() {                 // This function will make the widgets
             // add EXIT nodes, depending on which tree is dropped on
             $('#'+dragCueId+' #hidden-exit_yes').val('continue'); // 'reset' exit values - bug workaround
             $('#'+dragCueId+' #hidden-exit_no').val('continue'); // 'reset' exit values - bug workaround
-            var dragExits = setExitDirection(dragTreeId);
-            setExitValues(dragCueId, dragExits.yes, dragExits.no);
+            //var dragExits = setExitDirection(dragTreeId);
+            //setExitValues(dragCueId, dragExits.yes, dragExits.no);
+            
+            // draw the arrow to the next cue
+            drawArrowToNextCue(dragCueId);
             
             // FIX THIS!!!
             //$('#'+dragCueId).find('.stat_cue_header').show();
@@ -237,38 +269,20 @@ function makeSortable() {                 // This function will make the widgets
             $('#'+dragCueId+' .stat_cue_header').append( statTreeUpToThisCueHtml() ); // add the table "stats of the tree up to this cue"
             $('#'+dragCueId+' .widget_content').prepend( statButtonHtml() ); // add the button "stats of"
             activateStatButton(dragCueId);            // activate the button "stats of"
-        }
-    });
-    
-    // DISABLE dragging of all cues, until a criterion is selected
-    //$('.horiz_scroll li').draggable('disable'); // DISABLE FOR TESTING!!!
-      
-    $('.trees').droppable({
-        over : function(event, ui) {
-            dragTreeId = $(this).attr('id');  // get the ID of the dropped-over tree
-            console.log('dragTreeId: ' + dragTreeId);
-        }
-    });
-        
-    $('.trees').sortable({
-        //connectWith: '.trees',
-        helper: 'clone',
-        placeholder: 'widget_placeholder',
-        forcePlaceholderSize: 'true',
-        items: 'li:not(.unsortable)',
-        revert: true,
+        },
         update: function (event,ui) {
-                              
-            //console.log('SORTABLE UPDATE!');
-                  
+            
+            // get id of dragged cue
+            dragCueId = ui.item.attr("id");
+                                                
             // take care of the EXIT nodes
-            updateExitsForLastAndExLastCues(dragTreeId, dragCueId);
+            updateExitsForAllCues(dragTreeId, dragCueId);
                         
             // update JSON dataset for the analysis algorithms
             updateJsonDataset(dragTreeId);
             
         }
-    }).disableSelection();      
+    }).disableSelection();
 }
 
 function statButtonHtml() {
@@ -279,15 +293,15 @@ function statButtonHtml() {
 function statTreeUpToThisCueHtml() {
     var myHtml = '<li class="stats stat_tree">\
                     <table class="eval_table"> \
-                        <tr><td></td><td></td><td class="table_header" colspan="4">TREE UP TO THIS CUE</td></tr> \
-                        <tr><td class="cell_narrow"></td><td></td><td class="table_header cell_grey" colspan="4">PREDICTION</td></tr> \
+                        <tr><td></td><td></td><td class="table_title" colspan="4">TREE UP TO THIS CUE</td></tr> \
+                        <tr><td class="cell_narrow"></td><td></td><td class="table_header" colspan="4">PREDICTION</td></tr> \
                         <tr><td></td><td></td><th>yes</th><th>no</th><th>und</th><th>sum</th></tr> \
-                        <tr><td class="table_header_rotated" rowspan="3"><div class="rotate">CRITERION</div></td><th class="cell_narrow">yes</td><td class="success" id="hits">0</td><td class="fail" id="misses">0</td><td class="undecided" id="undecided_pos">0</td><td class="cell_grey" id="crit_yes_sum">0</td></tr> \
-                        <tr><th class="cell_narrow">no</th><td class="fail" id="falsealarms">0</td><td class="success" id="correctrejections">0</td><td class="undecided" id="undecided_neg">0</td><td class="cell_grey" id="crit_no_sum">0</td></tr> \
-                        <tr><th class="cell_narrow">sum</th><td class="cell_grey" id="pred_yes_sum">0</td><td class="cell_grey" id="pred_no_sum">0</td><td class="cell_grey" id="pred_und_sum">0</td><td class="cell_grey" id="pred_sum_sum">0</td></tr> \
+                        <tr><td class="table_header_rotated" rowspan="3"><div class="rotate">CRITERION</div></td><th class="cell_narrow">yes</td><td class="success" id="hits">0</td><td class="fail" id="misses">0</td><td class="undecided" id="undecided_pos">0</td><td class="cell_values" id="crit_yes_sum">0</td></tr> \
+                        <tr><th class="cell_narrow">no</th><td class="fail" id="falsealarms">0</td><td class="success" id="correctrejections">0</td><td class="undecided" id="undecided_neg">0</td><td class="cell_values" id="crit_no_sum">0</td></tr> \
+                        <tr><th class="cell_narrow">sum</th><td class="cell_values" id="pred_yes_sum">0</td><td class="cell_values" id="pred_no_sum">0</td><td class="cell_values" id="pred_und_sum">0</td><td class="cell_values" id="pred_sum_sum">0</td></tr> \
                         <tr><th></th></tr> \
                         <tr><td></td><td></td><th>p(Hits)</th><th>p(FA)</th><th>d"</th><th>Frug</th></tr> \
-                        <tr><td></td><td></td><td class="cell_grey" id="pHits">0</td><td class="cell_grey" id="pFA">0</td><td class="cell_grey" id="dprime">0</td><td class="cell_grey" id="frugality">0</td></tr> \
+                        <tr><td></td><td></td><td class="cell_values" id="pHits">0</td><td class="cell_values" id="pFA">0</td><td class="cell_values" id="dprime">0</td><td class="cell_values" id="frugality">0</td></tr> \
                     </table> \
                   </li>';
     return myHtml;
@@ -304,43 +318,39 @@ function activateStatButton(myCueId) {
     });
 }
 
-function updateExitsForLastAndExLastCues(myTreeId, myCueId) {
+function updateExitsForAllCues(myTreeId) {
     
     //var myTreeId = $('#'+myCueId).closest('.trees').attr('id');
-    //console.log('LAST CUE EXITS! myTreeId: '+myTreeId);
-    //console.log('LAST CUE EXITS! myCueId: '+myCueId);
     
     // get the last and ex-last cue
     var myTreeArray = $('#'+myTreeId).sortable('toArray');  // get the order of active tree
     myTreeArray = myTreeArray.filter(function(n){ return n != '' });  // remove empty elements in array
     //console.log('myTreeArray: '+myTreeArray);
     var myLastCueId = $(myTreeArray).get(-1);                     // get the last cue
-    var myExLastCueId = $(myTreeArray).get(-2);                     // get the last cue
+    //var myExLastCueId = $(myTreeArray).get(-2);                     // get the exlast cue
     //console.log('myLastCueId: '+myLastCueId);
     //console.log('myExLastCueId: '+myExLastCueId);
-                     
-    if (myLastCueId != undefined) {  // if the is at least one (last) cue
-        // add the second EXIT node
-        setExitValues(myLastCueId, 'exit', 'exit');
-        // remove CLOSE buttons from EXIT nodes of the last cue
-        $('#'+myLastCueId+' .button_close_exit').remove();
-        // remove the arrow to the next cue
-        $('#'+myLastCueId+' .cue_canvas').clearCanvas();
-    }
     
-    if (myExLastCueId != undefined) {  // if the last cue is not the only cue
-        // remove the second EXIT node
-        var dragExits = setExitDirection(myTreeId);
-        setExitValues(myExLastCueId, dragExits.yes, dragExits.no);
-        // add CLOSE button to EXIT node of ex-last cue
-        $('#'+myExLastCueId+' .exit_widget').append( closeExitButtonHtml() );
-        // activate the close exit button
-        activateCloseExitButton(myExLastCueId);  // activate the close button for Exit node
-        // draw arrow to the next cue
-        drawArrowToNextCue(myExLastCueId);
-    } else {
-        //console.log('NO EX-LAST CUE!');
-    }
+    // do for each cue in the tree, except the last cue
+    myTreeArray.forEach(function(myCueId){
+        if (myCueId != myLastCueId) {
+            // check if it has at both 'exit' values in hidden YES and NO fields
+            var myYesOld = $('#'+myCueId+' #hidden-exit_yes').val();
+            var myNoOld = $('#'+myCueId+' #hidden-exit_no').val();
+            if (myYesOld == 'exit' && myNoOld == 'exit') {
+                // set exit values according to the treeID: in tree0 exit-yes, in tree1 exit-no  
+                var myExits = setExitDirection(myTreeId);
+                setExitValues(myCueId, myExits.yes, myExits.no);
+            }
+        } else {
+            // add the second EXIT node
+            setExitValues(myLastCueId, 'exit', 'exit');
+            // remove CLOSE buttons from EXIT nodes of the last cue
+            $('#'+myLastCueId+' .exit_widget .button_close').remove();
+            // remove the arrow to the next cue
+            $('#'+myLastCueId+' .cue_arrow').remove();
+        } 
+    });
 }
 
 function setExitDirection(myTreeId) {
@@ -413,16 +423,16 @@ function addExitNode(myCueId, myHiddenExitId) {
             var myExitClass = 'exit_left';
             var myExitText = 'Yes';
             var myArrowHtml =  '<line x1="0" y1="45" x2="45" y2="0"/> \
-                                <line x1="0" y1="25" x2="0" y2="45"/> \
-                                <line x1="0" y1="45" x2="20" y2="45"/> \
+                                <line x1="1" y1="25" x2="1" y2="44"/> \
+                                <line x1="1" y1="44" x2="20" y2="44"/> \
                                 <text x="15" y="25" stroke-width="1" stroke="none" fill="black">yes</text>';
             break;
         case 'hidden-exit_no':
             var myExitClass = 'exit_right';
             var myExitText = 'No';
             var myArrowHtml =  '<line x1="0" y1="0" x2="45" y2="45"/> \
-                                <line x1="45" y1="25" x2="45" y2="45"/> \
-                                <line x1="25" y1="45" x2="45" y2="45"/> \
+                                <line x1="44" y1="25" x2="44" y2="44"/> \
+                                <line x1="25" y1="44" x2="44" y2="44"/> \
                                 <text x="17" y="25" stroke-width="1" stroke="none" fill="black">no</text>';
             break;
     }
@@ -431,7 +441,7 @@ function addExitNode(myCueId, myHiddenExitId) {
     var myExitNodeId = 'exit_'+d+'-'+c;  // d - the same as cueID, c - unique for exit nodes
     
     var exitNode =  '<li id='+myExitNodeId+' class="'+myExitClass+' exit_widget unsortable"> \
-                        '+closeExitButtonHtml()+' \
+                        '+closeButtonHtml()+' \
                         <div class="exit_widget_title"> \
                             <span>EXIT</span> \
                         </div> \
@@ -496,27 +506,6 @@ function drawArrowToExit(myExitNodeId, myExitClass) {
 
 function drawArrowToNextCue(myCueId) {
     
-    // clear canvas
-    $('#'+myCueId+' .cue_canvas').clearCanvas();
-    
-    var myX1 = 20;
-    var myY1 = 40;
-    var myX2 = 20;
-    var myY2 = 0;
-    var myLabelX = 20;
-    var myLabelY = 20;
-    
-    $('#'+myCueId+' .cue_canvas').drawLine({
-        strokeStyle: '#A9A9A9',
-        strokeWidth: 3,
-        rounded: true,
-        startArrow: true,
-        arrowRadius: 15,
-        arrowAngle: 90,
-        x1: myX1, y1: myY1,
-        x2: myX2, y2: myY2
-    });
-    
     //get Exit values
     var myYes = $('#'+myCueId+' #hidden-exit_yes').val();
     //var myNo = $('#'+myCueId+' #hidden-exit_no').val();  // we don't need that actually
@@ -530,24 +519,19 @@ function drawArrowToNextCue(myCueId) {
         break;
     }
     
+    // remove the old arrow if there was
+    $('#'+myCueId+' .cue_arrow').remove();
+    
+    // set the html code
     var myHtml =  '<svg class="cue_arrow" height="40" width="40"> \
                         <line x1="20" y1="0" x2="20" y2="40"/> \
-                        <line x1="10" y1="10" x2="20" y2="40"/> \
-                        <line x1="20" y1="40" x2="30" y2="30"/> \
-                        <text x="17" y="25" stroke-width="1" stroke="none" fill="black">no</text> \
+                        <line x1="5" y1="25" x2="20" y2="40"/> \
+                        <line x1="35" y1="25" x2="20" y2="40"/> \
+                        <text x="13" y="23" stroke-width="1" stroke="none" fill="black">'+myLabelText+'</text> \
                     </svg>';
     
-    $('#'+myCueId+' .widget_content').append( myHtml );
-    
-    $('#'+myCueId+' .cue_canvas').drawText({
-        fillStyle: '#000',
-        //strokeStyle: 'white',
-        //strokeWidth: 1,
-        x: myLabelX, y: myLabelY,
-        fontSize: 12,
-        fontFamily: 'Verdana, sans-serif',
-        text: myLabelText
-    });
+    // draw the SVG arrow
+    $('#'+myCueId).append( myHtml );
 }
 
 function closeButtonHtml() {
@@ -558,17 +542,12 @@ function closeButtonHtml() {
     return myHtml;
 }
 
-function closeExitButtonHtml() {
-    var myHtml = '<button class="button_close_exit">&#10005</button>'
-    return myHtml;
-}
-
 function activateCloseExitButton(myCueId) {
     
     //console.log('ACTIVATE EXIT BUTTON! myCueId: '+myCueId);
     
     //$('.close_exit').mousedown(function (e) {  // Create new anchor element with class of 'remove'
-    $('#'+myCueId).find('.button_close_exit').mouseup(function (e) {  // Create new anchor element with class of 'remove'
+    $('#'+myCueId+' .exit_widget .button_close').mouseup(function (e) {  // Create new anchor element with class of 'remove'
         e.stopPropagation();                                                // Stop event bubbling (don't initiate other actions triggered by "mousedown", e.g. dragging)
         
         // create EXIT node on another side        
@@ -630,13 +609,28 @@ function removeExitNode (myCueId, myHiddenExitId) {
 
 function trainingTestingButtons() {
     
+    $('.button_allcases').mouseup(function (e) {  // Create new anchor with a class of 'collapse'
+        console.log('ALL CASES!');
+        // switch the data
+        myData = myDataAllCases;
+        // change the look of the buttons
+        document.getElementById('button_allcases_id').className = "button_selectdata button_allcases button_t_on";
+        document.getElementById('button_training_id').className = "button_selectdata button_training button_t_off";
+        document.getElementById('button_testing_id').className = "button_selectdata button_testing button_t_off";
+        
+        updateJsonDataset('tree0'); // update JSON object and tree statistics
+        updateJsonDataset('tree1'); // update JSON object and tree statistics
+        updateStatisticsForSingleCues(); //update statistics in the blue area
+    });
+    
     $('.button_training').mouseup(function (e) {  // Create new anchor with a class of 'collapse'
         console.log('TRAINING!');
         // switch the data
         myData = myDataForTraining;
         // change the look of the buttons
-        document.getElementById('button_training_id').className = "button_training button_t_on";
-        document.getElementById('button_testing_id').className = "button_testing button_t_off";
+        document.getElementById('button_allcases_id').className = "button_selectdata button_allcases button_t_off";
+        document.getElementById('button_training_id').className = "button_selectdata button_training button_t_on";
+        document.getElementById('button_testing_id').className = "button_selectdata button_testing button_t_off";
         
         updateJsonDataset('tree0'); // update JSON object and tree statistics
         updateJsonDataset('tree1'); // update JSON object and tree statistics
@@ -648,8 +642,9 @@ function trainingTestingButtons() {
         // switch the data
         myData = myDataForTesting;
         // change the look of the buttons
-        document.getElementById('button_training_id').className = "button_training button_t_off";
-        document.getElementById('button_testing_id').className = "button_testing button_t_on";
+        document.getElementById('button_allcases_id').className = "button_selectdata button_allcases button_t_off";
+        document.getElementById('button_training_id').className = "button_selectdata button_training button_t_off";
+        document.getElementById('button_testing_id').className = "button_selectdata button_testing button_t_on";
         
         updateJsonDataset('tree0'); // update JSON object and tree statistics
         updateJsonDataset('tree1'); // update JSON object and tree statistics
@@ -713,7 +708,7 @@ function activateCloseCueButton(myCueId) {
             $(this).wrap('<div/>').parent().slideUp(function () {           // Wrap in DIV (explained below) and slide up
                 $(this).remove();                                           // When sliding up has finished, remove widget from DOM
                 //console.log('REMOVED myCueId: '+myCueId);
-                updateExitsForLastAndExLastCues(myTreeId, myCueId); // take care of the EXIT nodes
+                updateExitsForAllCues(myTreeId); // take care of the EXIT nodes
                 updateJsonDataset(myTreeId); // update the changed exit direction
             });
         });

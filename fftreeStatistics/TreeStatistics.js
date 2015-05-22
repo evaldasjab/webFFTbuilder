@@ -1,7 +1,8 @@
-/**
- * Created by scien_000 on 17-Apr-15.
- */
 function getStandardNormalZ(p) {
+    if (p > 1 || p < 0) {
+        alert("Error: p =" + p.toString() + ", Z cannot be computed");
+        return null;
+    }
     var tmp_p = 0.0;
     var lfStandardNormalZ = 0.0;
     tmp_p = evaluateStandardNormalZ(lfStandardNormalZ);
@@ -102,9 +103,9 @@ var TreeStatistics = (function () {
         if (this.getHitCount() === 0 && this.getMissCount() === 0)
             return undefined;
         else if (this.getHitCount() === 0)
-            return 1 / (2 * this.allCases());
+            return (1 / (2 * this.allCases()));
         else if (this.getMissCount() === 0)
-            return (1 - 1 / (2 * this.allCases()));
+            return (1 - (1 / (2 * this.allCases())));
         else
             return this.getHitCount() / (this.getHitCount() + this.getMissCount());
     };
@@ -115,9 +116,9 @@ var TreeStatistics = (function () {
         if (this.getFaCount() === 0 && this.getCrCount() == 0)
             return undefined;
         else if (this.getFaCount() === 0)
-            return 1 / 2 * this.allCases();
+            return (1 / (2 * this.allCases()));
         else if (this.getCrCount() === 0)
-            return 1 - 1 / 2 * this.allCases();
+            return (1 - (1 / (2 * this.allCases())));
         else
             return this.getFaCount() / (this.getFaCount() + this.getCrCount());
     };
@@ -198,4 +199,4 @@ var TreeStatistics = (function () {
     };
     return TreeStatistics;
 })();
-//# sourceMappingURL=TreeStatistics.js.map
+//# sourceMappingURL=fftreeStatistics.js.map

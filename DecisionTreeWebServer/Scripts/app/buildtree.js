@@ -205,7 +205,7 @@ function getExitValue(myCueId, myDir) {
 function makeSortable() {                 // This function will make the widgets draggable-droppable using the jQuery UI 'sortable' module.
     
     //var newItemId = '';
-    var origCue = '';
+    var origCueId = '';
     var dragCueId = '';
     var dragTreeId = '';  // variable knows the ID of the dropped tree
     //var orderTree0 = [];  // variable knows what's in the tree0
@@ -220,13 +220,13 @@ function makeSortable() {                 // This function will make the widgets
         revert: 'invalid',
         start: function(event,ui){
             //get ID form draggable item 
-            origCue = $(this).attr('id');
-            console.log("origCue: " + origCue);
+            origCueId = $(this).attr('id');
+            console.log("origCueId: " + origCueId);
         },
         stop: function(event,ui){
             //assign ID to clone
             d++; // prepare for the next dragCueId
-            dragCueId = origCue+'-'+d;  // make the new ID for the cloned cue
+            dragCueId = origCueId+'-'+d;  // make the new ID for the cloned cue
             //console.log('d: '+d);
             ui.helper.attr('id',dragCueId);  // rename the cloned cue
             console.log('dragCueId: ' + dragCueId);

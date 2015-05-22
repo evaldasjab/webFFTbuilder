@@ -1,6 +1,6 @@
 
 function analyzeDataset(myTreeObj) {
-    console.log('ANALYSE!!! myTreeObj: ' + JSON.stringify(myTreeObj, null, "  "));
+    //console.log('ANALYSE!!! myTreeObj: ' + JSON.stringify(myTreeObj, null, "  "));
     
     var h = 0, m = 0, fa = 0, cr = 0;
     STEPS = 0, HITS = 0, MISS = 0, FALSE_ALARMS = 0, CORRECT_REJECTIONS = 0, UNDECIDED_POS = 0, UNDECIDED_NEG = 0;
@@ -18,7 +18,7 @@ function analyzeDataset(myTreeObj) {
     var TREE = {};
     TREE.treeCuesList = myTreeObj.cues;
     //TREE.treeCuesList = myJsonObj.trees[0].cues;
-    console.log('TREE.treeCuesList: ' + JSON.stringify(TREE.treeCuesList, null, "  "));
+    //console.log('TREE.treeCuesList: ' + JSON.stringify(TREE.treeCuesList, null, "  "));
     
     //console.log('STAT myJsonObj: ' + JSON.stringify(myJsonObj, null, "  "));
 
@@ -38,7 +38,7 @@ function analyzeDataset(myTreeObj) {
     // for each record
     DATASET.records.forEach(function (rec) {
         
-        console.log('DATASET LOOP rec: '+ JSON.stringify(rec, null, "  "));
+        //console.log('DATASET LOOP rec: '+ JSON.stringify(rec, null, "  "));
         
         // e.g. "0 0 1 0"
         // checks cues of the tree sequentially until record exits
@@ -52,7 +52,7 @@ function analyzeDataset(myTreeObj) {
         for (var c = 0; c < TREE.treeCuesList.length; c++) {
         
             var treeCue = TREE.treeCuesList[c].name;
-            console.log('TREE LOOP treeCue: '+treeCue);
+            //console.log('TREE LOOP treeCue: '+treeCue);
             
             innerStep++;
             // STEPS++;
@@ -120,7 +120,7 @@ function analyzeDataset(myTreeObj) {
         }
         //console.log('rec.cueByTreeEvaluation: ' + JSON.stringify(rec.cueByTreeEvaluation, null, "  "));
         
-        console.log('END OF TREE LOOP TREE.treeCuesList: ' + JSON.stringify(TREE.treeCuesList, null, "  "));
+        //console.log('END OF TREE LOOP TREE.treeCuesList: ' + JSON.stringify(TREE.treeCuesList, null, "  "));
         
         HITS += h;
         MISS += m;
@@ -137,12 +137,12 @@ function analyzeDataset(myTreeObj) {
         //alert("ONE CUE DONE! myCueName: "+treeCue); 
     });
     
-    console.log('TREE HITS: ' + JSON.stringify(HITS, null, "  "));
-    console.log('TREE MISS: ' + JSON.stringify(MISS, null, "  "));
-    console.log('TREE CORRECT_REJECTIONS: ' + JSON.stringify(CORRECT_REJECTIONS, null, "  "));
-    console.log('TREE FALSE_ALARMS: ' + JSON.stringify(FALSE_ALARMS, null, "  "));
-    console.log('TREE UNDECIDED_POS: ' + JSON.stringify(UNDECIDED_POS, null, "  "));
-    console.log('TREE UNDECIDED_NEG: ' + JSON.stringify(UNDECIDED_NEG, null, "  "));
+    //console.log('TREE HITS: ' + JSON.stringify(HITS, null, "  "));
+    //console.log('TREE MISS: ' + JSON.stringify(MISS, null, "  "));
+    //console.log('TREE CORRECT_REJECTIONS: ' + JSON.stringify(CORRECT_REJECTIONS, null, "  "));
+    //console.log('TREE FALSE_ALARMS: ' + JSON.stringify(FALSE_ALARMS, null, "  "));
+    //console.log('TREE UNDECIDED_POS: ' + JSON.stringify(UNDECIDED_POS, null, "  "));
+    //console.log('TREE UNDECIDED_NEG: ' + JSON.stringify(UNDECIDED_NEG, null, "  "));
     
     CRIT_YES_SUM = HITS + MISS + UNDECIDED_POS;
     CRIT_NO_SUM = FALSE_ALARMS + CORRECT_REJECTIONS + UNDECIDED_NEG;
@@ -160,7 +160,7 @@ function analyzeDataset(myTreeObj) {
         for (var c = 0; c < TREE.treeCuesList.length; c++) {
             
             var myCueId = TREE.treeCuesList[c].id;
-            console.log('TREE CUE myCueId:'+myCueId);
+            //console.log('TREE CUE myCueId:'+myCueId);
             
             myHITS = TREE.treeCuesList[c].hits;
             myMISS = TREE.treeCuesList[c].miss;
@@ -195,8 +195,8 @@ function analyzeDataset(myTreeObj) {
                 myTreeMISS = myTreeMISS + myMISS;
                 myTreeFALSE_ALARMS = myTreeFALSE_ALARMS + myFALSE_ALARMS;
                 myTreeCORRECT_REJECTIONS = myTreeCORRECT_REJECTIONS + myCORRECT_REJECTIONS;
-                myTreeUNDECIDED_POS = myTreeUNDECIDED_POS - myUNDECIDED_POS;
-                myTreeUNDECIDED_NEG = myTreeUNDECIDED_NEG - myUNDECIDED_NEG;
+                myTreeUNDECIDED_POS = myUNDECIDED_POS;
+                myTreeUNDECIDED_NEG = myUNDECIDED_NEG;
                 myTreeSTEPS = myTreeSTEPS + mySTEPS;
             }
             

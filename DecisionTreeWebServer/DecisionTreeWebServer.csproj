@@ -190,7 +190,6 @@
     <Content Include="Scripts\app\calculatestatistics.js" />
     <Content Include="Scripts\app\importcsv.js" />
     <Content Include="Scripts\jcanvas-14.09.27.min.js" />
-    <Content Include="Scripts\jquery.jsPlumb-1.7.4-min.js" />
     <Content Include="Scripts\papaparse.min.js" />
     <Content Include="Scripts\app\webtreeserver.js" />
     <Content Include="Scripts\app\TreeStatistics.js" />

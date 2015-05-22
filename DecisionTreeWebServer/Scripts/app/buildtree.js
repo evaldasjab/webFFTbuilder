@@ -43,7 +43,7 @@ function updateJsonDataset(myTreeId) {
     //orderTree1 = $('#tree1').sortable('toArray');
     //orderTree0 = orderTree0.filter(function(n){ return n != "" });  // remove empty elements in array
     //orderTree1 = orderTree1.filter(function(n){ return n != "" });  // remove empty elements in array
-    //console.log('UDPDATE! myTreeCuesArray: ' + myTreeCuesArray.toString());
+    console.log('UDPDATE! myTreeCuesArray: ' + myTreeCuesArray.toString());
     
     //var myJsonObj = new Object();
     //myJsonObj.trees = [];
@@ -86,7 +86,7 @@ function updateJsonDataset(myTreeId) {
 
 function createTreeObj(myTreeId, myTreeCuesArray) {
     
-    //console.log('CREATE TREE OBJ myTreeId: '+myTreeId+', myTreeCuesArray: '+JSON.stringify(myTreeCuesArray, null, "  ") );
+    console.log('CREATE TREE OBJ myTreeId: '+myTreeId+', myTreeCuesArray: '+JSON.stringify(myTreeCuesArray, null, "  ") );
     
     var myTreeObj = new Object();
     
@@ -126,17 +126,17 @@ function createTreeObj(myTreeId, myTreeCuesArray) {
             myTreeObj.cues.push(myCueObj);
         }
     }
-    //console.log('create myTreeObj: '+JSON.stringify(myTreeObj, null, "  "));
+    console.log('create myTreeObj: '+JSON.stringify(myTreeObj, null, "  "));
     
     return myTreeObj;
 }
 
 function selectCriterion() {
-    $('.criterion_class').change(function(){
-        criterCue = $( 'input:radio[name=criterion_name]:checked' ).val();
+    $('.criterion').change(function(){
+        criterCue = $( 'input:radio[name=criterion]:checked' ).val();
         console.log('criterCue: ' + criterCue);
-        //$('.horiz_scroll .widget').draggable('enable'); // ENABLE dragging of all cues
-        //$('.horiz_scroll #'+criterCue).draggable('disable'); // DISABLE draggable of the cue, which is selected as criterion
+        $('.horiz_scroll li').draggable('enable'); // ENABLE dragging of all cues
+        $('.horiz_scroll #'+criterCue).draggable('disable'); // DISABLE draggable of the cue, which is selected as criterion
         
         updateJsonDataset('tree0'); // update JSON object because we have a criterion
         updateJsonDataset('tree1'); // update JSON object because we have a criterion
@@ -150,10 +150,10 @@ function updateStatisticsForSingleCues() {
     $('#cues_list .widget').each(function( index ) {
 
         var myCueId = $(this).attr('id');
-        //console.log('SINGLECUE myCueId: '+myCueId);
+        console.log('SINGLECUE myCueId: '+myCueId);
       
         var myOneCueTreeObj = createTreeObj(myCueId, [myCueId]);
-        //console.log('SINGLECUE myOneCueTreeObj: '+JSON.stringify(myOneCueTreeObj, null, "  ") );
+        console.log('SINGLECUE myOneCueTreeObj: '+JSON.stringify(myOneCueTreeObj, null, "  ") );
     
         analyzeDataset(myOneCueTreeObj);
     });
@@ -193,10 +193,10 @@ function getExitValue(myCueId, myDir) {
     //var myCueId = getCueId(myTreeId,myTreeElementId);
     switch (myDir) {
         case 'yes':
-            var myExit = $('#'+myCueId+' #hidden-exit_yes').val();
+            var myExit = $('#'+myCueId+' #hidden-exit-yes').val();
         break;
         case 'no':
-            var myExit = $('#'+myCueId+' #hidden-exit_no').val();
+            var myExit = $('#'+myCueId+' #hidden-exit-no').val();
         break;
     }
     return myExit;
@@ -205,59 +205,54 @@ function getExitValue(myCueId, myDir) {
 function makeSortable() {                 // This function will make the widgets draggable-droppable using the jQuery UI 'sortable' module.
     
     //var newItemId = '';
-    var origCue = '';
-    var dragCue = '';
+    var origCueId = '';
+    var dragCueId = '';
     var dragTreeId = '';  // variable knows the ID of the dropped tree
     //var orderTree0 = [];  // variable knows what's in the tree0
     //var orderTree1 = [];  // variable knows what's in the tree1
-    
-    $('#cues_list').find('.widget').draggable({
+        
+    $('.horiz_scroll').find('li').draggable({
         connectToSortable: ".trees",
         helper: 'clone',
-        handle: '.widget_title',        // Set the handle to the top bar
-        placeholder: 'widget_placeholder',
+        handle: '.widget-head',        // Set the handle to the top bar
+        placeholder: 'widget-placeholder',
         forcePlaceholderSize: 'true',
         revert: 'invalid',
         start: function(event,ui){
-            //hide the content, if expanded
-            //$(this).find('.widget_content').hide();
-            
             //get ID form draggable item 
-            origCue = $(this).attr('id');
-            //console.log("origCue: " + origCue);
+            origCueId = $(this).attr('id');
+            console.log("origCueId: " + origCueId);
         },
         stop: function(event,ui){
             //assign ID to clone
-            d++; // prepare for the next dragCue
-            dragCue = origCue+'-'+d;  // make the new ID for the cloned cue
+            d++; // prepare for the next dragCueId
+            dragCueId = origCueId+'-'+d;  // make the new ID for the cloned cue
             //console.log('d: '+d);
-            ui.helper.attr('id',dragCue);  // rename the cloned cue
-            //console.log('dragCue: ' + dragCue);
+            ui.helper.attr('id',dragCueId);  // rename the cloned cue
+            console.log('dragCueId: ' + dragCueId);
                         
-            // replace the radio button with close button
-            $('#'+dragCue+' .criterion_class').remove(); // remove the radio button
-            $('#'+dragCue+' .criterion_label').remove(); // remove the radio button label
-            $('#'+dragCue+' .widget_head').append( closeButtonHtml() );  // add close button
-            activateExpandButton(dragCue);  // reactivate EXPAND BUTTON - bug workaround
-            activateCloseCueButton(dragCue); // activate close button
+            $('#'+dragCueId+' .criterion').remove(); // remove the radio button
             
             //hide the content, if expanded
-            //$('#'+dragCue).find('.widget_content').hide();
+            //$('#'+dragCueId).find('.widget-content').hide();
+            
+            //reactivate CLOSE button - bug workaround?
+            activateCloseCueButton(dragCueId);
                         
             // add EXIT nodes, depending on which tree is dropped on
-            $('#'+dragCue+' #hidden-exit_yes').val('continue'); // 'reset' exit values - bug workaround
-            $('#'+dragCue+' #hidden-exit_no').val('continue'); // 'reset' exit values - bug workaround
+            $('#'+dragCueId+' #hidden-exit-yes').val('continue'); // 'reset' exit values - bug workaround
+            $('#'+dragCueId+' #hidden-exit-no').val('continue'); // 'reset' exit values - bug workaround
             var dragExits = setExitDirection(dragTreeId);
-            setExitValues(dragCue, dragExits.yes, dragExits.no);
+            setExitValues(dragCueId, dragExits.yes, dragExits.no);
             
             // FIX THIS!!!
             // add "TREE up to this cue" statistics table
-            $('#'+dragCue).find('.stat_cue_header').show();
-            $('#'+dragCue).find('.stat_tree_header').show();
-            //$('#'+dragCue).find('.stat_tree').show();
+            $('#'+dragCueId).find('.stat_cue_header').show();
+            $('#'+dragCueId).find('.stat_tree_header').show();
+            //$('#'+dragCueId).find('.stat_tree').show();
             
             // FIX THIS!!!
-            activateStatsSlideToggle(dragCue);
+            activateStatsSlideToggle(dragCueId);
         }
     });
     
@@ -274,7 +269,7 @@ function makeSortable() {                 // This function will make the widgets
     $('.trees').sortable({
         //connectWith: '.trees',
         helper: 'clone',
-        placeholder: 'widget_placeholder',
+        placeholder: 'widget-placeholder',
         forcePlaceholderSize: 'true',
         items: 'li:not(.unsortable)',
         revert: true,
@@ -282,6 +277,14 @@ function makeSortable() {                 // This function will make the widgets
         },
         over: function() {
             //$('#'+dragTreeId+' .placeholder').show();  //show or hide the text "drag'n'drop cues here"
+            
+            // this is supposed to make jsPlumb lines draggable
+            $(this).find('._jsPlumb_endpoint_anchor_').each(function(i,event){ 
+                if($(event).hasClass("connect"))
+                    jsPlumb.repaint($(event).parent());
+                else
+                    jsPlumb.repaint($(event));
+            });
             
         },
         out: function() {
@@ -296,11 +299,14 @@ function makeSortable() {                 // This function will make the widgets
             //console.log('SORTABLE UPDATE!');
                   
             // take care of the EXIT nodes
-            updateExitsForLastAndExLastCues(dragTreeId, dragCue);
+            updateExitsForLastAndExLastCues(dragTreeId, dragCueId);
             
             // draw lines between CUES and EXIT nodes
-            //connectNodes(dragCue);
-                        
+            //connectNodes(dragCueId);
+            
+            // update connecting lines!
+            jsPlumb.draggable(dragCueId);
+            
             // update JSON dataset for the analysis algorithms
             updateJsonDataset(dragTreeId);
             
@@ -327,7 +333,7 @@ function updateExitsForLastAndExLastCues(myTreeId, myCueId) {
         // add the second EXIT node
         setExitValues(myLastCueId, 'exit', 'exit');
         // remove CLOSE buttons from EXIT nodes of the last cue
-        $('#'+myLastCueId+' .button_close_exit').remove();
+        $('#'+myLastCueId+' .close-ui-exit').remove();
         // remove the arrow to the next cue
         $('#'+myLastCueId+' .cue_canvas').clearCanvas();
     }
@@ -337,7 +343,7 @@ function updateExitsForLastAndExLastCues(myTreeId, myCueId) {
         var dragExits = setExitDirection(myTreeId);
         setExitValues(myExLastCueId, dragExits.yes, dragExits.no);
         // add CLOSE button to EXIT node of ex-last cue
-        $('#'+myExLastCueId+' .exit_widget').append( closeExitButtonHtml() );
+        $('#'+myExLastCueId+' .exit-widget .widget-head').append( closeExitButtonHtml() );
         // activate the close exit button
         activateCloseExitButton(myExLastCueId);  // activate the close button for Exit node
         // draw arrow to the next cue
@@ -367,8 +373,8 @@ function setExitDirection(myTreeId) {
 function setExitValues(myCueId, myYes, myNo) {
     
     //get old Exit values
-    var myYesOld = $('#'+myCueId+' #hidden-exit_yes').val();
-    var myNoOld = $('#'+myCueId+' #hidden-exit_no').val();
+    var myYesOld = $('#'+myCueId+' #hidden-exit-yes').val();
+    var myNoOld = $('#'+myCueId+' #hidden-exit-no').val();
     
     //console.log('SET EXIT VALUES! '+myCueId+' '+myYes+' '+myNo);
     //console.log('myYesOld: '+myYesOld);
@@ -378,26 +384,26 @@ function setExitValues(myCueId, myYes, myNo) {
         //console.log('SET EXIT VALUES! myYesOld <> myYes: '+myYesOld+' '+myYes);
         switch (myYes) {
             case 'exit':
-                addExitNode(myCueId, 'hidden-exit_yes');
+                addExitNode(myCueId, 'hidden-exit-yes');
             break;
             case 'continue':
-                removeExitNode(myCueId, 'hidden-exit_yes');
+                removeExitNode(myCueId, 'hidden-exit-yes');
             break;
         }
-        $('#'+myCueId+' #hidden-exit_yes').val(myYes); // add ".trigger('change')" if you need to track this change and then do something with "$('#hidden-exit_yes').change(function(){do smth. here}"
+        $('#'+myCueId+' #hidden-exit-yes').val(myYes); // add ".trigger('change')" if you need to track this change and then do something with "$('#hidden-exit-yes').change(function(){do smth. here}"
     }
     
     if (myNoOld != myNo) {
         //console.log('SET EXIT VALUES! myNoOld <> myNo: '+myNoOld+' '+myNo);
         switch (myNo) {
             case 'exit':
-                addExitNode(myCueId, 'hidden-exit_no');
+                addExitNode(myCueId, 'hidden-exit-no');
             break;
             case 'continue':
-                removeExitNode(myCueId, 'hidden-exit_no');
+                removeExitNode(myCueId, 'hidden-exit-no');
             break;
         }
-        $('#'+myCueId+' #hidden-exit_no').val(myNo); // add ".trigger('change')" if you need to track this change and then do something with "$('#hidden-exit_yes').change(function(){do smth. here}"
+        $('#'+myCueId+' #hidden-exit-no').val(myNo); // add ".trigger('change')" if you need to track this change and then do something with "$('#hidden-exit-yes').change(function(){do smth. here}"
     }
 
 }
@@ -407,32 +413,32 @@ function addExitNode(myCueId, myHiddenExitId) {
     
     var myTreeId = $('#'+myCueId).closest('.trees').attr('id');
     var myTreeInt = getTreeInt(myTreeId);
-    //console.log('EXIT myTreeId: '+myTreeId+' '+myTreeInt);
+    console.log('EXIT myTreeId: '+myTreeId+' '+myTreeInt);
     
     //var myCriterionName = myJsonObj.trees[myTreeInt].criterion;
     
     
     switch(myHiddenExitId) {
-        case 'hidden-exit_yes':
-            var myExitClass = 'exit_left';
+        case 'hidden-exit-yes':
+            var myExitClass = 'exit-left';
             var myExitText = 'Yes';
             break;
-        case 'hidden-exit_no':
-            var myExitClass = 'exit_right';
+        case 'hidden-exit-no':
+            var myExitClass = 'exit-right';
             var myExitText = 'No';
             break;
     }
     
-    c++; // prepare for the next dragCue
-    var myExitNodeId = 'exit_'+d+'-'+c;  // d - the same as cueID, c - unique for exit nodes
+    c++; // prepare for the next dragCueId
+    var myExitNodeId = 'exit-'+d+'-'+c;  // d - the same as cueID, c - unique for exit nodes
     
-    var exitNode =  '<li id='+myExitNodeId+' class="'+myExitClass+' exit_widget unsortable">\
-                        '+closeExitButtonHtml()+' \
-                        <div class="exit_widget_title">\
-                            <span>EXIT</span>\
+    var exitNode =  '<li id='+myExitNodeId+' class="'+myExitClass+' exit-widget unsortable color-blue">\
+                        <div class="widget-head h3">\
+                            <span>Prediction: '+myExitText+'</span>\
+                            '+closeExitButtonHtml()+'\
                         </div>\
                         <div>\
-                            <canvas class="exit_canvas" width="160" height="50"></canvas>\
+                            <canvas class="exit_canvas" width="220" height="75"></canvas>\
                         </div>\
                     </li>';
     //$('#'+myCueId+' .exits').append(exitNode);
@@ -448,29 +454,29 @@ function addExitNode(myCueId, myHiddenExitId) {
 function drawArrowToExit(myExitNodeId, myExitClass) {
     
     switch(myExitClass) {
-        case 'exit_left':
-            var myX1 = 110;
-            var myY1 = 45;
-            var myX2 = 150;
-            var myY2 = 0;
+        case 'exit-left':
+            var myX1 = 160;
+            var myY1 = 65;
+            var myX2 = 220;
+            var myY2 = 5;
             var myLabelText = 'yes';
-            var myLabelX = 130;
-            var myLabelY = 22;
+            var myLabelX = 180;
+            var myLabelY = 30;
             break;
-        case 'exit_right':
-            var myX1 = 50;
-            var myY1 = 45;
-            var myX2 = 10;
-            var myY2 = 0;
+        case 'exit-right':
+            var myX1 = 60;
+            var myY1 = 65;
+            var myX2 = 5;
+            var myY2 = 5;
             var myLabelText = 'no';
-            var myLabelX = 30;
-            var myLabelY = 22;
+            var myLabelX = 40;
+            var myLabelY = 30;
             break;
     }
     
     $('#'+myExitNodeId+' .exit_canvas').drawLine({
-        strokeStyle: '#A9A9A9',
-        strokeWidth: 3,
+        strokeStyle: '#000',
+        strokeWidth: 2,
         rounded: true,
         startArrow: true,
         arrowRadius: 15,
@@ -495,16 +501,16 @@ function drawArrowToNextCue(myCueId) {
     // clear canvas
     $('#'+myCueId+' .cue_canvas').clearCanvas();
     
-    var myX1 = 20;
-    var myY1 = 40;
-    var myX2 = 20;
-    var myY2 = 0;
-    var myLabelX = 20;
-    var myLabelY = 20;
+    var myX1 = 75;
+    var myY1 = 65;
+    var myX2 = 75;
+    var myY2 = 10;
+    var myLabelX = 65;
+    var myLabelY = 35;
     
     $('#'+myCueId+' .cue_canvas').drawLine({
-        strokeStyle: '#A9A9A9',
-        strokeWidth: 3,
+        strokeStyle: '#000',
+        strokeWidth: 2,
         rounded: true,
         startArrow: true,
         arrowRadius: 15,
@@ -514,8 +520,8 @@ function drawArrowToNextCue(myCueId) {
     });
     
     //get Exit values
-    var myYes = $('#'+myCueId+' #hidden-exit_yes').val();
-    //var myNo = $('#'+myCueId+' #hidden-exit_no').val();  // we don't need that actually
+    var myYes = $('#'+myCueId+' #hidden-exit-yes').val();
+    //var myNo = $('#'+myCueId+' #hidden-exit-no').val();  // we don't need that actually
     
     switch (myYes) {
         case 'exit':
@@ -537,13 +543,8 @@ function drawArrowToNextCue(myCueId) {
     });
 }
 
-function closeButtonHtml() {
-    var myHtml = '<button class="button_close">&#10005</button>'
-    return myHtml;
-}
-
 function closeExitButtonHtml() {
-    var myHtml = '<button class="button_close_exit">&#10005</button>'
+    var myHtml = '<button id="icons" class="close-ui-exit ui-state-default ui-corner-all" title=".ui-icon-close"><span class="ui-icon ui-icon-close"></span></button>'
     return myHtml;
 }
 
@@ -551,16 +552,19 @@ function activateCloseExitButton(myCueId) {
     
     //console.log('ACTIVATE EXIT BUTTON! myCueId: '+myCueId);
     
-    //$('.close_exit').mousedown(function (e) {  // Create new anchor element with class of 'remove'
-    $('#'+myCueId).find('.button_close_exit').mouseup(function (e) {  // Create new anchor element with class of 'remove'
+    //$('.close-ui-exit').mousedown(function (e) {  // Create new anchor element with class of 'remove'
+    $('#'+myCueId).find('.close-ui-exit').mouseup(function (e) {  // Create new anchor element with class of 'remove'
         e.stopPropagation();                                                // Stop event bubbling (don't initiate other actions triggered by "mousedown", e.g. dragging)
         
-        // create EXIT node on another side        
+        //removeExitNode(myCueId, myHiddenExitId);
+        
         switchExitDirection(myCueId);
         
         var myTreeId = $('#'+myCueId).closest('.trees').attr('id');
         updateJsonDataset(myTreeId); // update the changed exit direction
-                
+        
+        jsPlumb.repaintEverything();
+        
         return false;                                            // Return false, prevent default action
     })
 }
@@ -570,8 +574,8 @@ function switchExitDirection(myCueId) {
     //console.log('SWITCH EXIT DIRECTION! myCueId: '+myCueId);
     
     //get hidden exit values
-    var myYesOld = $('#'+myCueId+' #hidden-exit_yes').val();
-    var myNoOld = $('#'+myCueId+' #hidden-exit_no').val();
+    var myYesOld = $('#'+myCueId+' #hidden-exit-yes').val();
+    var myNoOld = $('#'+myCueId+' #hidden-exit-no').val();
     
     switch(myYesOld) {
         case 'exit':
@@ -596,11 +600,11 @@ function switchExitDirection(myCueId) {
 function removeExitNode (myCueId, myHiddenExitId) {
     //console.log('REMOVE EXIT NODE: '+myCueId+' '+myHiddenExitId);
     switch(myHiddenExitId) {
-        case 'hidden-exit_yes':
-            var myExitClass = 'exit_left';
+        case 'hidden-exit-yes':
+            var myExitClass = 'exit-left';
             break;
-        case 'hidden-exit_no':
-            var myExitClass = 'exit_right';
+        case 'hidden-exit-no':
+            var myExitClass = 'exit-right';
             break;
     }
     $('#'+myCueId+' .'+myExitClass ).animate({                           // Animate widget to an opacity of 0
@@ -612,30 +616,33 @@ function removeExitNode (myCueId, myHiddenExitId) {
     });
 }
 
-function expandButtons() {
+
+function collapseCueButtons() {
     
-    console.log('ACTIVATE EXPANSION!');
-    
-    $('.button_expand').mouseup(function (e) {  // Create new anchor with a class of 'collapse'
-        console.log('EXPAND!');
-        $(this).parents('.widget').find('.widget_content').slideToggle('slow');
-    });
+    //$('.collapse-ui-cue').click(function (e) {  // Create new anchor with a class of 'collapse'
+    //    $(this).parents('.widget').find('.widget-content').slideToggle('slow');
+    //});
     
     // hide the content by default
-    $('.horiz_scroll').find('.widget_content').hide();
+    $('.horiz_scroll').find('.widget-content').hide();
     
-    //$('.horiz_scroll, .trees').on('click', '.button_expand', function (e) {  
-    //    $(this).parents('.widget').find('.widget_content').slideToggle('slow');
-    //});
-}
-
-function activateExpandButton(myCueId) {
-        
-    $('#'+myCueId+' .button_expand').mouseup(function (e) {  // Create new anchor with a class of 'collapse'
-        console.log('EXPAND!');
-        $(this).parents('.widget').find('.widget_content').slideToggle('slow');
+    $('.horiz_scroll, .trees').on('click', '.collapse-ui-cue', function (e) {  
+        $(this).parents('.widget').find('.widget-content').slideToggle('slow');
     });
 }
+
+//function collapseCueButtonsOLD() {
+    
+//    $('.collapse-ui-cue').mousedown(function (e) {  // Create new anchor with a class of 'collapse'
+//        e.stopPropagation();                             // Stop event bubbling
+//    }).toggle(function () {                              // Toggle: (1st State)
+//        $(this).parents('.widget').find('.widget-content').hide();  // Find content within widget and HIDE it
+//        return false;                                    // Return false, prevent default action
+//    },function () {                                      // Toggle: (2nd State)
+//        $(this).parents('.widget').find('.widget-content').show();  // Find content within widget and SHOW it
+//        return false;                                    // Return false, prevent default action
+//    }).prependTo($('.widget-head',this));       // Prepend that 'collapse' button to the widget's handle
+//}
 
 function activateStatsSlideToggle(myCueId) {  
     
@@ -659,7 +666,7 @@ function activateCloseCueButton(myCueId) {
     //console.log('closeCueButton myTreeId: '+myTreeId);
     //console.log('closeCueButton myCueId: '+myCueId);
     
-    $('#'+myCueId+' .button_close').mousedown(function (e) {  // Create new anchor element with class of 'remove'
+    $('#'+myCueId+' .close-ui-cue').mousedown(function (e) {  // Create new anchor element with class of 'remove'
         e.stopPropagation();                                                // Stop event bubbling (don't initiate other actions triggered by "mousedown", e.g. dragging)
     }).click(function () {
         $(this).parents('.widget').animate({                           // Animate widget to an opacity of 0
@@ -676,6 +683,144 @@ function activateCloseCueButton(myCueId) {
     })
 }
 
+
+function drawPlumbLines(){
+    
+    jsPlumb.ready(function () {
+        
+        var myCueId = 'cue0-10';
+        var myExitNodeId = 'exit-10-10';
+        //var myExitNodeId = $('#'+myCueId).find('.exit-widget')[0] ;
+    
+        // setup some defaults for jsPlumb.
+        var instance = jsPlumb.getInstance({
+            Endpoint: ["Dot", {radius: 2}],
+            HoverPaintStyle: {strokeStyle: "#1e8151", lineWidth: 2 },
+            ConnectionOverlays: [
+                [ "Arrow", {
+                    location: 1,
+                    id: "arrow",
+                    length: 14,
+                    foldback: 0.8
+                } ],
+                [ "Label", { label: "FOO", id: "label", cssClass: "aLabel" }]
+            ],
+            Container: "two_trees"
+        });
+    
+        window.jsp = instance;
+        //console.log('instance: '+JSON.stringify(instance, null, "  ") );
+    
+        var windows = jsPlumb.getSelector(".horiz_scroll .widget");
+    
+        // initialise draggable elements.
+        instance.draggable(windows);
+    
+        // bind a click listener to each connection; the connection is deleted. you could of course
+        // just do this: jsPlumb.bind("click", jsPlumb.detach), but I wanted to make it clear what was
+        // happening.
+        //instance.bind("click", function (c) {
+        //    instance.detach(c);
+        //});
+    
+        // bind a connection listener. note that the parameter passed to this function contains more than
+        // just the new connection - see the documentation for a full list of what is included in 'info'.
+        // this listener sets the connection's internal
+        // id as the label overlay's text.
+        instance.bind("connection", function (info) {
+            info.connection.getOverlay("label").setLabel(info.connection.id);
+        });
+    
+    
+        // suspend drawing and initialise.
+        instance.batch(function () {
+            instance.makeSource(windows, {
+                filter: ".ep",
+                anchor: "Continuous",
+                connector: [ "StateMachine", { curviness: 20 } ],
+                connectorStyle: { strokeStyle: "#5c96bc", lineWidth: 2, outlineColor: "transparent", outlineWidth: 4 },
+                maxConnections: 5,
+                onMaxConnections: function (info, e) {
+                    alert("Maximum connections (" + info.maxConnections + ") reached");
+                }
+            });
+    
+            // initialise all '.widget' elements as connection targets.
+            instance.makeTarget(windows, {
+                dropOptions: { hoverClass: "dragHover" },
+                anchor: "Continuous",
+                allowLoopback: true
+            });
+    
+            // and finally, make a couple of connections
+            instance.connect({ source: myCueId, target: myExitNodeId });
+            //instance.connect({ source: "phone1", target: "phone1" });
+            //instance.connect({ source: "phone1", target: "inperson" });
+        });
+    
+        jsPlumb.fire("jsPlumbDemoLoaded", instance);
+    
+    });
+};
+
+function connectNodes() {                
+    // jsPlumb "state machine"
+    
+    jsPlumb.ready(function() {
+            
+        var firstInstance = jsPlumb.getInstance();
+        
+        firstInstance.importDefaults({
+            //Connector : [ "Bezier", { curviness: 150 } ],
+            Anchors : [ "BottomCenter", "TopCenter" ]
+        });
+        
+        //set a container
+        jsPlumb.setContainer($("cue2-10"));
+          
+        firstInstance.connect({
+            source:"cue2-10",   //source:"element1", 
+            target:"exit-10-10",   //target:"element2",
+            scope:"someScope" 
+        });
+        
+        firstInstance.draggable(['cue2-10', 'exit-10-10']);
+        
+        /*
+        var myExitNodeId = $('#'+myCueId).find('.exit-widget')[0] ;
+        
+        // define if the endpoints are visible
+        var endpointOptions = {
+            isSource:true,
+            isTarget:true
+        };
+        
+        var div1Endpoint = jsPlumb.addEndpoint(myCueId, { anchor:'AutoDefault' }, endpointOptions );  
+        var div2Endpoint = jsPlumb.addEndpoint(myExitNodeId, { anchor:'AutoDefault' }, endpointOptions );  
+        
+        //var myConnect = jsPlumb.connect({ 
+        jsPlumb.connect({ 
+            source:div1Endpoint,
+            target:div2Endpoint,
+            connector: [ 'Straight' ],
+            //label: 'FOO'
+            overlays:[
+                [ "Arrow", { foldback:1, location:1, id:"arrow" } ], 
+                [ "Label", {label:"Yes", id:"label"}]
+            ] 
+            //paintStyle:{ lineWidth:2, strokeStyle:'black' }
+        });
+        
+        */
+        
+        //myInstanceOfJsPlumb.draggable(myExitNodeId);
+        
+        //var label = myConnect.getOverlay("label");
+        //console.log("Label is currently", label.getLabel());
+        //label.setLabel("BAR");
+        //console.log("Label is now", label.getLabel());
+    });
+}
 
 // Right at the very end of buildtree.js
 //iNettuts.init();

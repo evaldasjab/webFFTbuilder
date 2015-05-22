@@ -12,7 +12,7 @@ function analyzeDataset(myTreeObj) {
     //console.log('myCriterCueId: '+myCriterionName);
     
     var DATASET = {};
-    DATASET.records = myDataset.data;
+    DATASET.records = myData;
     //console.log('DATASET: '+ JSON.stringify(DATASET, null, "  "));
     
     var TREE = {};
@@ -31,7 +31,7 @@ function analyzeDataset(myTreeObj) {
         // first count undecided cases
         if (rec[myCriterionName] === 1)
             UNDECIDED_POS++;
-        else
+        else if (rec[myCriterionName] === 0) 
             UNDECIDED_NEG++;
     });
     
@@ -144,6 +144,68 @@ function analyzeDataset(myTreeObj) {
     //console.log('TREE UNDECIDED_POS: ' + JSON.stringify(UNDECIDED_POS, null, "  "));
     //console.log('TREE UNDECIDED_NEG: ' + JSON.stringify(UNDECIDED_NEG, null, "  "));
     
+    getDerivativeStatistics();
+    
+    updateAnalysisView('stat_'+myTreeId);
+    
+    // do it only for the tree analysis (not individual cues in the cue list)
+    if ( (myTreeId=='tree0') || (myTreeId=='tree1') ) {
+        
+        // calculate and display statistics for the cues in the tree
+        for (var c = 0; c < TREE.treeCuesList.length; c++) {
+            
+            var myCueId = TREE.treeCuesList[c].id;
+            //console.log('TREE CUE myCueId:'+myCueId);
+            
+            HITS = TREE.treeCuesList[c].hits;
+            MISS = TREE.treeCuesList[c].miss;
+            FALSE_ALARMS = TREE.treeCuesList[c].fals;
+            CORRECT_REJECTIONS = TREE.treeCuesList[c].corr;
+            UNDECIDED_POS = TREE.treeCuesList[c].un_p;
+            UNDECIDED_NEG = TREE.treeCuesList[c].un_n;
+            STEPS = TREE.treeCuesList[c].step;
+            
+            getDerivativeStatistics();
+        
+            updateAnalysisView(myCueId);
+            
+            if (c==0) {
+                // update statistics of the tree up to the FIRST cue
+                treeHITS = HITS;
+                treeMISS = MISS;
+                treeFALSE_ALARMS = FALSE_ALARMS;
+                treeCORRECT_REJECTIONS = CORRECT_REJECTIONS;
+                treeUNDECIDED_POS = UNDECIDED_POS;
+                treeUNDECIDED_NEG = UNDECIDED_NEG;
+                treeSTEPS = STEPS;
+            } else {
+                // update statistics of the tree up to OTHER cues
+                treeHITS = treeHITS + HITS;
+                treeMISS = treeMISS + MISS;
+                treeFALSE_ALARMS = treeFALSE_ALARMS + FALSE_ALARMS;
+                treeCORRECT_REJECTIONS = treeCORRECT_REJECTIONS + CORRECT_REJECTIONS;
+                treeUNDECIDED_POS = UNDECIDED_POS;
+                treeUNDECIDED_NEG = UNDECIDED_NEG;
+                treeSTEPS = treeSTEPS + STEPS;
+            }
+            
+            STEPS = treeSTEPS;
+            HITS = treeHITS;
+            MISS = treeMISS;
+            FALSE_ALARMS = treeFALSE_ALARMS;
+            CORRECT_REJECTIONS = treeCORRECT_REJECTIONS;
+            UNDECIDED_POS = treeUNDECIDED_POS;
+            UNDECIDED_NEG = treeUNDECIDED_NEG;
+            
+            getDerivativeStatistics();
+            
+            updateAnalysisView(myCueId+' .stat_tree');
+        }
+    }   
+}
+
+function getDerivativeStatistics() {
+    
     CRIT_YES_SUM = HITS + MISS + UNDECIDED_POS;
     CRIT_NO_SUM = FALSE_ALARMS + CORRECT_REJECTIONS + UNDECIDED_NEG;
     
@@ -152,85 +214,6 @@ function analyzeDataset(myTreeObj) {
     PRED_UND_SUM = UNDECIDED_POS + UNDECIDED_NEG;
     PRED_SUM_SUM = CRIT_YES_SUM + CRIT_NO_SUM;
     
-    updateAnalysisView(myTreeId);
-    
-    // do it only for the tree analysis (not individual cues in the cue list)
-    if ( (myTreeId=='tree0') || (myTreeId=='tree1') ) {
-       
-        for (var c = 0; c < TREE.treeCuesList.length; c++) {
-            
-            var myCueId = TREE.treeCuesList[c].id;
-            //console.log('TREE CUE myCueId:'+myCueId);
-            
-            myHITS = TREE.treeCuesList[c].hits;
-            myMISS = TREE.treeCuesList[c].miss;
-            myFALSE_ALARMS = TREE.treeCuesList[c].fals;
-            myCORRECT_REJECTIONS = TREE.treeCuesList[c].corr;
-            myUNDECIDED_POS = TREE.treeCuesList[c].un_p;
-            myUNDECIDED_NEG = TREE.treeCuesList[c].un_n;
-            mySTEPS = TREE.treeCuesList[c].step;
-            
-            myCRIT_YES_SUM = myHITS + myMISS + myUNDECIDED_POS;
-            myCRIT_NO_SUM = myFALSE_ALARMS + myCORRECT_REJECTIONS + myUNDECIDED_NEG;
-            
-            myPRED_YES_SUM = myHITS + myFALSE_ALARMS;
-            myPRED_NO_SUM = myMISS + myCORRECT_REJECTIONS;
-            myPRED_UND_SUM = myUNDECIDED_POS + myUNDECIDED_NEG;
-            myPRED_SUM_SUM = myCRIT_YES_SUM + myCRIT_NO_SUM;
-        
-            updateCueAnalysis(myCueId);
-            
-            if (c==0) {
-                // update statistics of the tree up to the FIRST cue
-                myTreeHITS = myHITS;
-                myTreeMISS = myMISS;
-                myTreeFALSE_ALARMS = myFALSE_ALARMS;
-                myTreeCORRECT_REJECTIONS = myCORRECT_REJECTIONS;
-                myTreeUNDECIDED_POS = myUNDECIDED_POS;
-                myTreeUNDECIDED_NEG = myUNDECIDED_NEG;
-                myTreeSTEPS = mySTEPS;
-            } else {
-                // update statistics of the tree up to OTHER cues
-                myTreeHITS = myTreeHITS + myHITS;
-                myTreeMISS = myTreeMISS + myMISS;
-                myTreeFALSE_ALARMS = myTreeFALSE_ALARMS + myFALSE_ALARMS;
-                myTreeCORRECT_REJECTIONS = myTreeCORRECT_REJECTIONS + myCORRECT_REJECTIONS;
-                myTreeUNDECIDED_POS = myUNDECIDED_POS;
-                myTreeUNDECIDED_NEG = myUNDECIDED_NEG;
-                myTreeSTEPS = myTreeSTEPS + mySTEPS;
-            }
-            
-            myTreeCRIT_YES_SUM = myTreeHITS + myTreeMISS + myTreeUNDECIDED_POS;
-            myTreeCRIT_NO_SUM = myTreeFALSE_ALARMS + myTreeCORRECT_REJECTIONS + myTreeUNDECIDED_NEG;
-            
-            myTreePRED_YES_SUM = myTreeHITS + myTreeFALSE_ALARMS;
-            myTreePRED_NO_SUM = myTreeMISS + myTreeCORRECT_REJECTIONS;
-            myTreePRED_UND_SUM = myTreeUNDECIDED_POS + myTreeUNDECIDED_NEG;
-            myTreePRED_SUM_SUM = myTreeCRIT_YES_SUM + myTreeCRIT_NO_SUM;
-            
-            updateTreeUpToThisCueAnalysis(myCueId);
-        }
-    }
-    
-}
-
-
-
-function updateAnalysisView(myId) {
-    
-    $('#'+myId+' #hits').text(HITS.toString());
-    $('#'+myId+' #misses').text(MISS.toString());
-    $('#'+myId+' #falsealarms').text(FALSE_ALARMS.toString())
-    $('#'+myId+' #correctrejections').text(CORRECT_REJECTIONS.toString())
-    $('#'+myId+' #undecided_pos').text(UNDECIDED_POS.toString())
-    $('#'+myId+' #undecided_neg').text(UNDECIDED_NEG.toString())
-    $('#'+myId+' #crit_yes_sum').text(CRIT_YES_SUM.toString())
-    $('#'+myId+' #crit_no_sum').text(CRIT_NO_SUM.toString())
-    $('#'+myId+' #pred_yes_sum').text(PRED_YES_SUM.toString())
-    $('#'+myId+' #pred_no_sum').text(PRED_NO_SUM.toString())
-    $('#'+myId+' #pred_und_sum').text(PRED_UND_SUM.toString())
-    $('#'+myId+' #pred_sum_sum').text(PRED_SUM_SUM.toString())
-    
     var ts = new TreeStatistics();
     ts.setHitCount(HITS);
     ts.setMissCount(MISS);
@@ -238,76 +221,65 @@ function updateAnalysisView(myId) {
     ts.setCrCount(CORRECT_REJECTIONS);
     ts.setStepsSum(STEPS);
     
-    $('#'+myId+' #pHits').text((Math.round(ts.getHitsProbability() * 1000) / 1000).toString());
-    $('#'+myId+' #pFA').text((Math.round(ts.getFalseAlarmsProbability() * 1000) / 1000).toString());
-    $('#'+myId+' #dprime').text((Math.round(ts.getDPrime() * 1000) / 1000).toString());
-    $('#'+myId+' #frugality').text((Math.round(ts.frugality() * 1000) / 1000).toString());
-    $('#'+myId+' #aprime').text((Math.round(ts.getAPrime() * 1000) / 1000).toString());
-    $('#'+myId+' #bprime').text((Math.round(ts.getBPrime() * 1000) / 1000).toString());
-    $('#'+myId+' #bdprime').text((Math.round(ts.getBDoublePrime() * 1000) / 1000).toString());
-    $('#'+myId+' #bias').text((Math.round(ts.getBias() * 1000) / 1000).toString());
+    PHITS = Math.round(ts.getHitsProbability() * 1000) / 1000;
+    PFA = Math.round(ts.getFalseAlarmsProbability() * 1000) / 1000;
+    DPRIME = Math.round(ts.getDPrime() * 1000) / 1000;
+    FRUGALITY = Math.round(ts.frugality() * 1000) / 1000;
+    APRIME = Math.round(ts.getAPrime() * 1000) / 1000;
+    BPRIME = Math.round(ts.getBPrime() * 1000) / 1000;
+    BDPRIME = Math.round(ts.getBDoublePrime() * 1000) / 1000;
+    BIAS = Math.round(ts.getBias() * 1000) / 1000;
 }
 
-function updateCueAnalysis(myId) {
+function resetTreeStatistics() {
+    STEPS = 0;
+    HITS = 'Hit';
+    MISS = 'Miss';
+    FALSE_ALARMS = 'FA';
+    CORRECT_REJECTIONS = 'CR';
+    UNDECIDED_POS = 0;
+    UNDECIDED_NEG = 0;
+    CRIT_YES_SUM = 0;
+    CRIT_NO_SUM = 0;
+    PRED_YES_SUM = 0;
+    PRED_NO_SUM = 0;
+    PRED_UND_SUM = 0;
+    PRED_SUM_SUM = 0;
+    PHITS = 0;
+    PFA = 0;
+    DPRIME = 0;
+    FRUGALITY = 0;
+    APRIME = 0;
+    BPRIME = 0;
+    BDPRIME = 0;
+    BIAS = 0;
     
-    $('#'+myId+' #hits').text(myHITS.toString());
-    $('#'+myId+' #misses').text(myMISS.toString());
-    $('#'+myId+' #falsealarms').text(myFALSE_ALARMS.toString())
-    $('#'+myId+' #correctrejections').text(myCORRECT_REJECTIONS.toString())
-    $('#'+myId+' #undecided_pos').text(myUNDECIDED_POS.toString())
-    $('#'+myId+' #undecided_neg').text(myUNDECIDED_NEG.toString())
-    $('#'+myId+' #crit_yes_sum').text(myCRIT_YES_SUM.toString())
-    $('#'+myId+' #crit_no_sum').text(myCRIT_NO_SUM.toString())
-    $('#'+myId+' #pred_yes_sum').text(myPRED_YES_SUM.toString())
-    $('#'+myId+' #pred_no_sum').text(myPRED_NO_SUM.toString())
-    $('#'+myId+' #pred_und_sum').text(myPRED_UND_SUM.toString())
-    $('#'+myId+' #pred_sum_sum').text(myPRED_SUM_SUM.toString())
-    
-    var ts = new TreeStatistics();
-    ts.setHitCount(myHITS);
-    ts.setMissCount(myMISS);
-    ts.setFaCount(myFALSE_ALARMS);
-    ts.setCrCount(myCORRECT_REJECTIONS);
-    ts.setStepsSum(mySTEPS);
-    
-    $('#'+myId+' #pHits').text((Math.round(ts.getHitsProbability() * 1000) / 1000).toString());
-    $('#'+myId+' #pFA').text((Math.round(ts.getFalseAlarmsProbability() * 1000) / 1000).toString());
-    $('#'+myId+' #dprime').text((Math.round(ts.getDPrime() * 1000) / 1000).toString());
-    $('#'+myId+' #frugality').text((Math.round(ts.frugality() * 1000) / 1000).toString());
-    $('#'+myId+' #aprime').text((Math.round(ts.getAPrime() * 1000) / 1000).toString());
-    $('#'+myId+' #bprime').text((Math.round(ts.getBPrime() * 1000) / 1000).toString());
-    $('#'+myId+' #bdprime').text((Math.round(ts.getBDoublePrime() * 1000) / 1000).toString());
-    $('#'+myId+' #bias').text((Math.round(ts.getBias() * 1000) / 1000).toString());
+    updateAnalysisView('stat_tree0');
+    updateAnalysisView('stat_tree1');
 }
 
-function updateTreeUpToThisCueAnalysis(myId) {
+
+function updateAnalysisView(myId) {
     
-    $('#'+myId+' .stat_tree #hits').text(myTreeHITS.toString());
-    $('#'+myId+' .stat_tree #misses').text(myTreeMISS.toString());
-    $('#'+myId+' .stat_tree #falsealarms').text(myTreeFALSE_ALARMS.toString())
-    $('#'+myId+' .stat_tree #correctrejections').text(myTreeCORRECT_REJECTIONS.toString())
-    $('#'+myId+' .stat_tree #undecided_pos').text(myTreeUNDECIDED_POS.toString())
-    $('#'+myId+' .stat_tree #undecided_neg').text(myTreeUNDECIDED_NEG.toString())
-    $('#'+myId+' .stat_tree #crit_yes_sum').text(myTreeCRIT_YES_SUM.toString())
-    $('#'+myId+' .stat_tree #crit_no_sum').text(myTreeCRIT_NO_SUM.toString())
-    $('#'+myId+' .stat_tree #pred_yes_sum').text(myTreePRED_YES_SUM.toString())
-    $('#'+myId+' .stat_tree #pred_no_sum').text(myTreePRED_NO_SUM.toString())
-    $('#'+myId+' .stat_tree #pred_und_sum').text(myTreePRED_UND_SUM.toString())
-    $('#'+myId+' .stat_tree #pred_sum_sum').text(myTreePRED_SUM_SUM.toString())
-    
-    var ts = new TreeStatistics();
-    ts.setHitCount(myTreeHITS);
-    ts.setMissCount(myTreeMISS);
-    ts.setFaCount(myTreeFALSE_ALARMS);
-    ts.setCrCount(myTreeCORRECT_REJECTIONS);
-    ts.setStepsSum(myTreeSTEPS);
-    
-    $('#'+myId+' .stat_tree #pHits').text((Math.round(ts.getHitsProbability() * 1000) / 1000).toString());
-    $('#'+myId+' .stat_tree #pFA').text((Math.round(ts.getFalseAlarmsProbability() * 1000) / 1000).toString());
-    $('#'+myId+' .stat_tree #dprime').text((Math.round(ts.getDPrime() * 1000) / 1000).toString());
-    $('#'+myId+' .stat_tree #frugality').text((Math.round(ts.frugality() * 1000) / 1000).toString());
-    $('#'+myId+' .stat_tree #aprime').text((Math.round(ts.getAPrime() * 1000) / 1000).toString());
-    $('#'+myId+' .stat_tree #bprime').text((Math.round(ts.getBPrime() * 1000) / 1000).toString());
-    $('#'+myId+' .stat_tree #bdprime').text((Math.round(ts.getBDoublePrime() * 1000) / 1000).toString());
-    $('#'+myId+' .stat_tree #bias').text((Math.round(ts.getBias() * 1000) / 1000).toString());
+    $('#'+myId+' #hits').text(HITS.toString());
+    $('#'+myId+' #misses').text(MISS.toString());
+    $('#'+myId+' #falsealarms').text(FALSE_ALARMS.toString());
+    $('#'+myId+' #correctrejections').text(CORRECT_REJECTIONS.toString());
+    $('#'+myId+' #undecided_pos').text(UNDECIDED_POS.toString());
+    $('#'+myId+' #undecided_neg').text(UNDECIDED_NEG.toString());
+    $('#'+myId+' #crit_yes_sum').text(CRIT_YES_SUM.toString());
+    $('#'+myId+' #crit_no_sum').text(CRIT_NO_SUM.toString());
+    $('#'+myId+' #pred_yes_sum').text(PRED_YES_SUM.toString());
+    $('#'+myId+' #pred_no_sum').text(PRED_NO_SUM.toString());
+    $('#'+myId+' #pred_und_sum').text(PRED_UND_SUM.toString());
+    $('#'+myId+' #pred_sum_sum').text(PRED_SUM_SUM.toString());
+
+    $('#'+myId+' #pHits').text(PHITS.toString());
+    $('#'+myId+' #pFA').text(PFA.toString());
+    $('#'+myId+' #dprime').text(DPRIME.toString());
+    $('#'+myId+' #frugality').text(FRUGALITY.toString());
+    $('#'+myId+' #aprime').text(APRIME.toString());
+    $('#'+myId+' #bprime').text(BPRIME.toString());
+    $('#'+myId+' #bdprime').text(BDPRIME.toString());
+    $('#'+myId+' #bias').text(BIAS.toString());
 }

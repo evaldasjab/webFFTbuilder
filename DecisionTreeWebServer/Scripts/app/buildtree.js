@@ -420,11 +420,11 @@ function addExitNode(myCueId, myHiddenExitId) {
     
     switch(myHiddenExitId) {
         case 'hidden-exit-yes':
-            var myExitClass = 'exit-left';
+            var myExitDir = 'exit-left';
             var myExitText = 'Yes';
             break;
         case 'hidden-exit-no':
-            var myExitClass = 'exit-right';
+            var myExitDir = 'exit-right';
             var myExitText = 'No';
             break;
     }
@@ -432,7 +432,7 @@ function addExitNode(myCueId, myHiddenExitId) {
     c++; // prepare for the next dragCueId
     var myExitNodeId = 'exit-'+d+'-'+c;  // d - the same as cueID, c - unique for exit nodes
     
-    var exitNode =  '<li id='+myExitNodeId+' class="'+myExitClass+' exit-widget unsortable color-blue">\
+    var exitNode =  '<li id='+myExitNodeId+' class="'+myExitDir+' exit-widget unsortable color-blue">\
                         <div class="widget-head h3">\
                             <span>Prediction: '+myExitText+'</span>\
                             '+closeExitButtonHtml()+'\
@@ -445,15 +445,15 @@ function addExitNode(myCueId, myHiddenExitId) {
     $(exitNode).hide().appendTo('#'+myCueId+' .exits').fadeIn(300);
     
     //draw arrow to the Exit Node
-    drawArrowToExit(myExitNodeId, myExitClass);
+    drawArrowToExit(myExitNodeId, myExitDir);
     
     // activate the close button
     activateCloseExitButton(myCueId);  // activate the close button
 }
 
-function drawArrowToExit(myExitNodeId, myExitClass) {
+function drawArrowToExit(myExitNodeId, myExitDir) {
     
-    switch(myExitClass) {
+    switch(myExitDir) {
         case 'exit-left':
             var myX1 = 160;
             var myY1 = 65;
@@ -601,13 +601,13 @@ function removeExitNode (myCueId, myHiddenExitId) {
     //console.log('REMOVE EXIT NODE: '+myCueId+' '+myHiddenExitId);
     switch(myHiddenExitId) {
         case 'hidden-exit-yes':
-            var myExitClass = 'exit-left';
+            var myExitDir = 'exit-left';
             break;
         case 'hidden-exit-no':
-            var myExitClass = 'exit-right';
+            var myExitDir = 'exit-right';
             break;
     }
-    $('#'+myCueId+' .'+myExitClass ).animate({                           // Animate widget to an opacity of 0
+    $('#'+myCueId+' .'+myExitDir ).animate({                           // Animate widget to an opacity of 0
         opacity: 0    
     },function () {                                                     // When animation (opacity) has finished
         $(this).wrap('<div/>').parent().slideUp(function () {           // Wrap in DIV (explained below) and slide up

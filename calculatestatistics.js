@@ -1,3 +1,4 @@
+// Calculates statistics and displays in the tables
 
 function analyzeDataset(myTreeObj) {
     //console.log('ANALYSE!!! myTreeObj: ' + JSON.stringify(myTreeObj, null, "  "));

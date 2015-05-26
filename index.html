@@ -11,22 +11,24 @@
         <title>Grow a FAST-and-FRUGAL Tree</title>
         <link href="buildtree.css" rel="stylesheet" type="text/css" />
         <link href='http://fonts.googleapis.com/css?family=Offside' rel='stylesheet' type='text/css'>
+        <link rel=" stylesheet" type="text/css" href="libraries/bootstrap-tour-standalone.css">
 </head>
 
 <body>
         
-<div id="blue_area">
+<div class="page_area noselect" id="blue_area">
         
     <header>
         <h1>Grow a FAST-and-FRUGAL Tree</h1>       
     </header>
     
+    <button class="button_help" id="button_help_id">?</button>
     <input type="file" id="csv-file" name="files"> 
-    <label for="csv-file" class="button_upload_csv" >Upload CSV file</label>
+    <label for="csv-file" class="button_upload_csv" id="button_upload_csv_id">Upload CSV file</label>
     
-    <button class="button_selectdata button_allcases button_t_on" id="button_allcases_id">All Cases</button>
-    <button class="button_selectdata button_training button_t_off" id="button_training_id">Training</button>
-    <button class="button_selectdata button_testing button_t_off" id="button_testing_id">Testing</button>
+    <button class="button_selectdata button_allcases button_t_on inactive" id="button_allcases_id">All Cases</button>
+    <button class="button_selectdata button_training button_t_on inactive" id="button_training_id">Training</button>
+    <button class="button_selectdata button_testing button_t_on inactive" id="button_testing_id">Testing</button>
 
     <!-- row of cues -->
     <div class="horiz_scroll">
@@ -41,15 +43,19 @@
         </div>
     </div>
     
-    
+    <svg class="button_expand_all" id="button_expand_all_blue" height="20" width="20">
+        <polyline points="3 8,10 15,17 8"/>
+    </svg>
     <!-- row of cues -->
 </div>
-
-
     
     <!-- FFTs -->
 
-<div id="white_area">
+<div class = "page_area" id="white_area">
+        
+    <svg class="button_expand_all" id="button_expand_all_white" height="20" width="20">
+        <polyline points="3 8,10 15,17 8"/>
+    </svg>
     
     <ul class="columns">        
         <li class="drophere" id="drophere_tree0">Drop the cues here!</li>
@@ -106,18 +112,22 @@
     
     <!-- Bottom of document -->
     
-    <script type="text/javascript" src="libraries/jquery-1.11.3.min.js"></script>
-    <script type="text/javascript" src="libraries/jquery-ui-1.11.4.min.js"></script>
-    <script type="text/javascript" src="libraries/papaparse.min.js"></script>
-    <script type="text/javascript" src="libraries/jcanvas-14.09.27.min.js"></script>
+    <script src="libraries/jquery-1.11.3.min.js"></script>
+    <script src="libraries/jquery-ui-1.11.4.min.js"></script>
+    <script src="libraries/papaparse.min.js"></script>
+    <script src="libraries/bootstrap-tour-standalone.js"></script>
     
     <!-- evaldas -->
-    <script type="text/javascript" src="buildtree.js"></script>
-    <script type="text/javascript" src="importcsv.js"></script>
-    <script type="text/javascript" src="calculatestatistics.js"></script>
+    <script src="buttonshtmls.js"></script>
+    <script src="showtooltipstour.js"></script>
+    <script src="importcsv.js"></script>
+    <script src="updateobjects.js"></script>
+    <script src="calculatestatistics.js"></script>
+    <script src="buildtree.js"></script>
 
+    <!-- uwe -->
     <script src="fftreeStatistics/TreeStatistics.js"></script>
-    <!-- uwe
+    <!--
     <script src="fftreeStatistics/fftreeStatistics.js"></script>
     <script src="fftreeStatistics/app.js"></script>
     

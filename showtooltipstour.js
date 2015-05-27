@@ -40,7 +40,7 @@ function showTooltipsTour() {
         },
         {  // step 5
           element: '#blue_area li:not(.ui-draggable-disabled) .widget_title',
-          title: 'Step 3',
+          title: 'Step 3:',
           content: 'Choose a cue (any except the selected as criterion) and drag it to the tree area.',
           placement: "bottom",
         },

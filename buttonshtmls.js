@@ -68,11 +68,19 @@ function expandAllButtons() {
     
     $('.button_expand_all').mouseup(function (e) {  // Create new anchor with a class of 'collapse'
         
+        // if there is no cue with expanded stats, expand all
         if ($(this).parent('.page_area').find('.widget_content:visible').length == 0) {
             $(this).parent('.page_area').find('.widget_content').show(1000);
+            // change the icon
+            $('.button_expand_all .up').hide();
+            $('.button_expand_all .down').show();
             
+        // if there is at least one expanded, collapse all
         } else {
             $(this).parent('.page_area').find('.widget_content').hide(1000);
+            // change the icon
+            $('.button_expand_all .down').hide(1000);
+            $('.button_expand_all .up').show(1000);
             
             // show next tooltip
             console.log('TIP 5 or 10');
@@ -89,8 +97,8 @@ function expandAllButtons() {
         //$(this).parent('#blue_area').find('.widget_content').show(1000);
     });
     
-    // hide the content by default
-    //$('.horiz_scroll').find('.widget_content').hide();
+    // hide icon by default
+    $('.button_expand_all .up').hide();
     
     //$('.horiz_scroll, .trees').on('click', '.button_expand', function (e) {  
     //    $(this).parents('.widget').find('.widget_content').slideToggle('slow');
@@ -153,8 +161,8 @@ function activateCloseCueButton(myCueId) {
             $(this).wrap('<div/>').parent().slideUp(function () {           // Wrap in DIV (explained below) and slide up
                 $(this).remove();                                           // When sliding up has finished, remove widget from DOM
                 //console.log('REMOVED myCueId: '+myCueId);
-                updateExitsAndArrowsForAllCues(myTreeId); // take care of the EXIT nodes
-                updateJsonDataset(myTreeId); // update the changed exit direction
+                updateExitsAndArrowsForAllCues(myTreeId); // take care of the EXIT nodes and ARROWS
+                updateJsonDataset(myTreeId); // update statistics
             });
         });
         

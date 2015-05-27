@@ -144,11 +144,11 @@ function makeSortable() {                 // This function will make the widgets
             dragCueId = ui.item.attr("id");
                                                 
             // take care of the EXIT nodes
+            //console.log('updateExitsAndArrowsForAllCues. dragTreeId: '+dragTreeId+' dragCueId:'+dragCueId);
             updateExitsAndArrowsForAllCues(dragTreeId, dragCueId);
                         
             // update JSON dataset for the analysis algorithms
-            updateJsonDataset(dragTreeId);
-            
+            updateJsonDataset(dragTreeId);            
         }
     }).disableSelection();
 }
@@ -170,7 +170,7 @@ function updateExitsAndArrowsForAllCues(myTreeId) {
 
     myTreeArray.forEach(function(myCueId){
         
-        console.log('FOREACH myCueId: '+myCueId);
+        console.log('UPDATE EXITS AN ARROWS myCueId: '+myCueId);
         console.log('myLastCueId: '+myLastCueId);
         
         // do for each cue in the tree, except the last cue
@@ -364,13 +364,9 @@ function removeExitNode (myCueId, myExitClass) {
     //        var myExitDir = 'exit_right';
     //        break;
     //}
-    $('#'+myCueId+' .'+myExitClass ).animate({                           // Animate widget to an opacity of 0
-        opacity: 0    
-    },function () {                                                     // When animation (opacity) has finished
-        $(this).wrap('<div/>').parent().slideUp(function () {           // Wrap in DIV (explained below) and slide up
-            $(this).remove();                                           // When sliding up has finished, remove widget from DOM
-        });
-    });
+    
+    $('#'+myCueId+' .'+myExitClass ).remove();                                           // When sliding up has finished, remove widget from DOM
+    
 }
 function switchExitDirection(myCueId, myExitClass) {
     
@@ -388,12 +384,16 @@ function switchExitDirection(myCueId, myExitClass) {
     }
 }
 
-function getExitValues(myCueId) {
+function getExitValues(myCueId, cameFrom) {
+    console.log('function getExitValues, came from: '+cameFrom);
+    
     // check if Exit nodes exist
     var myExitLeftId = $('#'+myCueId+' .exit_left').attr('id');
     var myExitRightId = $('#'+myCueId+' .exit_right').attr('id');
     
-    //console.log('CHECK myCueId: '+myCueId+' myExitLeftId: '+myExitLeftId+' myExitRightId: '+myExitRightId);
+    console.log('CHECK myCueId: '+myCueId+' myExitLeftId: '+myExitLeftId+' myExitRightId: '+myExitRightId);
+    
+    //alert('stop');
     
     if (myExitLeftId == myExitRightId) {   // if both or none EXIT nodes exist
         var myLeft = 'exit';

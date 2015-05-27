@@ -7,11 +7,7 @@ function updateJsonDataset(myTreeId) {
     var myTreeCuesArray = $('#'+myTreeId).sortable('toArray');
     myTreeCuesArray = myTreeCuesArray.filter(function(n){ return n != "" });  // remove empty elements in array
 
-    //orderTree0 = $('#tree0').sortable('toArray');
-    //orderTree1 = $('#tree1').sortable('toArray');
-    //orderTree0 = orderTree0.filter(function(n){ return n != "" });  // remove empty elements in array
-    //orderTree1 = orderTree1.filter(function(n){ return n != "" });  // remove empty elements in array
-    //console.log('UDPDATE! myTreeCuesArray: ' + myTreeCuesArray.toString());
+    console.log('UDPDATE JSON! myTreeCuesArray: ' + myTreeCuesArray.toString());
     
     //var myJsonObj = new Object();
     //myJsonObj.trees = [];
@@ -52,15 +48,20 @@ function createTreeObj(myTreeId, myTreeCuesArray) {
         
         var myCueId = myTreeCuesArray[e];
         myCueObj.id = myCueId;
-        //console.log('myCueObj.name: ' + myCueObj.name);
+                
+        console.log('myCueId: ' + myCueId);
         
+        var myExitValues = getExitValues(myCueId, 'from createTreeObject, loop in myTreeCuesArray');
+        console.log('myExitValues.myLeft: ' + myExitValues.myLeft);
+        console.log('myExitValues.myRight: ' + myExitValues.myRight);
+                
         if (myCueObj.id != undefined) { // if there is at least one cue
             
             myCueObj.name = getCueName(myCueId);  // getCueName(myCueId)
             //myCueObj.yes = getExitValue( myCueId, 'yes' );      // getExitValue(myCueId, myDir)
-            myCueObj.yes = getExitValues(myCueId).myLeft;   // returns .myLeft and .myRight
+            myCueObj.yes = myExitValues.myLeft;   // returns .myLeft and .myRight
             //myCueObj.no = getExitValue( myCueId, 'no' );      // getExitValue(myCueId, myDir)
-            myCueObj.no = getExitValues(myCueId).myRight;   // returns .myLeft and .myRight
+            myCueObj.no = myExitValues.myRight;   // returns .myLeft and .myRight
             myCueObj.hits = 0;
             myCueObj.miss = 0;
             myCueObj.fals = 0;

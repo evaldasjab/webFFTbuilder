@@ -3,35 +3,38 @@
 function helpButton() {
     
     $('.button_help').mouseup(function (e) {  // Create new anchor with a class of 'collapse'
-        console.log('HELP!');
-        tour.start(true);
+        console.log('START TOUR! TIP 0');
+        //tour.start(true);
+        // Start the tour
+        tour.restart(true);
+        tour.goTo(0); // after reload of page not always restarts from teh beginning
     });
 }
 
 function trainingTestingButtons() {
     
-    $('.button_allcases').mouseup(function (e) {  // Create new anchor with a class of 'collapse'
+    $('#button_allcases').mouseup(function (e) {  // Create new anchor with a class of 'collapse'
         console.log('ALL CASES!');
         // switch the data
         myData = myDataAllCases;
         // change the look of the buttons
-        document.getElementById('button_allcases_id').className = "button_selectdata button_allcases button_t_on";
-        document.getElementById('button_training_id').className = "button_selectdata button_training button_t_off";
-        document.getElementById('button_testing_id').className = "button_selectdata button_testing button_t_off";
+        $('#button_allcases').toggleClass('button_on', true);
+        $('#button_training').toggleClass('button_on', false);
+        $('#button_testing').toggleClass('button_on', false);
         
         updateJsonDataset('tree0'); // update JSON object and tree statistics
         updateJsonDataset('tree1'); // update JSON object and tree statistics
         updateStatisticsForSingleCues(); //update statistics in the blue area
     });
     
-    $('.button_training').mouseup(function (e) {  // Create new anchor with a class of 'collapse'
+    $('#button_training').mouseup(function (e) {  // Create new anchor with a class of 'collapse'
         console.log('TRAINING!');
         // switch the data
         myData = myDataForTraining;
         // change the look of the buttons
-        document.getElementById('button_allcases_id').className = "button_selectdata button_allcases button_t_off";
-        document.getElementById('button_training_id').className = "button_selectdata button_training button_t_on";
-        document.getElementById('button_testing_id').className = "button_selectdata button_testing button_t_off";
+        $('#button_allcases').toggleClass('button_on', false);
+        $('#button_training').toggleClass('button_on', true);
+        $('#button_testing').toggleClass('button_on', false);
         
         updateJsonDataset('tree0'); // update JSON object and tree statistics
         updateJsonDataset('tree1'); // update JSON object and tree statistics
@@ -42,14 +45,14 @@ function trainingTestingButtons() {
         tour.goTo(2);
     });
     
-     $('.button_testing').mouseup(function (e) {  // Create new anchor with a class of 'collapse'
+     $('#button_testing').mouseup(function (e) {  // Create new anchor with a class of 'collapse'
         console.log('TESTING!');
         // switch the data
         myData = myDataForTesting;
         // change the look of the buttons
-        document.getElementById('button_allcases_id').className = "button_selectdata button_allcases button_t_off";
-        document.getElementById('button_training_id').className = "button_selectdata button_training button_t_off";
-        document.getElementById('button_testing_id').className = "button_selectdata button_testing button_t_on";
+        $('#button_allcases').toggleClass('button_on', false);
+        $('#button_training').toggleClass('button_on', false);
+        $('#button_testing').toggleClass('button_on', true);
         
         updateJsonDataset('tree0'); // update JSON object and tree statistics
         updateJsonDataset('tree1'); // update JSON object and tree statistics
@@ -66,21 +69,24 @@ function expandAllButtons() {
     
     //console.log('ACTIVATE EXPANSION!');
     
+    // hide icon by default
+    $('.button_expand_all .up').hide();
+    
     $('.button_expand_all').mouseup(function (e) {  // Create new anchor with a class of 'collapse'
         
         // if there is no cue with expanded stats, expand all
         if ($(this).parent('.page_area').find('.widget_content:visible').length == 0) {
-            $(this).parent('.page_area').find('.widget_content').show(1000);
+            $(this).parent('.page_area').find('.widget_content').animate({height:'show',width:'show'});
             // change the icon
-            $('.button_expand_all .up').hide();
-            $('.button_expand_all .down').show();
+            $(this).find('.up').delay(1000).show(0);
+            $(this).find('.down').delay(1000).hide(0);
             
         // if there is at least one expanded, collapse all
         } else {
-            $(this).parent('.page_area').find('.widget_content').hide(1000);
+            $(this).parent('.page_area').find('.widget_content').animate({height:'hide',width:'hide'});
             // change the icon
-            $('.button_expand_all .down').hide(1000);
-            $('.button_expand_all .up').show(1000);
+            $(this).find('.up').delay(1000).hide(0);
+            $(this).find('.down').delay(1000).show(0);
             
             // show next tooltip
             console.log('TIP 5 or 10');
@@ -90,28 +96,36 @@ function expandAllButtons() {
                 tour.goTo(10);
             }
         }
-        
-        
-        //console.log('EXPAND ALL!');
-        //$(this).parent('#blue_area').find('.widget_content').animate({height:'toggle',width:'toggle'});
-        //$(this).parent('#blue_area').find('.widget_content').show(1000);
     });
-    
-    // hide icon by default
-    $('.button_expand_all .up').hide();
-    
-    //$('.horiz_scroll, .trees').on('click', '.button_expand', function (e) {  
-    //    $(this).parents('.widget').find('.widget_content').slideToggle('slow');
-    //});
 }
 function expandButtons() {
+    
+    // hide icon by default
+    $('.button_expand .up').hide();
     
     //console.log('ACTIVATE EXPANSION!');
     
     $('.button_expand').mouseup(function (e) {  // Create new anchor with a class of 'collapse'
-        console.log('EXPAND!');
-        //$(this).parents('.widget').find('.widget_content').slideToggle('slow');
-        $(this).parents('.widget').find('.widget_content').animate({height:'toggle',width:'toggle'});
+        
+        //var myCueId = $(this).parents('.widget')
+        // if the widget content is hidden, expand
+        if ( $(this).closest('.widget').find('.widget_content').is(':hidden') ) {
+            console.log('EXPAND!');
+            
+            $(this).closest('.widget').find('.widget_content').animate({height:'show',width:'show'});
+            // change the icon
+            $(this).find('.up').delay(300).show(0);
+            $(this).find('.down').delay(300).hide(0);
+            
+        // if the widget content is shown, collapse
+        } else {
+            console.log('COLLAPSE!');
+            
+            $(this).closest('.widget').find('.widget_content').animate({height:'hide',width:'hide'});
+            // change the icon
+            $(this).find('.up').delay(300).hide(0);
+            $(this).find('.down').delay(300).show(0);
+        }
         
         // show next tooltip
         console.log('TIP 4');

@@ -184,7 +184,7 @@ function updateExitsAndArrowsForAllCues(myTreeId) {
             //var myNoOld = $('#'+myCueId+' #hidden-exit_no').val();
             
             // check which EXIT nodes exist
-            var myExitValues = getExitValues(myCueId);   // returns .myLeft and .myRight
+            var myExitValues = getExitValues(myCueId, 'from updateExitsAndArrowsForAllCues, myTreeArray loop, if myCueId is last cue');   // returns .myLeft and .myRight
             
             // do only if the cue has both EXITS (used to be the last cue) or no EXITS (new cue)
             if ( (myExitValues.myLeft == myExitValues.myRight) ) {
@@ -385,7 +385,7 @@ function switchExitDirection(myCueId, myExitClass) {
 }
 
 function getExitValues(myCueId, cameFrom) {
-    console.log('function getExitValues, came from: '+cameFrom);
+    console.log('FUNCTION getExitValues, came: '+cameFrom);
     
     // check if Exit nodes exist
     var myExitLeftId = $('#'+myCueId+' .exit_left').attr('id');

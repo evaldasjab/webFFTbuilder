@@ -24,11 +24,13 @@
     
     <button class="button_help" id="button_help_id">?</button>
     <input type="file" id="csv-file" name="files"> 
-    <label for="csv-file" class="button_upload_csv" id="button_upload_csv_id">Upload CSV file</label>
+    <label for="csv-file" class="button_load_csv" id="button_upload_csv_file">Upload CSV File</label>
     
-    <button class="button_selectdata button_allcases button_t_on inactive" id="button_allcases_id">All Cases</button>
-    <button class="button_selectdata button_training button_t_on inactive" id="button_training_id">Training</button>
-    <button class="button_selectdata button_testing button_t_on inactive" id="button_testing_id">Testing</button>
+    <button class="button_load_csv" id="button_load_csv_sample">Load CSV Sample</button>
+    
+    <button class="button_selectdata button_on inactive" id="button_allcases">All Cases</button>
+    <button class="button_selectdata inactive" id="button_training">Training</button>
+    <button class="button_selectdata inactive" id="button_testing">Testing</button>
 
     <!-- row of cues -->
     <div class="horiz_scroll">
@@ -118,6 +120,7 @@
     <script src="libraries/jquery-ui-1.11.4.min.js"></script>
     <script src="libraries/papaparse.min.js"></script>
     <script src="libraries/bootstrap-tour-standalone.js"></script>
+    <script src="libraries/jquery.ui.touch-punch.js"></script>
     
     <!-- evaldas -->
     <script src="buttonshtmls.js"></script>

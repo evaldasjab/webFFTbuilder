@@ -6,7 +6,7 @@ function showTooltipsTour() {
     tour = new Tour({
         steps: [{
             // step 0
-          element: '#button_upload_csv_id',
+          element: '#button_upload_csv_file',
           title: 'Step 1:',
           content: 'Open a CSV file. The data should have headers and 1 or 0 values, interpreted as "yes" and "no".',
           placement: "bottom",
@@ -121,11 +121,7 @@ function showTooltipsTour() {
     });
     
     // Initialize the tour
-    tour.init(true);
-    
-    // Start the tour
-    tour.restart(true);
-    tour.goTo(0); // after reload of page not always restarts from teh beginning
+    tour.init();
     
     console.log('TIPS RUNNING!');
 }

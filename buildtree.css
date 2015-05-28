@@ -45,19 +45,27 @@ a {color:black;}
 input[type=file] {
     display: none;
 }
-.button_upload_csv {
+.button_load_csv {
   cursor: pointer;
-  width: 120px;
+  width: 150px;
   height: 20px;
   border-radius: 10px;
   border: 0px solid black;
-  background: LightGrey;
-  position: absolute;
-  left: 60px;
   font-family: 'Offside', Arial, Sans-Serif;
   font-size: 12px;
   color: Black;
   text-align: center;
+  background: LightGrey;
+  color: Black;
+  z-index: 0;
+}
+#button_upload_csv_file {
+  position: absolute;
+  left: 60px;
+}
+#button_load_csv_sample {
+  position: absolute;
+  left: 195px;
 }
 
 .button_selectdata {
@@ -68,29 +76,26 @@ input[type=file] {
   font-family: 'Offside', Arial, Sans-Serif;
   font-size: 12px;
   text-align: center;
-}
-.button_allcases {
-  position: absolute;
-  left: 200px;
-}
-.button_training {
-  position: absolute;
-  left: 300px;
-}
-.button_testing {
-  position: absolute;
-  left: 400px;
-}
-.button_t_on {
-  background: White;
-  color: Black;
-  z-index: 1;
-}
-.button_t_off {
-  cursor: pointer;
   background: LightGrey;
   color: Black;
   z-index: 0;
+}
+#button_allcases {
+  position: absolute;
+  left: 365px;
+}
+#button_training {
+  position: absolute;
+  left: 470px;
+}
+#button_testing {
+  position: absolute;
+  left: 575px;
+}
+.button_on {
+  background: White;
+  color: Black;
+  z-index: 1;
 }
 
 .noselect {
@@ -393,6 +398,7 @@ th, td {
   font-size: 10px;
   text-align: center;
   border: 0px solid black;
+  white-space: nowrap;
 }
 
 th {
@@ -414,6 +420,7 @@ th {
   white-space: nowrap;
   border-top: 0px solid LightGrey;
   border-bottom: 1px solid LightGrey;
+  white-space: nowrap;
 }
 #blue_area .table_header{
   border-bottom: 1px solid White;

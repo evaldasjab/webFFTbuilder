@@ -34,7 +34,7 @@ namespace DecisionTreeWeb.Model
             }
         }
 
-        public void SaveTree(DecisionTree tree)
+        public string SaveTree(DecisionTree tree)
         {
             try
             {
@@ -42,49 +42,36 @@ namespace DecisionTreeWeb.Model
 
                 long kb = 0;
 
+                // set countnumber to treename
+                string name = string.Format("SI_{0}", TreeInfos.Count().ToString());
+                tree.Name = name;
+
                 using (MemoryStream ms = new MemoryStream())
                 {
                     dcs.WriteObject(ms, tree);
                     kb = ms.Length / 1024;
                     
-                    // set countnumber to treename
-                    string idx = TreeInfos.Count().ToString();
+                    
                     TreeInfo t = new TreeInfo()
                     {
                         TreeInfoId = Guid.NewGuid(),
-                        Name = string.Format("SommerInsitut_{0}", idx),
+                        Name = name,
                         Data = ms.ToArray()
-                    };
+                    };           
 
                     TreeInfos.Add(t);
                     SaveChanges();
+                    return t.Name;
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.StackTrace);
+                Console.WriteLine(e.Message);
+                return e.Message;
             }
         }
 
-        public static bool ServerConnectionAvailable()
-        {
-            if (!System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
-                return false;
-
-            try
-            {
-                using (var c = new SqlConnection(server))
-                {
-                    c.Open();
-                }
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
+     
         private class CustomInitliazer : IDatabaseInitializer<ABCDBContext>
         {
 

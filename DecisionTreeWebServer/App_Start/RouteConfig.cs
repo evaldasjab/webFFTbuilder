@@ -15,8 +15,8 @@ namespace DecisionTreeWebServer
 
             routes.MapRoute(
                 name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Index", action = "Index", id = UrlParameter.Optional }
+                url: "{controller}/{action}",
+                defaults: new { controller = "Index", action = "Index" }
             );
         }
     }

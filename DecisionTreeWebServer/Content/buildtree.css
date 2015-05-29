@@ -18,88 +18,143 @@ a {color:black;}
 #blue_area {
   background:#50ADE1;  /* Special BLUE */
   height: auto;
-  padding: 20px 20px 20px 20px;
+  padding: 20px 20px 0px 20px;
 }
 #blue_area h1 {
   font-family: 'Offside', Arial, Sans-Serif;
   font-size: 50px;
   color: white;
+  white-space: nowrap;
   margin: 0px 0px 10px 0px;
+}
+
+.button_help {
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  border: 1px solid White;
+  background: none;
+  font-family: 'Offside', Arial, Sans-Serif;
+  font-size: 12px;
+  color: White;
+  text-align: center;
+  position: absolute;
 }
 
 input[type=file] {
     display: none;
 }
-.button_upload_csv {
+.button_load_csv {
   cursor: pointer;
-  width: 120px;
+  width: 150px;
   height: 20px;
   border-radius: 10px;
   border: 0px solid black;
-  background: grey;
-  position: absolute;
-  font-family: 'Offside', Arial, Sans-Serif;
-  font-size: 12px;
-  color: White;
-  text-align: center;
-}
-
-.button_training {
-  cursor: pointer;
-  width: 120px;
-  height: 20px;
-  border-radius: 10px;
-  border: 0px solid black;
-  background: grey;
-  position: relative;
-  left: 200px;
-  font-family: 'Offside', Arial, Sans-Serif;
-  font-size: 12px;
-  color: White;
-  text-align: center;
-  z-index: 1;
-}
-.button_testing {
-  cursor: pointer;
-  width: 120px;
-  height: 20px;
-  border-radius: 10px;
-  border: 0px solid black;
-  background: White;
-  position: relative;
-  left: 180px;
   font-family: 'Offside', Arial, Sans-Serif;
   font-size: 12px;
   color: Black;
   text-align: center;
+  background: LightGrey;
+  color: Black;
+  z-index: 0;
+}
+#button_upload_csv_file {
+  position: absolute;
+  left: 60px;
+}
+#button_load_csv_sample {
+  position: absolute;
+  left: 195px;
+}
+
+.button_selectdata {
+  width: 120px;
+  height: 20px;
+  border-radius: 10px;
+  border: 0px solid black;
+  font-family: 'Offside', Arial, Sans-Serif;
+  font-size: 12px;
+  text-align: center;
+  background: LightGrey;
+  color: Black;
+  z-index: 0;
+}
+#button_allcases {
+  position: absolute;
+  left: 365px;
+}
+#button_training {
+  position: absolute;
+  left: 470px;
+}
+#button_testing {
+  position: absolute;
+  left: 575px;
+}
+.button_on {
+  background: White;
+  color: Black;
+  z-index: 1;
+}
+
+.noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 /* This container element gives us the scrollbars we want.*/
 div.horiz_scroll {
-  margin: 20px 0px 0px 0px;
+  margin: 50px 0px 0px 0px;
   width: 100%;
   height: 100%;
+  overflow: auto;
 }
 
 /* table-layout: fixed does a lot of the magic, here. It makes sure that the "table cells" retain the pixel dimensions you want.*/
 .cues_list {
-    display: table;
-    table-layout: fixed;
-    width: 100%;
+  display: table;
+  table-layout: fixed;
+  width: 100%;
 }
 
 /* Arranging your content inside the "cells" is as simple as using the vertical-align and text-align properties. Floats work, too.*/
 article {
-    width: auto;
-    height: auto;
-    display: table-cell;
-    vertical-align: top;
-    padding: 0px 20px 0px 0px;
+  width: auto;
+  height: auto;
+  display: table-cell;
+  vertical-align: top;
+  padding: 0px 20px 0px 0px;
 }
 
 .cues .undecided{
     background: White;
     color: Black;
+}
+
+.button_expand_all {
+  cursor: pointer;
+  background: transparent;
+  border: none !important;
+  fill: none;
+  stroke-width: 1;
+}
+#blue_area .button_expand_all {
+  stroke: White;
+  position: relative;
+  top: 0px;
+  left: -17px;
+}
+#white_area .button_expand_all {
+  stroke: Grey;
+  vertical-align: top;
+  position: relative;
+  top: -20px;
+  left: 4px;
 }
 
 /* Row section End ***************/
@@ -109,27 +164,22 @@ article {
 #white_area {
   background: white;
   padding: 20px 0px 0px 0px;
+  width: 1200px;
 }
 
 .trees {
   width:120px;
   display: inline-block; 
   height: 600px;
-  vertical-align:top;
-}
-
-#tree0 {
-  background-color: LightGrey; 
-}
-
-#tree1 {
-  background-color: LightGrey;
+  vertical-align: top;
 }
 
 .columns {
   width:120px;
   display: inline-block; 
-  background-color: white;  
+  background-color: white;
+  position: relative;
+  vertical-align: top;
 }
 
 .stat_columns {
@@ -138,9 +188,11 @@ article {
   background-color: white;  
 }
 
-.placeholder {
-    text-align: center;
-    opacity: 0.6;
+.drophere {
+  width: 120px;
+  position: absolute;
+  left: 130px;
+  top: 14px;
 }
 /* Columns End *************/
 
@@ -155,19 +207,21 @@ article {
   margin: 0px 0px 40px 0px;
 }
 .widget_placeholder {
-  border: 2px dashed #A9A9A9;
-  width: 120px;
-  height: 40px;
-  border-radius: 20px;
+  border: 2px dashed LightGrey;
+  width: 118px;
+  height: 38px;
+  border-radius: 19px;
   margin: 0px 0px 40px 0px;
 }
 
 .widget_head {
-  cursor: move;
   width: 120px;
   height: 40px;
   border-radius: 20px;
   background: White;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
 }
 .trees .widget_head {
   background: #50ADE1;
@@ -185,12 +239,18 @@ article {
   white-space: nowrap;
   overflow: hidden;
 }
-.widget_content {
+li:not(.ui-draggable-disabled) .widget_title {
+  cursor: move;
+}
+
+#blue_area .widget_content {
   position: relative;
-  right: 60px;
+  left: -22px;
 }
 .trees .widget_content {
-    width: 300px;
+  width: 260px;
+  position: relative;
+  left: -70px;
 }
 
 label {
@@ -201,51 +261,50 @@ label {
   cursor: pointer;
   background: transparent;
   border: none !important;
-  color: grey;
-  font-size: 16px;
+  fill: none;
+  stroke: Grey;
+  stroke-width: 1;
   position: absolute;
-  left: 3px;
-  top: 7px;
+  left: 6px;
+  top: 10px;
 }
-.trees .button_expand {
-  color: white;
+.trees .button_expand{
+  stroke: White;
 }
 
 .button_close {
   cursor: pointer;
   background: transparent;
   border: none !important;
-  color: White;
-  font-size: 16px;
+  stroke: white;
+  stroke-width: 1;
+  fill: none;
   position: absolute;
-  left: 91px;
-  top: 9px;
+  left: 93px;
+  top: 10px;
 }
-.button_close_exit {
-  cursor: pointer;
-  background: transparent;
-  border: none !important;
-  color: White;
-  font-size: 16px;
+.exit_widget .button_close {
   position: absolute;
-  right: 6px;
+  left: 53px;
   top: 9px;
 }
 
 input[type=radio] {
     display: none;
 }
-input[type="radio"] + label {
-    color: grey;
-    font-size: 22px;
-    position: absolute;
-    left: 93px;
-    top: 3px;
+input[type=radio] + label {
+  stroke: grey;
+  stroke-width: 1;
+  fill: none;
+  position: absolute;
+  left: 93px;
+  top: 10px;
 }
-input[type=radio]:checked + label:before{
-    content: "\26AB";
-    color: grey;
-    position: absolute;
+input[type=radio]:checked + label{
+  fill: grey;
+}
+.trees .button_radio{
+  stroke: white;
 }
 
 .exit_widget {
@@ -263,12 +322,21 @@ input[type=radio]:checked + label:before{
   white-space: nowrap;
   overflow: hidden;
 }
-
+.exit_arrow {
+  stroke: LightGrey;
+  stroke-width: 2;
+  fill: none;
+}
 .exit_left {
   position: absolute;
   left: -100px;
   bottom: -80px;
   background: #2ECC71; /* green */
+}
+.exit_left .exit_arrow {
+  position: absolute;
+  left: 70px;
+  top: -42px;
 }
 .exit_right {
     position: absolute;
@@ -276,11 +344,19 @@ input[type=radio]:checked + label:before{
     bottom: -80px;
     background: #E74C3C;  /* red */
 }
+.exit_right .exit_arrow {
+  position: absolute;
+  left: -34px;
+  top: -42px;
+}
 
-.cue_canvas {
-    position: absolute;
-    left: 40px;
-    bottom: -40px;
+.cue_arrow {
+  stroke: LightGrey;
+  stroke-width: 2;
+  fill: none;
+  position: absolute;
+  left: 40px;
+  bottom: -40px;
     
 }
 
@@ -293,6 +369,20 @@ input[type=radio]:checked + label:before{
 /* Widgets End ***************/
 
 /* Statistics ***************/
+
+.button_stat {
+  cursor: pointer;
+  width: 170px;
+  height: 20px;
+  border-radius: 10px;
+  border: 0px solid black;
+  background: LightGrey;
+  font-family: 'Offside', Arial, Sans-Serif;
+  font-size: 12px;
+  color: Black;
+  text-align: center;
+  margin: 20px 0px 0px 45px;
+}
 
 .stats {
   display: inline-block; 
@@ -308,22 +398,42 @@ th, td {
   font-size: 10px;
   text-align: center;
   border: 0px solid black;
+  white-space: nowrap;
 }
 
 th {
   font-family: 'Offside', Arial, Sans-Serif;
 }
 
+.table_title{
+  font-family: 'Offside', Arial, Sans-Serif;
+  font-size: 12px;
+  color: #50ADE1;          /* blue */
+  white-space: nowrap;
+}
+#blue_area .table_title{
+  color: White;
+}
 .table_header{
   font-family: 'Offside', Arial, Sans-Serif;
   font-size: 12px;
+  white-space: nowrap;
+  border-top: 0px solid LightGrey;
+  border-bottom: 1px solid LightGrey;
+  white-space: nowrap;
+}
+#blue_area .table_header{
+  border-bottom: 1px solid White;
 }
 
 .table_header_rotated{
   font-family: 'Offside', Arial, Sans-Serif;
   font-size: 12px;
-  background: LightGrey;
-
+  border-left: 0px solid LightGrey;
+  border-right: 1px solid LightGrey;
+}
+#blue_area .table_header_rotated{
+  border-right: 1px solid White;
 }
 
 .rotate {
@@ -344,8 +454,16 @@ th {
   width: 20px;
 }
 
-.cell_grey{
-  background: LightGrey;
+.cell_values{
+  border-top: 1px solid LightGrey;
+  border-bottom: 0px solid LightGrey;
+  border-collapse: collapse;
+  width: 40px;
+}
+#blue_area .cell_values{
+  border-top: 1px solid White;
+  border-bottom: 0px solid White;
+  border-collapse: collapse;
   width: 40px;
 }
 
@@ -367,16 +485,16 @@ th {
     background-color: #50ADE1;   /* blue */
 }
 
-.button_upload_tree {
+.button_export {
   cursor: pointer;
   width: 166px;
   height: 20px;
   border-radius: 10px;
   border: 0px solid black;
-  background: grey;
+  background: LightGrey;
   font-family: 'Offside', Arial, Sans-Serif;
   font-size: 12px;
-  color: white;
+  color: Black;
   text-align: center;
 }
 

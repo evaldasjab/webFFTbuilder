@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using ABCUniverse.Portable.Trees;
 using DecisionTreeWeb.Model;
 using ABCUniverse.DataAccess;
+using ABCUniverse.Portable;
 
 namespace DecisionTreeWebServer.Controllers
 {
@@ -20,10 +21,10 @@ namespace DecisionTreeWebServer.Controllers
         }
 
         [HttpPost]
-        public bool SaveTree(Tree tree)
+        public JsonResult SaveTree(Tree tree)
         {
-            if (!ABCDBContext.ServerConnectionAvailable()) return false;
-            
+            if (!ABCDBContext.ServerConnectionAvailable()) return Json("No connection to server! Your tree wasn't saved!");
+
             if (validateTree(tree))
             {
                 try
@@ -35,9 +36,8 @@ namespace DecisionTreeWebServer.Controllers
                     Node prnt = null;
                     foreach (var c in tree.cues)
                     {
-                        var n = new Node();
-                        n.NodeLabel = c.name;
-
+                        var n = new Node(new WorldAttribute(c.name));
+                        
                         if (prnt == null)
                         {
                             t.SetRoot(n);
@@ -65,23 +65,23 @@ namespace DecisionTreeWebServer.Controllers
                     // save to db
                     using (var ctx = new ABCDBContext())
                     {
-                        ctx.SaveTree(t.Clone());
-                        return true;
+                        string name = ctx.SaveTree(t);
+                        return Json(string.Format("{0} saved!", name));
                     }
                 }
                 catch (Exception e)
                 {
-                    return false;
+                    return Json("Error! Your tree wasn't saved!");
                 }
             }
 
-            return false;
+            return Json(false);
         }
 
         // validate Jsontree
         private bool validateTree(Tree t)
         {
-            return t != null;
+            return t != null && t.cues.Count!=0;
         }
     }
 }

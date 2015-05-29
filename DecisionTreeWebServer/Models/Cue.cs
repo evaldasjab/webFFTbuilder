@@ -6,7 +6,7 @@ using System.Web;
 
 namespace DecisionTreeWeb.Model
 {
-    [DataContract(IsReference=true)]
+    [DataContract(IsReference = true)]
     public class Cue
     {
         [DataMember(IsRequired = true)]

@@ -18,6 +18,7 @@ a {color:black;}
 #blue_area {
   background:#50ADE1;  /* Special BLUE */
   height: auto;
+  width: 100%;
   padding: 20px 20px 0px 20px;
 }
 #blue_area h1 {
@@ -29,7 +30,7 @@ a {color:black;}
 }
 
 .disabled {
-  opacity: 0.2;
+  opacity: 0;
 }
 
 .button_help {

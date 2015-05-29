@@ -7,21 +7,23 @@ buttonHelp();
 // activate EXPAND ALL buttons
 //buttonsExpandAll();
 
+/*
 // activate the upload CSV file button
 buttonUploadCsvFile();
-// activate the load CSV sample button - CHANGE THE URL!!!
+ activate the load CSV sample button - CHANGE THE URL!!!
 buttonLoadCsvSample('https://dl.dropboxusercontent.com/u/15758787/data_infarction.csv');
 
-myDataset = {};
-
 function buttonUploadCsvFile() {
-  
-  $('#button_upload_csv_file').mouseup(function (e) {
-    
+  $('#button_upload_csv_file').mouseup(function (e) {    
     // get the file
     document.getElementById('csv-file').click();
   });
 }
+*/
+
+// FIX THIS!!!
+myDataset = {};
+
 function handleFileSelect(evt) {
   
   // activate select data buttons
@@ -44,6 +46,7 @@ function handleFileSelect(evt) {
   $('#button_load_csv_sample').toggleClass('button_on', false);
 }
 
+/*
 function buttonLoadCsvSample(myUrl) {
   
   $('#button_load_csv_sample').mouseup(function (e) {
@@ -67,7 +70,7 @@ function buttonLoadCsvSample(myUrl) {
     $('#button_load_csv_sample').toggleClass('button_on', true);
   });
 }
-
+*/
 
 function listCues(results){
       
@@ -162,6 +165,9 @@ function listCues(results){
       );
     }    
     
+    // TEST!!!
+    //scrollTextInTitle();
+    
     // stop the loading spinners
     $('.spinner').remove();
     
@@ -223,8 +229,76 @@ function filterOutNonZerosAndOnes(mySet) {
   
   return mySet;
 }
+  
+function scrollTextInTitle() {
+  
+  for (var i = 0; i < $('.widget_title').length; i++) {
+    var $this = $('.widget_title').eq(i);
+    
+    
+    if(this.offsetWidth < this.scrollWidth){
+        debugger;
+    }
+  }
+    
+      $(function() {
+        for (var i = 0; i < $('.widget_title').length; i++) {
+            var this_el = $('.widget_title').eq(i);
+            var interval = null;
+            
+              $(this_el).on("mouseenter",function() {
+                var that = $(this);
+                var this_indent = 0;
+                  
+                interval = setInterval(function(){
+                  this_indent--;
+                    if(this_indent < -150) {
+                        this_indent = 100;
+                    }
+                  $(that).css('text-indent', this_indent);
+                },20);
+                $(this).data("interval",interval);
+                  
+              });
+              
+              $(this_el).on("mouseleave",function() {
+                  clearInterval($(this).data("interval"));
+                  $(this).css("text-indent",0);
+              });
+            
+        }
+      });
+}
 
 $(document).ready(function(){
-  $("#csv-file").change(handleFileSelect);
+  
+    $('#button_upload_csv_file').mouseup(function (e) {    
+      // get the file
+      document.getElementById('csv-file').click();
+    });
+  
+    $("#csv-file").change(handleFileSelect);
+
+    $('#button_load_csv_sample').mouseup(function (e) {
+        //var myUrl = './data/data_infarction.csv';
+        var myUrl = 'https://dl.dropboxusercontent.com/u/15758787/data_infarction.csv';
+        Papa.parse(myUrl, {
+            download: true,
+            header: true,
+            dynamicTyping: true,
+            skipEmptyLines: true,
+            complete: function (results) {
+                console.log('LOADED CSV SAMPLE: ' + JSON.stringify(results, null, "  "));
+
+                listCues(results);
+            },
+            error: function (e) {
+                console.log(e);
+            }
+        });
+        // mark the button as selected
+        $('#button_upload_csv_file').toggleClass('button_on', false);
+        $('#button_load_csv_sample').toggleClass('button_on', true);
+    });
 });
 

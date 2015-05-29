@@ -4,22 +4,36 @@
 
 var d = 9;  // for unique cue IDs, not 0 to have always two characters for removal (3 characters with '-')
 var c = 9;  // for unique exit IDs, not 0 to have always two characters for removal (3 characters with '-')
-var criterCue = '';
+var criterCueId = '';
 
 function init() {                        // Function, which initialises methods to be run when page has loaded
-    // The method which starts it all...
-    //this.attachStylesheet('buildtree.js.css');
-    this.selectCriterion();
-    this.makeSortable();
+    // activate draggable and sortable
+    makeSortable();
+    selectCriterion();
+    
 }
 
 function selectCriterion() {
     $('.criterion_class').change(function(){
-        criterCue = $( 'input:radio[name=criterion_name]:checked' ).val();
-        console.log('criterCue: ' + criterCue);
-        // ENABLE dragging of all cues
-        $('.widget').draggable('enable'); 
-        $('#'+criterCue).draggable('disable'); // DISABLE draggable of the cue, which is selected as criterion
+        
+        criterCueId = $( 'input:radio[name=criterion_name]:checked' ).val();
+        criterCueName = $('#'+criterCueId).attr('name');
+        console.log('criterCueId: '+criterCueId+', criterCueName: '+criterCueName);
+        
+        // remove the criterion cue from the trees, if there are some
+        $('[name="'+criterCueName+'"] .button_close').click();
+        
+        // mark the cue adding the 'criterion_cue' class
+        $('.widget').toggleClass('criterion_cue', false); // remove the class from other cues if previously was selected
+        $('#'+criterCueId).toggleClass('criterion_cue', true);
+        
+        // ENABLE dragging of all cues except criterion
+        makeSortable(); // RERUN - workaround, otherwise gives error
+        $('.widget').draggable('enable');
+        $('#'+criterCueId).draggable('disable');
+        
+        // show 'Drop the cues here!'
+        $('.drophere').removeClass('disabled');
         
         updateJsonDataset('tree0'); // update JSON object and tree statistics
         updateJsonDataset('tree1'); // update JSON object and tree statistics
@@ -40,7 +54,7 @@ function makeSortable() {                 // This function will make the widgets
     //var orderTree0 = [];  // variable knows what's in the tree0
     //var orderTree1 = [];  // variable knows what's in the tree1
     
-    $('#cues_list').find('.widget').draggable({
+    $('.widget').draggable({   
         connectToSortable: ".trees",
         helper: 'clone',
         handle: '.widget_title',        // Set the handle to the top bar
@@ -106,27 +120,15 @@ function makeSortable() {                 // This function will make the widgets
             // replace the radio button with close button
             $('#'+dragCueId+' .criterion_class').remove(); // remove the radio button
             $('#'+dragCueId+' .criterion_label').remove(); // remove the radio button label
-            $('#'+dragCueId+' .widget_head').append( closeButtonHtml() );  // add close button
-            activateExpandButton(dragCueId);  // reactivate EXPAND BUTTON - bug workaround
-            activateCloseCueButton(dragCueId); // activate close button
-            
-            //hide the content, if expanded
-            //$('#'+dragCueId).find('.widget_content').hide();
-                        
-            // add EXIT nodes, depending on which tree is dropped on
-            //$('#'+dragCueId+' #hidden-exit_yes').val('continue'); // 'reset' exit values - bug workaround
-            //$('#'+dragCueId+' #hidden-exit_no').val('continue'); // 'reset' exit values - bug workaround
-            //var dragExits = setExitDirection(dragTreeId);
-            //setExitValues(dragCueId, dragExits.yes, dragExits.no);
-            
-            // draw the arrow to the next cue
-            //drawArrowToNextCue(dragCueId);
+            $('#'+dragCueId+' .widget_head').append( htmlButtonClose() );  // add close button
+            activateButtonExpand(dragCueId);  // reactivate EXPAND BUTTON - bug workaround
+            activateButtonCloseCue(dragCueId); // activate close button
 
             // add "TREE up to this cue" statistics table
             $('#'+dragCueId+' .stats_header').text('THIS CUE');    // rename the table to "stats of this cue"
-            $('#'+dragCueId+' .stat_cue_header').append( statTreeUpToThisCueHtml() ); // add the table "stats of the tree up to this cue"
-            $('#'+dragCueId+' .widget_content').prepend( statButtonHtml() ); // add the button "stats of"
-            activateStatButton(dragCueId);            // activate the button "stats of"
+            $('#'+dragCueId+' .stat_cue_header').append( htmlStatTreeUpToThisCue() ); // add the table "stats of the tree up to this cue"
+            $('#'+dragCueId+' .widget_content').prepend( htmlButtonStat() ); // add the button "stats of"
+            activateButtonStat(dragCueId);            // activate the button "stats of"
             
             // show next tooltip
             console.log('TIP 7 or 12 or 15');
@@ -170,8 +172,8 @@ function updateExitsAndArrowsForAllCues(myTreeId) {
 
     myTreeArray.forEach(function(myCueId){
         
-        console.log('UPDATE EXITS AN ARROWS myCueId: '+myCueId);
-        console.log('myLastCueId: '+myLastCueId);
+        //console.log('UPDATE EXITS AN ARROWS myCueId: '+myCueId);
+        //console.log('myLastCueId: '+myLastCueId);
         
         // do for each cue in the tree, except the last cue
         if (myCueId != myLastCueId) {
@@ -194,8 +196,8 @@ function updateExitsAndArrowsForAllCues(myTreeId) {
                 setExitNodes(myCueId, myExits.myYes, myExits.myNo);
                 
                 // add close EXIT button to the Exit node
-                $('#'+myCueId+' .exit_widget').append( closeButtonHtml() );  // add close button
-                activateCloseExitButton(myCueId, myExits.myExitClass);
+                $('#'+myCueId+' .exit_widget').append( htmlButtonClose() );  // add close button
+                activateButtonCloseExit(myCueId, myExits.myExitClass);
                 
                 // draw arrow to the next cue
                 drawArrowToNextCue(myCueId, myExits.myYes, myExits.myNo);
@@ -216,9 +218,9 @@ function drawArrowToNextCue(myCueId, myYes, myNo) {
     //get info about Exit nodes
     //var myExitLeftId = $('#'+myCueId+' .exit_left').attr('id');
     //var myExitRightId = $('#'+myCueId+' .exit_right').attr('id');
-    console.log('DRAW ARROW myCueId: '+myCueId);
-    console.log('myEes: '+myYes);
-    console.log('myNo: '+myNo);
+    //console.log('DRAW ARROW myCueId: '+myCueId);
+    //console.log('myEes: '+myYes);
+    //console.log('myNo: '+myNo);
     //var myYes = $('#'+myCueId+' #hidden-exit_yes').val();
     //var myNo = $('#'+myCueId+' #hidden-exit_no').val();  // we don't need that actually
     
@@ -335,7 +337,7 @@ function addExitNode(myCueId, myExitClass) {
     var myExitNodeId = 'exit_'+d+'-'+c;  // d - the same as cueID, c - unique for exit nodes
     
     var exitNode =  '<li id='+myExitNodeId+' class="'+myExitClass+' exit_widget unsortable"> \
-                        '+closeButtonHtml()+' \
+                        '+htmlButtonClose()+' \
                         <div class="exit_widget_title"> \
                             <span>EXIT</span> \
                         </div> \
@@ -347,7 +349,7 @@ function addExitNode(myCueId, myExitClass) {
     $(exitNode).hide().appendTo('#'+myCueId+' .exits').fadeIn(300);
     
     // activate the EXIT close button
-    activateCloseExitButton(myCueId, myExitClass);  // activate the close button
+    activateButtonCloseExit(myCueId, myExitClass);  // activate the close button
 }
 function getTreeInt(myTreeId) {
     var mySlice = myTreeId.slice(4,5);  // leave only the number e.g."1" in "cue1-0"
@@ -385,13 +387,13 @@ function switchExitDirection(myCueId, myExitClass) {
 }
 
 function getExitValues(myCueId, cameFrom) {
-    console.log('FUNCTION getExitValues, came: '+cameFrom);
+    //console.log('FUNCTION getExitValues, came: '+cameFrom);
     
     // check if Exit nodes exist
     var myExitLeftId = $('#'+myCueId+' .exit_left').attr('id');
     var myExitRightId = $('#'+myCueId+' .exit_right').attr('id');
     
-    console.log('CHECK myCueId: '+myCueId+' myExitLeftId: '+myExitLeftId+' myExitRightId: '+myExitRightId);
+    //console.log('CHECK myCueId: '+myCueId+' myExitLeftId: '+myExitLeftId+' myExitRightId: '+myExitRightId);
     
     //alert('stop');
     

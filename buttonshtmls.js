@@ -1,6 +1,6 @@
 // Makes and activates buttons, adds htmls
 
-function helpButton() {
+function buttonHelp() {
     
     $('.button_help').mouseup(function (e) {  // Create new anchor with a class of 'collapse'
         console.log('START TOUR! TIP 0');
@@ -11,7 +11,19 @@ function helpButton() {
     });
 }
 
-function trainingTestingButtons() {
+function buttonsAllcasesTrainingTesting() {
+    
+    // enable the buttons
+    $('.button_selectdata').removeClass('disabled');
+    
+    // create loading spinners
+    showSpinner('button_allcases');
+    showSpinner('button_training');
+    showSpinner('button_testing');
+    // show loading spinners if hidden
+    //$('#loading_spinner_all').show();
+    //$('#loading_spinner_train').show();
+    //$('#loading_spinner_test').show();
     
     $('#button_allcases').mouseup(function (e) {  // Create new anchor with a class of 'collapse'
         console.log('ALL CASES!');
@@ -63,30 +75,88 @@ function trainingTestingButtons() {
         tour.goTo(16);
     });
 }
+function deactivateButtonsAllcasesTrainingTesting() {
+    
+    // disable the buttons
+    $('.button_selectdata').addClass('disabled');
+    
+    // stop the loading spinners
+    $('.spinner').remove();
+    
+    // hide loading spinners
+    //$('#loading_spinner_all').hide();
+    //$('#loading_spinner_train').hide();
+    //$('#loading_spinner_test').hide();
+    
+    // remove numbers of cases on the buttons
+    //document.getElementById("button_allcases").textContent = 'All Cases: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+    //document.getElementById("button_training").textContent = 'Training: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+    //document.getElementById("button_testing").textContent = 'Testing: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+}
+
+function showSpinner(myLocationId) {
+    var opts = {
+      lines: 8 // The number of lines to draw
+    , length: 15 // The length of each line
+    , width: 10 // The line thickness
+    , radius: 12 // The radius of the inner circle
+    , scale: 0.25 // Scales overall size of the spinner
+    , corners: 1 // Corner roundness (0..1)
+    , color: 'Grey' // #rgb or #rrggbb or array of colors
+    , opacity: 0.10 // Opacity of the lines
+    , rotate: 0 // The rotation offset
+    , direction: 1 // 1: clockwise, -1: counterclockwise
+    , speed: 1 // Rounds per second
+    , trail: 60 // Afterglow percentage
+    , fps: 20 // Frames per second when using setTimeout() as a fallback for CSS
+    , zIndex: 2e9 // The z-index (defaults to 2000000000)
+    , className: 'spinner' // The CSS class to assign to the spinner
+    , top: '50%' // Top position relative to parent
+    , left: '50%' // Left position relative to parent
+    , shadow: false // Whether to render a shadow
+    , hwaccel: false // Whether to use hardware acceleration
+    , position: 'absolute' // Element positioning
+    }
+    var target = document.getElementById(myLocationId)
+    spinner = new Spinner(opts).spin(target);
+}
 
 
-function expandAllButtons() {
+function buttonExpandAll(myButtonId) {
     
     //console.log('ACTIVATE EXPANSION!');
     
-    // hide icon by default
-    $('.button_expand_all .up').hide();
+    // remove event if already was activated
+    $('#'+myButtonId).unbind('mouseup');
     
-    $('.button_expand_all').mouseup(function (e) {  // Create new anchor with a class of 'collapse'
+    // remove class 'disabled'
+    $('#'+myButtonId).attr('class', 'buttons_controls button_expand_all'); 
+    
+    // hide icon UP by default
+    $('.button_expand_all .up').hide();
+    $('.button_expand_all .down').show();
+    
+    $('#'+myButtonId).mouseup(function (e) {  // Create new anchor with a class of 'collapse'
         
         // if there is no cue with expanded stats, expand all
         if ($(this).parent('.page_area').find('.widget_content:visible').length == 0) {
             $(this).parent('.page_area').find('.widget_content').animate({height:'show',width:'show'});
-            // change the icon
-            $(this).find('.up').delay(1000).show(0);
-            $(this).find('.down').delay(1000).hide(0);
+            
+            // change the icons - individual and 'expand all'
+            $(this).parent('.page_area').find('.button_expand .up').show(300);
+            $(this).parent('.page_area').find('.button_expand .down').hide();
+            $(this).find('.up').show(300);
+            $(this).find('.down').hide();
             
         // if there is at least one expanded, collapse all
         } else {
             $(this).parent('.page_area').find('.widget_content').animate({height:'hide',width:'hide'});
-            // change the icon
-            $(this).find('.up').delay(1000).hide(0);
-            $(this).find('.down').delay(1000).show(0);
+            
+            // change the icons - individual and 'expand all'
+            $(this).parent('.page_area').find('.button_expand .up').hide();
+            $(this).parent('.page_area').find('.button_expand .down').show(300);
+            $(this).find('.up').hide();
+            $(this).find('.down').show(300);
             
             // show next tooltip
             console.log('TIP 5 or 10');
@@ -98,33 +168,49 @@ function expandAllButtons() {
         }
     });
 }
-function expandButtons() {
+
+function deactivateButtonExpandAll(myButtonId) {
+        
+    // remove event 
+    $('#'+myButtonId).unbind('mouseup');
     
-    // hide icon by default
+    // add class 'disabled'
+    $('#'+myButtonId).attr('class', 'buttons_controls button_expand_all disabled'); 
+    
+}
+
+function buttonsExpand() {
+    
+    // hide icon UP by default
     $('.button_expand .up').hide();
     
     //console.log('ACTIVATE EXPANSION!');
     
     $('.button_expand').mouseup(function (e) {  // Create new anchor with a class of 'collapse'
         
-        //var myCueId = $(this).parents('.widget')
         // if the widget content is hidden, expand
         if ( $(this).closest('.widget').find('.widget_content').is(':hidden') ) {
             console.log('EXPAND!');
             
             $(this).closest('.widget').find('.widget_content').animate({height:'show',width:'show'});
-            // change the icon
-            $(this).find('.up').delay(300).show(0);
-            $(this).find('.down').delay(300).hide(0);
+            
+            // change the icons - individual and 'expand all'
+            $(this).find('.up').show(300);
+            $(this).find('.down').hide();
+            $(this).closest('.page_area').find('.button_expand_all .up').show(300);
+            $(this).closest('.page_area').find('.button_expand_all .down').hide();
             
         // if the widget content is shown, collapse
         } else {
             console.log('COLLAPSE!');
             
             $(this).closest('.widget').find('.widget_content').animate({height:'hide',width:'hide'});
-            // change the icon
-            $(this).find('.up').delay(300).hide(0);
-            $(this).find('.down').delay(300).show(0);
+            
+            // change the icons - individual and 'expand all'
+            $(this).find('.up').hide();
+            $(this).find('.down').show(300);
+            $(this).closest('.page_area').find('.button_expand_all .up').hide();
+            $(this).closest('.page_area').find('.button_expand_all .down').show(300);
         }
         
         // show next tooltip
@@ -139,11 +225,38 @@ function expandButtons() {
     //    $(this).parents('.widget').find('.widget_content').slideToggle('slow');
     //});
 }
-function activateExpandButton(myCueId) {
-        
-    $('#'+myCueId+' .button_expand').mouseup(function (e) {  // Create new anchor with a class of 'collapse'
-        console.log('EXPAND!');
-        $(this).parents('.widget').find('.widget_content').slideToggle('slow');
+function activateButtonExpand(myCueId) {
+    
+    // hide icon UP by default
+    $('#'+myCueId+' .button_expand .up').hide();
+    $('#'+myCueId+' .button_expand .down').show();
+    
+    $('#'+myCueId+' .button_expand').mouseup(function (e) { 
+
+        // if the widget content is hidden, expand
+        if ( $(this).closest('.widget').find('.widget_content').is(':hidden') ) {
+            console.log('EXPAND!');
+            
+            $(this).closest('.widget').find('.widget_content').animate({height:'show'});
+            
+            // change the icons - individual and 'expand all'
+            $(this).find('.up').show(300);
+            $(this).find('.down').hide();
+            $(this).closest('.page_area').find('.button_expand_all .up').show(300);
+            $(this).closest('.page_area').find('.button_expand_all .down').hide();
+            
+        // if the widget content is shown, collapse
+        } else {
+            console.log('COLLAPSE!');
+            
+            $(this).closest('.widget').find('.widget_content').animate({height:'hide'});
+            
+            // change the icons - individual and 'expand all'
+            $(this).find('.up').hide();
+            $(this).find('.down').show(300);
+            $(this).closest('.page_area').find('.button_expand_all .up').hide();
+            $(this).closest('.page_area').find('.button_expand_all .down').show(300);
+        }
         
         // show next tooltip
         console.log('TIP 8');
@@ -151,8 +264,8 @@ function activateExpandButton(myCueId) {
     });
 }
 
-function closeButtonHtml() {
-    var myHtml = '<svg class="button_close" height="20" width="20"> \
+function htmlButtonClose() {
+    var myHtml = '<svg class="button_controls button_close" height="20" width="20"> \
                           <line x1="6" y1="6" x2="15" y2="15"/> \
                           <line x1="6" y1="15" x2="15" y2="6"/> \
                         </svg>'
@@ -160,7 +273,7 @@ function closeButtonHtml() {
 }
 
 
-function activateCloseCueButton(myCueId) {  
+function activateButtonCloseCue(myCueId) {  
     
     var myTreeId = $('#'+myCueId).closest('.trees').attr('id');
     //console.log('closeCueButton myTreeId: '+myTreeId);
@@ -187,7 +300,7 @@ function activateCloseCueButton(myCueId) {
         return false;                                            // Return false, prevent default action
     })
 }
-function activateCloseExitButton(myCueId, myExitClass) {
+function activateButtonCloseExit(myCueId, myExitClass) {
     
     //$('.close_exit').mousedown(function (e) {  // Create new anchor element with class of 'remove'
     $('#'+myCueId+' .'+myExitClass+' .button_close').mouseup(function (e) {  // Create new anchor element with class of 'remove'
@@ -209,11 +322,11 @@ function activateCloseExitButton(myCueId, myExitClass) {
     })
 }
 
-function statButtonHtml() {
-    var myHtml = '<button class="button_stat">STATISTICS OF</button>';
+function htmlButtonStat() {
+    var myHtml = '<button class="buttons_grey button_stat">STATISTICS OF</button>';
     return myHtml;
 }
-function statTreeUpToThisCueHtml() {
+function htmlStatTreeUpToThisCue() {
     var myHtml = '<li class="stats stat_tree">\
                     <table class="eval_table"> \
                         <tr><td></td><td></td><td class="table_title" colspan="4">TREE UP TO THIS CUE</td></tr> \
@@ -229,7 +342,7 @@ function statTreeUpToThisCueHtml() {
                   </li>';
     return myHtml;
 }
-function activateStatButton(myCueId) {
+function activateButtonStat(myCueId) {
     // hide the statistics of the tree
     $('#'+myCueId).find('.stat_tree').hide();
     
@@ -244,7 +357,7 @@ function activateStatButton(myCueId) {
     });
 }
 
-function exportToServerButtons() {
+function buttonsExportToServer() {
     
     $('.button_export').mouseup(function (e) {  // Create new anchor with a class of 'collapse'
         console.log('EXPORT TO SERVER!');

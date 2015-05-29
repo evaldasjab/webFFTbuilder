@@ -23,15 +23,19 @@
     </header>
     
     <button class="button_help" id="button_help_id">?</button>
-    <input type="file" id="csv-file" name="files"> 
-    <label for="csv-file" class="button_load_csv" id="button_upload_csv_file">Upload CSV File</label>
     
-    <button class="button_load_csv" id="button_load_csv_sample">Load CSV Sample</button>
+    <button class="buttons_grey button_load_csv" id="button_upload_csv_file">Upload CSV File</button>
+    <input type="file" id="csv-file" name="files">
+    <button class="buttons_grey button_load_csv" id="button_load_csv_sample">Load CSV Sample</button>
     
-    <button class="button_selectdata button_on inactive" id="button_allcases">All Cases</button>
-    <button class="button_selectdata inactive" id="button_training">Training</button>
-    <button class="button_selectdata inactive" id="button_testing">Testing</button>
-
+    <button class="buttons_grey button_selectdata button_on disabled" id="button_allcases"></button>
+    <button class="buttons_grey button_selectdata disabled" id="button_training"></button>
+    <button class="buttons_grey button_selectdata disabled" id="button_testing"></button>
+    
+    
+    
+    
+    
     <!-- row of cues -->
     <div class="horiz_scroll">
         <div id="cues_list">
@@ -45,9 +49,9 @@
         </div>
     </div>
     
-    <svg class="button_expand_all" id="button_expand_all_blue" height="20" width="20">
-        <polyline class="down" points="3 8,10 15,17 8"/>
-        <polyline class="up" points="3 15,10 8,17 15"/>
+    <svg id="button_expand_all_blue" class="buttons_controls button_expand_all disabled" height="20" width="20">
+        <polyline class="down" points="3 7,10 14,17 7"/>
+        <polyline class="up" points="3 13,10 6,17 13"/>
     </svg>
     <!-- row of cues -->
 </div>
@@ -56,13 +60,13 @@
 
 <div class = "page_area" id="white_area">
         
-    <svg class="button_expand_all" id="button_expand_all_white" height="20" width="20">
-        <polyline class='down' points="3 8,10 15,17 8"/>
-        <polyline class="up" points="3 15,10 8,17 15"/>
+    <svg class="buttons_controls button_expand_all disabled" id="button_expand_all_white" height="20" width="20">
+        <polyline class='down' points="3 7,10 14,17 7"/>
+        <polyline class="up" points="3 13,10 6,17 13"/>
     </svg>
     
     <ul class="columns">        
-        <li class="drophere" id="drophere_tree0">Drop the cues here!</li>
+        <li class="drophere disabled" id="drophere_tree0">Drop the cues here!</li>
     </ul>
     <ul class="trees" id="tree0">
 
@@ -81,7 +85,7 @@
             <tr><th></th><th></th><th>p(Hits)</th><th>p(FA)</th><th>d'</th><th>Frug</th></tr>
             <tr><th></th><th></th><td class="cell_values" id="pHits">0</td><td class="cell_values" id="pFA">0</td><td class="cell_values" id="dprime">0</td><td class="cell_values" id="frugality">0</td></tr>
             <tr><th></th></tr>
-            <tr><th></th><th></th><th colspan="4"><button class="button_export" value="tree0">Export Tree 1 to Server</button></th></tr>
+            <tr><th></th><th></th><th colspan="4"><button class="buttons_grey button_export" value="tree0" disabled>Export Tree 1 to Server</button></th></tr>
         </table>
     </div>
     <div class="stat_columns">
@@ -96,11 +100,11 @@
             <tr><th></th><th></th><th>p(Hits)</th><th>p(FA)</th><th>d'</th><th>Frug</th></tr>
             <tr><th></th><th></th><td class="cell_values" id="pHits">0</td><td class="cell_values" id="pFA">0</td><td class="cell_values" id="dprime">0</td><td class="cell_values" id="frugality">0</td></tr>
             <tr><th></th></tr>
-            <tr><th></th><th></th><th colspan="4"><button class="button_export" value="tree1">Export Tree 2 to Server</button></th></tr>
+            <tr><th></th><th></th><th colspan="4"><button class="buttons_grey button_export" value="tree1" disabled>Export Tree 2 to Server</button></th></tr>
         </table>
     </div>
     <ul class="columns">
-        <div class="drophere" id="drophere_tree1">Drop the cues here!</div>
+        <div class="drophere disabled" id="drophere_tree1">Drop the cues here!</div>
     </ul>
     <ul class="trees" id="tree1">
     </ul>
@@ -121,6 +125,7 @@
     <script src="libraries/papaparse.min.js"></script>
     <script src="libraries/bootstrap-tour-standalone.js"></script>
     <script src="libraries/jquery.ui.touch-punch.js"></script>
+    <script src="libraries/spin.min.js"></script>
     
     <!-- evaldas -->
     <script src="buttonshtmls.js"></script>

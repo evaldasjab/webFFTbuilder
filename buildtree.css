@@ -28,6 +28,10 @@ a {color:black;}
   margin: 0px 0px 10px 0px;
 }
 
+.disabled {
+  opacity: 0.2;
+}
+
 .button_help {
   cursor: pointer;
   width: 20px;
@@ -40,12 +44,22 @@ a {color:black;}
   color: White;
   text-align: center;
   position: absolute;
+  left: 25px;
+  transition: 1s;
+}
+.button_help:hover {
+  background: #7cc2e9;     /*lighter than special BLUE, opacity 75% */
+  transition: background 0s, color 1s;
+}
+.button_help:active {
+  color: #50ADE1;  /* Special BLUE */
+  transition: color 0s;
 }
 
-input[type=file] {
+#csv-file {
     display: none;
 }
-.button_load_csv {
+.buttons_grey {
   cursor: pointer;
   width: 150px;
   height: 20px;
@@ -55,9 +69,22 @@ input[type=file] {
   font-size: 12px;
   color: Black;
   text-align: center;
-  background: LightGrey;
+  background: LightGrey;    /* or d4d4d4, b 83% */
   color: Black;
   z-index: 0;
+  transition: color 1s;
+}
+.buttons_grey:disabled {
+  opacity: 0.2;
+}
+.buttons_grey:hover {
+  background: #e5e5e5;     /*lighter than LightGrey, b 90% */
+  color: Black;
+  z-index: 1;
+}
+.buttons_grey:active {
+  color: #50ADE1;  /* Special BLUE */
+  transition: color 0s;
 }
 #button_upload_csv_file {
   position: absolute;
@@ -68,34 +95,37 @@ input[type=file] {
   left: 195px;
 }
 
-.button_selectdata {
-  width: 120px;
-  height: 20px;
-  border-radius: 10px;
-  border: 0px solid black;
-  font-family: 'Offside', Arial, Sans-Serif;
-  font-size: 12px;
-  text-align: center;
-  background: LightGrey;
-  color: Black;
-  z-index: 0;
-}
 #button_allcases {
   position: absolute;
   left: 365px;
 }
 #button_training {
   position: absolute;
-  left: 470px;
+  left: 500px;
 }
 #button_testing {
   position: absolute;
-  left: 575px;
+  left: 635px;
 }
 .button_on {
   background: White;
   color: Black;
   z-index: 1;
+}
+#loading_spinner_all {
+  position: relative;
+  top: 10px;
+  left: -116px;
+}
+#loading_spinner_train {
+  position: relative;
+  top: 10px;
+  left: 14px;
+}
+#loading_spinner_test {
+  position: relative;
+  top: 10px;
+  left: 148px;
 }
 
 .noselect {
@@ -218,13 +248,17 @@ article {
   width: 120px;
   height: 40px;
   border-radius: 20px;
+  border: 1px solid #50ADE1;   /* Special BLUE */;
   background: White;
   position: relative;
   margin-left: auto;
   margin-right: auto;
 }
+li:not(.ui-draggable-disabled) .widget_head {
+  border: 1px solid #50ADE1;   /* Special BLUE */;
+}
 .trees .widget_head {
-  background: #50ADE1;
+  background: #50ADE1;   /* Special BLUE */
 }
 
 .widget_title {
@@ -232,7 +266,7 @@ article {
   line-height: 40px;
   margin-left: auto;
   margin-right: auto;
-  color: black;
+  color: Grey;
   font-family: 'Offside', Arial, Sans-Serif;
   font-size: 20px;
   text-align: center;
@@ -241,6 +275,10 @@ article {
 }
 li:not(.ui-draggable-disabled) .widget_title {
   cursor: move;
+  color: Black;
+}
+.criterion_cue .widget_title {
+  color: #50ADE1;   /* Special BLUE */
 }
 
 #blue_area .widget_content {
@@ -251,60 +289,6 @@ li:not(.ui-draggable-disabled) .widget_title {
   width: 260px;
   position: relative;
   left: -70px;
-}
-
-label {
-  cursor: pointer;
-}
-
-.button_expand {
-  cursor: pointer;
-  background: transparent;
-  border: none !important;
-  fill: none;
-  stroke: Grey;
-  stroke-width: 1;
-  position: absolute;
-  left: 6px;
-  top: 10px;
-}
-.trees .button_expand{
-  stroke: White;
-}
-
-.button_close {
-  cursor: pointer;
-  background: transparent;
-  border: none !important;
-  stroke: white;
-  stroke-width: 1;
-  fill: none;
-  position: absolute;
-  left: 93px;
-  top: 10px;
-}
-.exit_widget .button_close {
-  position: absolute;
-  left: 53px;
-  top: 9px;
-}
-
-input[type=radio] {
-    display: none;
-}
-input[type=radio] + label {
-  stroke: grey;
-  stroke-width: 1;
-  fill: none;
-  position: absolute;
-  left: 93px;
-  top: 10px;
-}
-input[type=radio]:checked + label{
-  fill: grey;
-}
-.trees .button_radio{
-  stroke: white;
 }
 
 .exit_widget {
@@ -331,7 +315,7 @@ input[type=radio]:checked + label{
   position: absolute;
   left: -100px;
   bottom: -80px;
-  background: #2ECC71; /* green */
+  background: #2ECC71; /* special GREEN */
 }
 .exit_left .exit_arrow {
   position: absolute;
@@ -342,7 +326,7 @@ input[type=radio]:checked + label{
     position: absolute;
     left: 140px;
     bottom: -80px;
-    background: #E74C3C;  /* red */
+    background: #E74C3C;  /* special RED */
 }
 .exit_right .exit_arrow {
   position: absolute;
@@ -367,6 +351,77 @@ input[type=radio]:checked + label{
 }
 
 /* Widgets End ***************/
+
+/* Button Controls ***************/
+
+.button_controls {
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  border: none;
+  background: transparent;
+  fill: none;
+  stroke: Grey;
+  stroke-width: 1;
+  transition: background 1s, stroke 1s, stroke-width 1s;
+}
+.button_controls:hover {
+  background: #e5e5e5;     /*lighter than LightGrey, b 90% */
+  transition: background 0s;
+}
+.trees .button_controls:hover {
+  background: #7cc2e9;     /*lighter than special BLUE, opacity 75% */
+  transition: background 0s;
+}
+.button_controls:active {
+  background: transparent;
+  stroke: #50ADE1;  /* Special BLUE */
+  stroke-width: 2;
+  transition: background 0s, stroke 0s, stroke-width 0s;
+}
+
+.button_expand {
+  position: absolute;
+  left: 6px;
+  top: 10px;
+}
+.button_close {
+  position: absolute;
+  left: 93px;
+  top: 10px;
+}
+.trees .button_expand, .trees .button_radio, .trees .button_close{
+  stroke: White;
+}
+.exit_widget .button_close {
+  position: absolute;
+  left: 53px;
+  top: 9px;
+}
+.exit_left .button_close:hover {
+  background: #62d995;     /*lighter than special GREEN, opacity 75% */
+}
+.exit_right .button_close:hover {
+  background: #ed796d;     /*lighter than special RED, opacity 75% */
+}
+
+input[type=radio] {
+    display: none;
+}
+input[type=radio] + label {
+  stroke: grey;
+  stroke-width: 1;
+  fill: none;
+  position: absolute;
+  left: 93px;
+  top: 10px;
+}
+input[type=radio]:checked + label{
+  fill: grey;
+}
+
+/* Button Controls End ***************/
 
 /* Statistics ***************/
 

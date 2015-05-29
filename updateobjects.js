@@ -7,11 +7,25 @@ function updateJsonDataset(myTreeId) {
     var myTreeCuesArray = $('#'+myTreeId).sortable('toArray');
     myTreeCuesArray = myTreeCuesArray.filter(function(n){ return n != "" });  // remove empty elements in array
 
-    console.log('UDPDATE JSON! myTreeCuesArray: ' + myTreeCuesArray.toString());
+    console.log('JSON UPDATE! myTreeCuesArray: ' + myTreeCuesArray.toString());
     
-    //var myJsonObj = new Object();
-    //myJsonObj.trees = [];
-            
+    //IF THERE IS AT LEAST ONE CUE IN THE TREE
+    if (myTreeCuesArray[0] != undefined) { // if there is at least one cue
+        
+        // activate the EXPAND ALL button in the white area
+        buttonExpandAll('button_expand_all_white');
+        
+        // enable EXPORT TO SERVER buttons
+        $('#stat_'+myTreeId+' .button_export').removeAttr('disabled');
+    } else {
+        
+        // de-activate the EXPAND ALL button in the white area
+        deactivateButtonExpandAll('button_expand_all_white');
+        
+        // disable EXPORT TO SERVER buttons
+        $('#stat_'+myTreeId+' .button_export').attr('disabled','disabled');
+    }
+    
     var myTreeObj = createTreeObj(myTreeId, myTreeCuesArray);
     
     //myJsonObj.trees[t] = myTreeObj;
@@ -34,8 +48,8 @@ function createTreeObj(myTreeId, myTreeCuesArray) {
     myTreeObj.tree = myTreeId;
     
     //myTreeObj.criterion = 'cue1'; // ONLY FOR TESTING!!!
-    if (criterCue != '') {
-        myTreeObj.criterion = Object.keys(myDataset.data[0])[getInt(criterCue)];  // get the name of criterion cue by id
+    if (criterCueId != '') {
+        myTreeObj.criterion = Object.keys(myDataset.data[0])[getInt(criterCueId)];  // get the name of criterion cue by id
     } else {
         myTreeObj.criterion = '';
     }
@@ -49,11 +63,11 @@ function createTreeObj(myTreeId, myTreeCuesArray) {
         var myCueId = myTreeCuesArray[e];
         myCueObj.id = myCueId;
                 
-        console.log('myCueId: ' + myCueId);
+        //console.log('myCueId: ' + myCueId);
         
         var myExitValues = getExitValues(myCueId, 'from createTreeObject, loop in myTreeCuesArray');
-        console.log('myExitValues.myLeft: ' + myExitValues.myLeft);
-        console.log('myExitValues.myRight: ' + myExitValues.myRight);
+        //console.log('myExitValues.myLeft: ' + myExitValues.myLeft);
+        //console.log('myExitValues.myRight: ' + myExitValues.myRight);
                 
         if (myCueObj.id != undefined) { // if there is at least one cue
             

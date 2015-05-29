@@ -3,15 +3,30 @@
 // initiate the tooltips tour
 showTooltipsTour();
 //activate HELP button
-helpButton();
+buttonHelp();
 // activate EXPAND ALL buttons
-expandAllButtons();
+//buttonsExpandAll();
 
+// activate the upload CSV file button
+buttonUploadCsvFile();
 // activate the load CSV sample button - CHANGE THE URL!!!
-loadCsvSample('https://dl.dropboxusercontent.com/u/15758787/data_infarction.csv');
-                                 
+buttonLoadCsvSample('https://dl.dropboxusercontent.com/u/15758787/data_infarction.csv');
+
+myDataset = {};
+
+function buttonUploadCsvFile() {
+  
+  $('#button_upload_csv_file').mouseup(function (e) {
+    
+    // get the file
+    document.getElementById('csv-file').click();
+  });
+}
 function handleFileSelect(evt) {
   
+  // activate select data buttons
+  buttonsAllcasesTrainingTesting();
+
   var myFile = evt.target.files[0];
 
   Papa.parse(myFile, {
@@ -19,7 +34,7 @@ function handleFileSelect(evt) {
     dynamicTyping: true,
     skipEmptyLines: true,
     complete: function(results) {
-      console.log('IMPORTED CSV FILE: '+JSON.stringify(results, null, "  "));
+      console.log('UPLOADED CSV FILE: '+JSON.stringify(results, null, "  "));
         
       listCues(results); 
     }
@@ -29,9 +44,12 @@ function handleFileSelect(evt) {
   $('#button_load_csv_sample').toggleClass('button_on', false);
 }
 
-function loadCsvSample(myUrl) {
+function buttonLoadCsvSample(myUrl) {
   
   $('#button_load_csv_sample').mouseup(function (e) {
+    
+    // activate select data buttons
+    buttonsAllcasesTrainingTesting();
     
     Papa.parse(myUrl, {
       download: true,
@@ -54,13 +72,26 @@ function loadCsvSample(myUrl) {
 function listCues(results){
       
   // remove fields containing non 0 or 1 values
-  myDataset = filterOutNonZerosAndOnes(results);
-  console.log('Filtered Dataset: '+JSON.stringify(myDataset, null, "  "));
+  var myDatasetFilter = filterOutNonZerosAndOnes(results);
+  console.log('Filtered Dataset: '+JSON.stringify(myDatasetFilter, null, "  "));
   
   // check if there is valid data left after filtering
-  if (Object.keys(myDataset.data[0])==0) {
+  if (Object.keys(myDatasetFilter.data[0])==0) {
+    
+    // stop the loading spinners
+    $('.spinner').remove();
+    
+    //check if there is no data loaded from before, hide the data select buttons
+    if (Object.keys(myDataset)==0) {
+      // disable the select data buttons
+      deactivateButtonsAllcasesTrainingTesting();
+    }
+    
     alert('Invalid data: variables with only 1 or 0 values not found. Please upload another CSV file!');
+    
   } else {
+    
+    myDataset = myDatasetFilter;
   
     //split the results equally for TRAINING and TESTING
     var myLength = myDataset.data.length;
@@ -92,15 +123,15 @@ function listCues(results){
             <ul class="cues"> \
                 <li id="cue'+i+'" name='+myCueName+' class="widget"> \
                   <div class="widget_head"> \
-                    <svg class="button_expand" height="20" width="20"> \
-                      <polyline class="down" points="3 8,10 15,17 8"/> \
-                      <polyline class="up" points="3 15,10 8,17 15"/> \
+                    <svg class="button_controls button_expand" height="20" width="20"> \
+                      <polyline class="down" points="3 7,10 14,17 7"/> \
+                      <polyline class="up" points="3 13,10 6,17 13"/> \
                     </svg> \
                     <div class="widget_title" > \
                       <span id="title'+i+'" title="'+myCueName+'">'+myCueName+'</span> \
                     </div> \
                     <input type="radio" id="button_radio_'+i+'" class="criterion_class" name="criterion_name" value="cue'+i+'" /> \
-                    <label for="button_radio_'+i+'" class="criterion_label"> \
+                    <label for="button_radio_'+i+'" class="button_controls criterion_label"> \
                       <svg class="button_radio" height="20" width="20"> \
                         <circle cx="10" cy="10" r="6"/> \
                       </svg> \
@@ -131,6 +162,9 @@ function listCues(results){
       );
     }    
     
+    // stop the loading spinners
+    $('.spinner').remove();
+    
     // show the number of cases on the buttons
     document.getElementById("button_allcases").textContent = 'All Cases: '+myLength.toString();
     document.getElementById("button_training").textContent = 'Training: '+myHalf.toString();
@@ -138,21 +172,18 @@ function listCues(results){
     
     // in the beginning, show statistics with TRAINING data
     myData = myDataAllCases;
-    // change the look of the buttons
-    //document.getElementById('button_allcases_id').className = "button_selectdata button_allcases button_t_on";
-    //document.getElementById('button_training_id').className = "button_selectdata button_training button_t_off";
-    //document.getElementById('button_testing_id').className = "button_selectdata button_testing button_t_off";
-    // activate buttons to switch the data
-    trainingTestingButtons();
     
-    // update the statistics
+    // reset the statistics
     resetTreeStatistics(); // if there was from previous csv upload
     
-    //DISABLE FOR TESTING!!!
-    expandButtons(); // activate the expand buttons (function in buildtree.js)
+    // activate the EXPAND ALL button in the blue area
+    buttonExpandAll('button_expand_all_blue');
     
-    // activare EXPORT TO SERVERS buttons under the statistics tables
-    exportToServerButtons();
+    // activate the expand buttons (function in buildtree.js)
+    buttonsExpand(); 
+    
+    // activate (but disable until there is at least one cue in the tree) EXPORT TO SERVERS buttons under the statistics tables
+    buttonsExportToServer();
     
     init();
     

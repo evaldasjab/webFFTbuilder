@@ -1,5 +1,77 @@
 // Makes and activates buttons, adds htmls
 
+function splitValueSliderChangeSwap() {
+    
+    myDataset.split_values.forEach(function(myObj) {
+      
+        //console.log('HERE CHECK BEFORE! myObj: '+JSON.stringify(myObj, null, "  "));
+      
+        var myCueId = myObj.id;
+        var YES_VALUE = myObj.yes;
+        var NO_VALUE = myObj.no;
+        var SPLIT_VALUE = myObj.split;
+        
+        $('#'+myCueId+' #yes_value').text(YES_VALUE);
+        $('#'+myCueId+' #no_value').text(NO_VALUE);
+        $('#'+myCueId+' #split_value').val(SPLIT_VALUE);
+        
+        if ((YES_VALUE > NO_VALUE)) {
+            var minVal = NO_VALUE;
+            var maxVal = YES_VALUE;
+            var reverseSlider = true;
+        } else {
+            var minVal = YES_VALUE;
+            var maxVal = NO_VALUE;
+            var reverseSlider = false;
+        }
+        
+        $('#'+myCueId+' .stat_slider').slider({
+            isRTL: true,
+            min: minVal,
+            max: maxVal,
+            value: SPLIT_VALUE,
+            step: 0.1,
+            slide: function(event, ui) {
+                $('#'+myCueId+' #split_value').val(ui.value);
+                //$( "input" ).val( "$" + ui.value );
+            },
+            change: function( event, ui ) {
+                // change binary values of this cue/field in the dataset
+                myObj.split = ui.value;
+                //console.log('HERE CHECK AFTER! myObj: '+JSON.stringify(myObj, null, "  "));
+                //myDataset = convertToBinary(myDataset, [myObj]);
+                alert( 'no luck...' );
+            }
+        });
+        
+        $('#'+myCueId+' #split_value').change(function () {
+            //var value = this.value.substring(1);
+            var value = $(this).val();
+            $('#'+myCueId+' .stat_slider').slider("value", parseFloat(value));
+        });
+    });
+}
+
+function changeBinaryValues(myFieldValues) {
+    
+    // go through every object (case/row) in the data array
+    // and replace value to 0 or 1, based on the split value
+    myDataset.data.forEach(function(myObj) {
+      
+      //console.log('HERE CHECK! myObj: '+JSON.stringify(myObj, null, "  "));
+      
+      // replace value to 0, if it's in range of SPLIT (included) and NO (included) values
+      if ( (myObj[myFieldValues.name] >= Math.min(myFieldValues.split, myFieldValues.no) ) && (myObj[myFieldValues.name] <= Math.max(myFieldValues.split, myFieldValues.no) ) ) {
+        myObj[myFieldValues.name] = 0;
+      // replace value to 1, if it's in range of YES (included) and SPLIT (excluded) values 
+      } else {
+        myObj[myFieldValues.name] = 1;
+      }
+    });
+
+    console.log('UPDATED BINARY! myDataset: '+JSON.stringify(myDataset, null, "  "));
+}
+
 function buttonHelp() {
     
     $('.button_help').mouseup(function (e) {  // Create new anchor with a class of 'collapse'
@@ -329,15 +401,15 @@ function htmlButtonStat() {
 function htmlStatTreeUpToThisCue() {
     var myHtml = '<li class="stats stat_tree">\
                     <table class="eval_table"> \
-                        <tr><td></td><td></td><td class="table_title" colspan="4">TREE UP TO THIS CUE</td></tr> \
+                        <tr><td class="table_title" colspan="6">TREE UP TO THIS CUE</td></tr> \
                         <tr><td class="cell_narrow"></td><td></td><td class="table_header" colspan="4">PREDICTION</td></tr> \
                         <tr><td></td><td></td><th>yes</th><th>no</th><th>und</th><th>sum</th></tr> \
                         <tr><td class="table_header_rotated" rowspan="3"><div class="rotate">CRITERION</div></td><th class="cell_narrow">yes</td><td class="success" id="hits">0</td><td class="fail" id="misses">0</td><td class="undecided" id="undecided_pos">0</td><td class="cell_values" id="crit_yes_sum">0</td></tr> \
                         <tr><th class="cell_narrow">no</th><td class="fail" id="falsealarms">0</td><td class="success" id="correctrejections">0</td><td class="undecided" id="undecided_neg">0</td><td class="cell_values" id="crit_no_sum">0</td></tr> \
                         <tr><th class="cell_narrow">sum</th><td class="cell_values" id="pred_yes_sum">0</td><td class="cell_values" id="pred_no_sum">0</td><td class="cell_values" id="pred_und_sum">0</td><td class="cell_values" id="pred_sum_sum">0</td></tr> \
                         <tr><th></th></tr> \
-                        <tr><td></td><td></td><th>p(Hits)</th><th>p(FA)</th><th>d"</th><th>Frug</th></tr> \
-                        <tr><td></td><td></td><td class="cell_values" id="pHits">0</td><td class="cell_values" id="pFA">0</td><td class="cell_values" id="dprime">0</td><td class="cell_values" id="frugality">0</td></tr> \
+                        <tr><th colspan="2">p(Hits)</th><th>p(FA)</th><th>d&#8242</th><th>Frug</th><th>Bias</th></tr> \
+                        <tr><td colspan="2" class="cell_values" id="pHits">0</td><td class="cell_values" id="pFA">0</td><td class="cell_values" id="dprime">0</td><td class="cell_values" id="frugality">0</td><td class="cell_values" id="bias">0</td></tr> \
                     </table> \
                   </li>';
     return myHtml;

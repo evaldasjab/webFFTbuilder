@@ -117,6 +117,9 @@ function makeSortable() {                 // This function will make the widgets
         },
         receive: function(event,ui) {
             
+            // remove "split values" part from the stats table
+            $('#'+dragCueId+' .row_to_delete').remove();
+            
             // replace the radio button with close button
             $('#'+dragCueId+' .criterion_class').remove(); // remove the radio button
             $('#'+dragCueId+' .criterion_label').remove(); // remove the radio button label

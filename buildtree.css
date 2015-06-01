@@ -12,6 +12,18 @@ a {color:black;}
 
 
 
+input[type=text] {
+    width: inherit;
+    height: inherit;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    text-align: center;
+}
+
+
+
+
 
 /* Row section ****************/
 
@@ -188,6 +200,20 @@ article {
   left: 4px;
 }
 
+.button_swap {
+  cursor: pointer;
+  background: transparent;
+  border: none !important;
+  fill: none;
+  stroke-width: 1;
+}
+#blue_area .button_swap {
+  stroke: White;
+}
+#white_area .button_swap {
+  stroke: Grey;
+}
+
 /* Row section End ***************/
 
 /* Columns *************/
@@ -283,13 +309,14 @@ li:not(.ui-draggable-disabled) .widget_title {
 }
 
 #blue_area .widget_content {
+  width: 220px;
   position: relative;
-  left: -22px;
+  left: 0px;
 }
 .trees .widget_content {
   width: 260px;
   position: relative;
-  left: -70px;
+  left: -50px;
 }
 
 .exit_widget {
@@ -428,7 +455,7 @@ input[type=radio]:checked + label{
 
 .button_stat {
   cursor: pointer;
-  width: 170px;
+  width: 215px;
   height: 20px;
   border-radius: 10px;
   border: 0px solid black;
@@ -437,7 +464,7 @@ input[type=radio]:checked + label{
   font-size: 12px;
   color: Black;
   text-align: center;
-  margin: 20px 0px 0px 45px;
+  margin: 20px 0px 0px 5px;
 }
 
 .stats {

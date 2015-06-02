@@ -147,10 +147,12 @@ function analyzeDataset(myTreeObj) {
     
     getDerivativeStatistics();
     
-    updateAnalysisView('stat_'+myTreeId);
+    updateAnalysisView(myTreeId);
     
     // do it only for the tree analysis (not individual cues in the cue list)
     if ( (myTreeId=='tree0') || (myTreeId=='tree1') ) {
+        
+        updateAnalysisView('stat_'+myTreeId);
         
         // calculate and display statistics for the cues in the tree
         for (var c = 0; c < TREE.treeCuesList.length; c++) {
@@ -282,6 +284,8 @@ function updateSplitValuesView(myCueId) {
 */
 
 function updateAnalysisView(myId) {
+    
+    //alert('updateAnalysisView: '+myId);
     
     $('#'+myId+' #hits').text(HITS.toString());
     $('#'+myId+' #misses').text(MISS.toString());

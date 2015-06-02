@@ -44,7 +44,7 @@ function splitValueSliderChangeSwap(mySet, myTrueSet, mySplitValuesArray) {
                 if (criterCueId != '') {
                     updateJsonDataset('tree0'); // update JSON object and tree statistics
                     updateJsonDataset('tree1'); // update JSON object and tree statistics
-                    updateStatisticsForSingleCues(); //update statistics in the blue area
+                    updateStatForOneSingleCue(myCueId); //update statistics in the blue area
                 }
             }
         });
@@ -101,7 +101,7 @@ function splitValueSliderChangeSwap(mySet, myTrueSet, mySplitValuesArray) {
             if (criterCueId != '') {
                 updateJsonDataset('tree0'); // update JSON object and tree statistics
                 updateJsonDataset('tree1'); // update JSON object and tree statistics
-                updateStatisticsForSingleCues(); //update statistics in the blue area
+                //updateStatForOneSingleCue(myCueId); //update statistics in the blue area
             }
              
         });

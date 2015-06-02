@@ -108,7 +108,7 @@ function getCueName(myCueId) {
 
 function updateStatisticsForSingleCues() {
     
-    $('#cues_list .widget').each(function( index ) {
+    $('#blue_area .widget').each(function( index ) {
 
         var myCueId = $(this).attr('id');
         //console.log('SINGLECUE myCueId: '+myCueId);
@@ -118,4 +118,12 @@ function updateStatisticsForSingleCues() {
     
         analyzeDataset(myOneCueTreeObj);
     });   
+}
+
+function updateStatForOneSingleCue(myCueId) {
+      
+        var myOneCueTreeObj = createTreeObj(myCueId, [myCueId]);
+        //console.log('SINGLECUE myOneCueTreeObj: '+JSON.stringify(myOneCueTreeObj, null, "  ") );
+    
+        analyzeDataset(myOneCueTreeObj);
 }

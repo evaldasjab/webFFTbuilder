@@ -104,7 +104,7 @@ function listCues(results){
                   <div class="widget_content"> \
                         <ul class="stat_cue_header"> \
                           <li class="stats stat_cue unsortable">\
-                            <table class="eval_table" id="stat_cue'+i+'"> \
+                            <table class="eval_table"> \
                                 <tr class="row_to_delete"><td class="stats_slider" colspan="6"><div class="stat_slider"></div></td></tr> \
                                 <tr class="row_to_delete"><td class="cell_values" id="yes_value" colspan="2">0</td><td class="success">yes</td><td class="cell_values"><input type="text" id="split_value" value="0"></input></td><td class="fail">no</td><td class="cell_values" id="no_value">0</td></tr> \
                                 <tr class="row_to_delete"><th id="yes_label" colspan="2">max</th><td class="swap" colspan="3"><svg class="button_swap" height="20" width="40"><polyline class="left" points="7 6,2 11,7 16"/><polyline class="right" points="34 6,39 11,34 16"/><line x1="2" y1="11" x2="39" y2="11"/></svg></td><th id="no_label">min</th></tr> \

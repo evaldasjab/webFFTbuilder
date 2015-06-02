@@ -220,6 +220,7 @@ function convertToBinary(mySet, myTrueSet, mySplitValuesArray) {
     
     // go through every object (case/row) in the ORIGINAL data array (results)
     // and replace value to 0 or 1, based on the split value in the BINARY data array (myDataset)
+
     //mySet.data.forEach(function(myObj) {
     for (c in mySet.data) {  
       

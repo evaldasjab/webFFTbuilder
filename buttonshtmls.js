@@ -1,8 +1,136 @@
 // Makes and activates buttons, adds htmls
 
+function splitValueSliderChangeSwap(mySet, myTrueSet, mySplitValuesArray) {
+    
+    //myDataset.split_values.forEach(function(myObj) {
+    mySplitValuesArray.forEach(function(mySplitObj) {
+      
+        //console.log('HERE CHECK BEFORE! myObj: '+JSON.stringify(myObj, null, "  "));
+      
+        var myCueId = mySplitObj.id;
+        
+        // update the values in the widget content
+        $('#'+myCueId+' #yes_value').text(mySplitObj.yes);
+        $('#'+myCueId+' #no_value').text(mySplitObj.no);
+        $('#'+myCueId+' #split_value').val(mySplitObj.split);
+        
+        if ((mySplitObj.yes > mySplitObj.no)) {
+            var minVal = mySplitObj.no;
+            var maxVal = mySplitObj.yes;
+            var reverseSlider = true;
+        } else {
+            var minVal = mySplitObj.yes;
+            var maxVal = mySplitObj.no;
+            var reverseSlider = false;
+        }
+        
+        $('#'+myCueId+' .stat_slider').slider({
+            isRTL: true,
+            min: minVal,
+            max: maxVal,
+            value: mySplitObj.split,
+            step: 0.1,
+            slide: function(event, ui) {
+                $('#'+myCueId+' #split_value').val(ui.value);
+                //$( "input" ).val( "$" + ui.value );
+            },
+            change: function( event, ui ) {
+                // change binary values of this cue/field in the dataset
+                mySplitObj.split = ui.value;
+                //console.log('HERE CHECK AFTER! myObj: '+JSON.stringify(myObj, null, "  "));
+                var mySet = convertToBinary(myDataset, myTrueSet, [mySplitObj]);
+                
+                // update statistics, if there a criterion already selected
+                if (criterCueId != '') {
+                    updateJsonDataset('tree0'); // update JSON object and tree statistics
+                    updateJsonDataset('tree1'); // update JSON object and tree statistics
+                    updateStatisticsForSingleCues(); //update statistics in the blue area
+                }
+            }
+        });
+        
+        $('#'+myCueId+' #split_value').change(function () {
+            //var value = this.value.substring(1);
+            var value = $(this).val();
+            $('#'+myCueId+' .stat_slider').slider("value", parseFloat(value));
+        });
+        
+        $('#'+myCueId+' .button_swap').mouseup(function (e) {
+            
+            // swap the MAX and MIN values
+            var myYesValue = mySplitObj.yes;
+            var myNoValue = mySplitObj.no;
+            //var mySplitValue = mySplitObj.split;
+            mySplitObj.yes = myNoValue;
+            mySplitObj.no = myYesValue;
+            //mySplitObj.split = myYesValue - mySplitValue + myNoValue;
+            
+            //alert( 'mySplitObj: '+JSON.stringify(mySplitObj, null, "  ") );
+            
+            $('#'+myCueId+' #yes_value').text(mySplitObj.yes);
+            $('#'+myCueId+' #no_value').text(mySplitObj.no);
+            //$('#'+myCueId+' #split_value').val(mySplitObj.split);
+                                             
+            // swap the MAX and MIN labels
+            var myYesLabel = $('#'+myCueId+' #yes_label').text();
+            var myNoLabel = $('#'+myCueId+' #no_label').text();
+            $('#'+myCueId+' #yes_label').text(myNoLabel);
+            $('#'+myCueId+' #no_label').text(myYesLabel);
+            
+            // swap slider
+            if ((mySplitObj.yes > mySplitObj.no)) {
+                var minVal = mySplitObj.no;
+                var maxVal = mySplitObj.yes;
+                var reverseSlider = true;
+            } else {
+                var minVal = mySplitObj.yes;
+                var maxVal = mySplitObj.no;
+                var reverseSlider = false;
+            }
+            $('#'+myCueId+' .stat_slider').slider({
+                isRTL: reverseSlider,
+                min: minVal,
+                max: maxVal,
+                value: mySplitObj.split,
+            });
+            
+            // update the dataset
+            var mySet = convertToBinary(myDataset, myTrueSet, [mySplitObj]);
+                
+            // update statistics, if there a criterion already selected
+            if (criterCueId != '') {
+                updateJsonDataset('tree0'); // update JSON object and tree statistics
+                updateJsonDataset('tree1'); // update JSON object and tree statistics
+                updateStatisticsForSingleCues(); //update statistics in the blue area
+            }
+             
+        });
+    });
+}
+
+function changeBinaryValues(myFieldValues) {
+    
+    // go through every object (case/row) in the data array
+    // and replace value to 0 or 1, based on the split value
+    myDataset.data.forEach(function(myObj) {
+      
+      //console.log('HERE CHECK! myObj: '+JSON.stringify(myObj, null, "  "));
+      
+      // replace value to 0, if it's in range of SPLIT (included) and NO (included) values
+      if ( (myObj[myFieldValues.name] >= Math.min(myFieldValues.split, myFieldValues.no) ) && (myObj[myFieldValues.name] <= Math.max(myFieldValues.split, myFieldValues.no) ) ) {
+        myObj[myFieldValues.name] = 0;
+      // replace value to 1, if it's in range of YES (included) and SPLIT (excluded) values 
+      } else {
+        myObj[myFieldValues.name] = 1;
+      }
+    });
+
+    console.log('UPDATED BINARY! myDataset: '+JSON.stringify(myDataset, null, "  "));
+}
+
 function buttonHelp() {
     
-    $('.button_help').mouseup(function (e) {  // Create new anchor with a class of 'collapse'
+    $('.button_help').mouseup(function (e) {  
         console.log('START TOUR! TIP 0');
         //tour.start(true);
         // Start the tour
@@ -25,7 +153,7 @@ function buttonsAllcasesTrainingTesting() {
     //$('#loading_spinner_train').show();
     //$('#loading_spinner_test').show();
     
-    $('#button_allcases').mouseup(function (e) {  // Create new anchor with a class of 'collapse'
+    $('#button_allcases').mouseup(function (e) {  
         console.log('ALL CASES!');
         // switch the data
         myData = myDataAllCases;
@@ -39,7 +167,7 @@ function buttonsAllcasesTrainingTesting() {
         updateStatisticsForSingleCues(); //update statistics in the blue area
     });
     
-    $('#button_training').mouseup(function (e) {  // Create new anchor with a class of 'collapse'
+    $('#button_training').mouseup(function (e) {  
         console.log('TRAINING!');
         // switch the data
         myData = myDataForTraining;
@@ -57,7 +185,7 @@ function buttonsAllcasesTrainingTesting() {
         tour.goTo(2);
     });
     
-     $('#button_testing').mouseup(function (e) {  // Create new anchor with a class of 'collapse'
+     $('#button_testing').mouseup(function (e) {  
         console.log('TESTING!');
         // switch the data
         myData = myDataForTesting;
@@ -136,7 +264,7 @@ function buttonExpandAll(myButtonId) {
     $('.button_expand_all .up').hide();
     $('.button_expand_all .down').show();
     
-    $('#'+myButtonId).mouseup(function (e) {  // Create new anchor with a class of 'collapse'
+    $('#'+myButtonId).mouseup(function (e) {  
         
         // if there is no cue with expanded stats, expand all
         if ($(this).parent('.page_area').find('.widget_content:visible').length == 0) {
@@ -186,7 +314,7 @@ function buttonsExpand() {
     
     //console.log('ACTIVATE EXPANSION!');
     
-    $('.button_expand').mouseup(function (e) {  // Create new anchor with a class of 'collapse'
+    $('.button_expand').mouseup(function (e) {  
         
         // if the widget content is hidden, expand
         if ( $(this).closest('.widget').find('.widget_content').is(':hidden') ) {
@@ -329,15 +457,15 @@ function htmlButtonStat() {
 function htmlStatTreeUpToThisCue() {
     var myHtml = '<li class="stats stat_tree">\
                     <table class="eval_table"> \
-                        <tr><td></td><td></td><td class="table_title" colspan="4">TREE UP TO THIS CUE</td></tr> \
+                        <tr><td class="table_title" colspan="6">TREE UP TO THIS CUE</td></tr> \
                         <tr><td class="cell_narrow"></td><td></td><td class="table_header" colspan="4">PREDICTION</td></tr> \
                         <tr><td></td><td></td><th>yes</th><th>no</th><th>und</th><th>sum</th></tr> \
                         <tr><td class="table_header_rotated" rowspan="3"><div class="rotate">CRITERION</div></td><th class="cell_narrow">yes</td><td class="success" id="hits">0</td><td class="fail" id="misses">0</td><td class="undecided" id="undecided_pos">0</td><td class="cell_values" id="crit_yes_sum">0</td></tr> \
                         <tr><th class="cell_narrow">no</th><td class="fail" id="falsealarms">0</td><td class="success" id="correctrejections">0</td><td class="undecided" id="undecided_neg">0</td><td class="cell_values" id="crit_no_sum">0</td></tr> \
                         <tr><th class="cell_narrow">sum</th><td class="cell_values" id="pred_yes_sum">0</td><td class="cell_values" id="pred_no_sum">0</td><td class="cell_values" id="pred_und_sum">0</td><td class="cell_values" id="pred_sum_sum">0</td></tr> \
                         <tr><th></th></tr> \
-                        <tr><td></td><td></td><th>p(Hits)</th><th>p(FA)</th><th>d"</th><th>Frug</th></tr> \
-                        <tr><td></td><td></td><td class="cell_values" id="pHits">0</td><td class="cell_values" id="pFA">0</td><td class="cell_values" id="dprime">0</td><td class="cell_values" id="frugality">0</td></tr> \
+                        <tr><th colspan="2">p(Hits)</th><th>p(FA)</th><th>d&#8242</th><th>Frug</th><th>Bias</th></tr> \
+                        <tr><td colspan="2" class="cell_values" id="pHits">0</td><td class="cell_values" id="pFA">0</td><td class="cell_values" id="dprime">0</td><td class="cell_values" id="frugality">0</td><td class="cell_values" id="bias">0</td></tr> \
                     </table> \
                   </li>';
     return myHtml;
@@ -359,7 +487,7 @@ function activateButtonStat(myCueId) {
 
 function buttonsExportToServer() {
     
-    $('.button_export').mouseup(function (e) {  // Create new anchor with a class of 'collapse'
+    $('.button_export').mouseup(function (e) {  
         console.log('EXPORT TO SERVER!');
         
         // show next tooltip

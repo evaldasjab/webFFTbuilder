@@ -9,9 +9,10 @@
                 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
         <title>Grow a FAST-and-FRUGAL Tree</title>
-        <link href="buildtree.css" rel="stylesheet" type="text/css" />
         <link href='http://fonts.googleapis.com/css?family=Offside' rel='stylesheet' type='text/css'>
+        <link rel=" stylesheet" type="text/css" href="libraries/jquery-ui.css">
         <link rel=" stylesheet" type="text/css" href="libraries/bootstrap-tour-standalone.css">
+        <link href="buildtree.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -21,19 +22,23 @@
     <header>
         <h1>Grow a FAST-and-FRUGAL Tree</h1>       
     </header>
-    
+        
     <button class="button_help" id="button_help_id">?</button>
     
     <button class="buttons_grey button_load_csv" id="button_upload_csv_file">Upload CSV File</button>
     <input type="file" id="csv-file" name="files">
-    <button class="buttons_grey button_load_csv" id="button_load_csv_sample">Load CSV Sample</button>
+    <!--<button class="buttons_grey button_load_csv" id="button_load_csv_sample">Load CSV Sample</button>-->
+    
+    <select class="buttons_grey button_load_csv" id="button_load_csv_sample">
+        <option>Load CSV Sample</option>
+        <option value="data_infarction">Green and Mehr - Coronary Care Unit</option>
+        <option value="data_cmc">Contraceptive Prevalence Survey</option>
+        </optgroup>
+    </select>
     
     <button class="buttons_grey button_selectdata button_on disabled" id="button_allcases"></button>
     <button class="buttons_grey button_selectdata disabled" id="button_training"></button>
     <button class="buttons_grey button_selectdata disabled" id="button_testing"></button>
-    
-    
-    
     
     
     <!-- row of cues -->
@@ -55,8 +60,7 @@
     </svg>
 </div>
     <!-- row of cues END-->
-    
-    <!--<marquee behavior="scroll" direction="left">Your continuous scroll text goes here</marquee> -->
+
     
     <!-- FFTs -->
 
@@ -71,44 +75,45 @@
         <li class="drophere disabled" id="drophere_tree0">Drop the cues here!</li>
     </ul>
     <ul class="trees" id="tree0">
-
+        <!-- here will go the cues -->
     </ul>
     <ul class="columns">
     </ul>
     <div class="stat_columns">
         <table class="eval_table" id="stat_tree0">
-            <tr><th></th><th></th><td class="table_title" colspan="4">STATISTICS OF TREE 1</td></tr>
+            <tr><td class="table_title" colspan="6">STATISTICS OF TREE 1</td></tr>
             <tr><th class="cell_narrow"></th><th></th><td class="table_header" colspan="4">PREDICTION</td></tr>
             <tr><th></th><th></th><th>yes</th><th>no</th><th>und</th><th>sum</th></tr>
             <tr><td class="table_header_rotated" rowspan="3"><div class="rotate">CRITERION</div></td><th class="cell_narrow">yes</td><td class="success" id="hits">Hit</td><td class="fail" id="misses">Miss</td><td class="undecided" id="undecided_pos">0</td><td class="cell_values" id="crit_yes_sum">0</td></tr>
             <tr><th class="cell_narrow">no</td><td class="fail" id="falsealarms">FA</td><td class="success" id="correctrejections">CR</td><td class="undecided" id="undecided_neg">0</td><td class="cell_values" id="crit_no_sum">0</td></tr>
             <tr><th class="cell_narrow">sum</th><td class="cell_values" id="pred_yes_sum">0</td><td class="cell_values" id="pred_no_sum">0</td><td class="cell_values" id="pred_und_sum">0</td><td class="cell_values" id="pred_sum_sum">0</td></tr>
             <tr><th></th></tr>
-            <tr><th></th><th></th><th>p(Hits)</th><th>p(FA)</th><th>d'</th><th>Frug</th></tr>
-            <tr><th></th><th></th><td class="cell_values" id="pHits">0</td><td class="cell_values" id="pFA">0</td><td class="cell_values" id="dprime">0</td><td class="cell_values" id="frugality">0</td></tr>
+            <tr><th colspan="2">p(Hits)</th><th>p(FA)</th><th>d'</th><th>Frug</th><th>Bias</th></tr>
+            <tr><td colspan="2" class="cell_values" id="pHits">0</td><td class="cell_values" id="pFA">0</td><td class="cell_values" id="dprime">0</td><td class="cell_values" id="frugality">0</td><td class="cell_values" id="bias">0</td></tr>
             <tr><th></th></tr>
-            <tr><th></th><th></th><th colspan="4"><button class="buttons_grey button_export" value="tree0" disabled>Export Tree 1 to Server</button></th></tr>
+            <tr><th colspan="6"><button class="buttons_grey button_export" value="tree0" disabled>Export Tree 1 to Server</button></th></tr>
         </table>
     </div>
     <div class="stat_columns">
         <table class="eval_table"  id="stat_tree1">
-            <tr><th></th><th></th><td class="table_title" colspan="4">STATISTICS OF TREE 2</td></tr>
+            <tr><td class="table_title" colspan="6">STATISTICS OF TREE 2</td></tr>
             <tr><th class="cell_narrow"></th><th></th><td class="table_header" colspan="4">PREDICTION</td></tr>
             <tr><th></th><th></th><th>yes</th><th>no</th><th>und</th><th>sum</th></tr>
             <tr><td class="table_header_rotated" rowspan="3"><div class="rotate">CRITERION</div></td><th class="cell_narrow">yes</td><td class="success" id="hits">Hit</td><td class="fail" id="misses">Miss</td><td class="undecided" id="undecided_pos">0</td><td class="cell_values" id="crit_yes_sum">0</td></tr>
             <tr><th class="cell_narrow">no</td><td class="fail" id="falsealarms">FA</td><td class="success" id="correctrejections">CR</td><td class="undecided" id="undecided_neg">0</td><td class="cell_values" id="crit_no_sum">0</td></tr>
             <tr><th class="cell_narrow">sum</th><td class="cell_values" id="pred_yes_sum">0</td><td class="cell_values" id="pred_no_sum">0</td><td class="cell_values" id="pred_und_sum">0</td><td class="cell_values" id="pred_sum_sum">0</td></tr>
             <tr><th></th></tr>
-            <tr><th></th><th></th><th>p(Hits)</th><th>p(FA)</th><th>d'</th><th>Frug</th></tr>
-            <tr><th></th><th></th><td class="cell_values" id="pHits">0</td><td class="cell_values" id="pFA">0</td><td class="cell_values" id="dprime">0</td><td class="cell_values" id="frugality">0</td></tr>
+            <tr><th colspan="2">p(Hits)</th><th>p(FA)</th><th>d'</th><th>Frug</th><th>Bias</th></tr>
+            <tr><td colspan="2" class="cell_values" id="pHits">0</td><td class="cell_values" id="pFA">0</td><td class="cell_values" id="dprime">0</td><td class="cell_values" id="frugality">0</td><td class="cell_values" id="bias">0</td></tr>
             <tr><th></th></tr>
-            <tr><th></th><th></th><th colspan="4"><button class="buttons_grey button_export" value="tree1" disabled>Export Tree 2 to Server</button></th></tr>
+            <tr><th colspan="6"><button class="buttons_grey button_export" value="tree1" disabled>Export Tree 2 to Server</button></th></tr>
         </table>
     </div>
     <ul class="columns">
         <div class="drophere disabled" id="drophere_tree1">Drop the cues here!</div>
     </ul>
     <ul class="trees" id="tree1">
+        <!-- here will go the cues -->
     </ul>
     <ul class="columns">
     </ul>
@@ -128,6 +133,7 @@
     <script src="libraries/bootstrap-tour-standalone.js"></script>
     <script src="libraries/jquery.ui.touch-punch.js"></script>
     <script src="libraries/spin.min.js"></script>
+    <script src="libraries/jquery.ui.slider-rtl.pack.js"></script>
     
     <!-- evaldas -->
     <script src="buttonshtmls.js"></script>

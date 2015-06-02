@@ -105,18 +105,6 @@ function getCueName(myCueId) {
     }
     return myName;
 }
-//function getExitValue(myCueId, myDir) {
-//    //var myCueId = getCueId(myTreeId,myTreeElementId);
-//    switch (myDir) {
-//        case 'yes':
-//            var myExit = $('#'+myCueId+' #hidden-exit_yes').val();
-//        break;
-//        case 'no':
-//            var myExit = $('#'+myCueId+' #hidden-exit_no').val();
-//        break;
-//    }
-//    return myExit;
-//}
 
 function updateStatisticsForSingleCues() {
     

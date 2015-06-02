@@ -233,6 +233,7 @@ function getDerivativeStatistics() {
 }
 
 function resetTreeStatistics() {
+    
     STEPS = 0;
     HITS = 'Hit';
     MISS = 'Miss';
@@ -259,6 +260,26 @@ function resetTreeStatistics() {
     updateAnalysisView('stat_tree1');
 }
 
+/*
+function updateSplitValuesView(myCueId) {
+    
+    //myDataset.split_values.forEach(function(myObj) {
+      
+        //console.log('HERE CHECK! myObj: '+JSON.stringify(myObj, null, "  "));
+      
+        //myCueId = myObj.id;
+        YES_VALUE = myObj.yes;
+        NO_VALUE = myObj.no;
+        SPLIT_VALUE = myObj.split;
+        
+        $('#'+myCueId+' #yes_value').text(YES_VALUE.toString());
+        $('#'+myCueId+' #no_value').text(NO_VALUE.toString());
+        $('#'+myCueId+' #split_value').text(SPLIT_VALUE.toString());
+        
+    //});
+    
+}
+*/
 
 function updateAnalysisView(myId) {
     

@@ -363,13 +363,37 @@ $(document).ready(function(){
         change: function() {
           var selectedSample = $(this).val();
           switch (selectedSample) {
-            case 'data_infarction':
-              //var myUrl = './data/data_infarction.csv';
-              var myUrl = 'https://dl.dropboxusercontent.com/u/15758787/data_infarction.csv';
+            case 'data_ccu_89':
+              //var myUrl = './data/data_ccu_89.csv';
+              var myUrl = 'https://dl.dropboxusercontent.com/u/15758787/data_csv/data_ccu_89.csv';
               break;
-            case 'data_cmc':
-              //var myUrl = './data/data_cmc.csv';
-              var myUrl = 'https://dl.dropboxusercontent.com/u/15758787/data_cmc.csv';
+            case 'data_ccu_89_rand':
+              //var myUrl = './data/data_ccu_89_rand.csv';
+              var myUrl = 'https://dl.dropboxusercontent.com/u/15758787/data_csv/data_ccu_89_rand.csv';
+              break;
+            case 'data_ccu_10':
+              //var myUrl = './data/data_ccu_10.csv';
+              var myUrl = 'https://dl.dropboxusercontent.com/u/15758787/data_csv/data_ccu_10.csv';
+              break;
+            case 'data_cmc_1cue':
+              //var myUrl = './data/data_cmc_1cue.csv';
+              var myUrl = 'https://dl.dropboxusercontent.com/u/15758787/data_csv/data_cmc_1cue.csv';
+              break;
+            case 'data_cmc_v1_1cue':
+              //var myUrl = './data/data_cmc_v1_1cue.csv';
+              var myUrl = 'https://dl.dropboxusercontent.com/u/15758787/data_csv/data_cmc_v1_1cue.csv';
+              break;
+            case 'data_cmc_FFT':
+              //var myUrl = './data/data_cmc_FFT.csv';
+              var myUrl = 'https://dl.dropboxusercontent.com/u/15758787/data_csv/data_cmc_FFT.csv';
+              break;
+            case 'data_cmc_v1_FFT':
+              //var myUrl = './data/data_cmc_v1_FFT.csv';
+              var myUrl = 'https://dl.dropboxusercontent.com/u/15758787/data_csv/data_cmc_v1_FFT.csv';
+              break;
+            case 'data_cmc_village2':
+              //var myUrl = './data/data_cmc_village2.csv';
+              var myUrl = 'https://dl.dropboxusercontent.com/u/15758787/data_csv/data_cmc_village2.csv';
               break;
             default:
               return false;  // if none is selected

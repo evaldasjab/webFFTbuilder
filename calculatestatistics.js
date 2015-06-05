@@ -147,10 +147,12 @@ function analyzeDataset(myTreeObj) {
     
     getDerivativeStatistics();
     
-    updateAnalysisView('stat_'+myTreeId);
+    updateAnalysisView(myTreeId);
     
     // do it only for the tree analysis (not individual cues in the cue list)
     if ( (myTreeId=='tree0') || (myTreeId=='tree1') ) {
+        
+        updateAnalysisView('stat_'+myTreeId);
         
         // calculate and display statistics for the cues in the tree
         for (var c = 0; c < TREE.treeCuesList.length; c++) {
@@ -233,6 +235,7 @@ function getDerivativeStatistics() {
 }
 
 function resetTreeStatistics() {
+    
     STEPS = 0;
     HITS = 'Hit';
     MISS = 'Miss';
@@ -259,8 +262,21 @@ function resetTreeStatistics() {
     updateAnalysisView('stat_tree1');
 }
 
+function resetDerivativeView(myId) {
+    
+    $('#'+myId+' #pHits').text('0');
+    $('#'+myId+' #pFA').text('0');
+    $('#'+myId+' #dprime').text('0');
+    $('#'+myId+' #frugality').text('0');
+    $('#'+myId+' #aprime').text('0');
+    $('#'+myId+' #bprime').text('0');
+    $('#'+myId+' #bdprime').text('0');
+    $('#'+myId+' #bias').text('0');
+}
 
 function updateAnalysisView(myId) {
+    
+    //alert('updateAnalysisView: '+myId);
     
     $('#'+myId+' #hits').text(HITS.toString());
     $('#'+myId+' #misses').text(MISS.toString());

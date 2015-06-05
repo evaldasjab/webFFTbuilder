@@ -51,7 +51,7 @@ function createTreeObj(myTreeId, myTreeCuesArray) {
     if (criterCueId != '') {
         myTreeObj.criterion = Object.keys(myDataset.data[0])[getInt(criterCueId)];  // get the name of criterion cue by id
     } else {
-        myTreeObj.criterion = '';
+        myTreeObj.criterion = getCueName(myTreeCuesArray[0]);   // buvo  
     }
     
     myTreeObj.cues = [];
@@ -105,29 +105,24 @@ function getCueName(myCueId) {
     }
     return myName;
 }
-//function getExitValue(myCueId, myDir) {
-//    //var myCueId = getCueId(myTreeId,myTreeElementId);
-//    switch (myDir) {
-//        case 'yes':
-//            var myExit = $('#'+myCueId+' #hidden-exit_yes').val();
-//        break;
-//        case 'no':
-//            var myExit = $('#'+myCueId+' #hidden-exit_no').val();
-//        break;
-//    }
-//    return myExit;
-//}
 
 function updateStatisticsForSingleCues() {
     
-    $('#cues_list .widget').each(function( index ) {
+    $('#blue_area .widget').each(function( index ) {
 
         var myCueId = $(this).attr('id');
         //console.log('SINGLECUE myCueId: '+myCueId);
       
         var myOneCueTreeObj = createTreeObj(myCueId, [myCueId]);
+        console.log('SINGLECUE myOneCueTreeObj: '+JSON.stringify(myOneCueTreeObj, null, "  ") );
+        analyzeDataset(myOneCueTreeObj);
+    });   
+}
+
+function updateStatForOneSingleCue(myCueId) {
+      
+        var myOneCueTreeObj = createTreeObj(myCueId, [myCueId]);
         //console.log('SINGLECUE myOneCueTreeObj: '+JSON.stringify(myOneCueTreeObj, null, "  ") );
     
         analyzeDataset(myOneCueTreeObj);
-    });   
 }

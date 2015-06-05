@@ -11,18 +11,6 @@ body {font-size:0.8em; font-family:Arial,Verdana,Sans-Serif; background: white;}
 a {color:black;}
 
 
-/* SUTVARKYTI!!! */
-
-
-input[type=text] {
-    width: inherit;
-    height: inherit;
-    margin: 0;
-    padding: 0;
-    border: 0;
-    text-align: center;
-}
-
 
 .ui-selectmenu-button {
   cursor: pointer;
@@ -40,6 +28,11 @@ input[type=text] {
   left: 195px;
   z-index: 0;
   transition: color 1s;
+}
+.ui-selectmenu-button span.ui-selectmenu-text {
+  padding: 2px 0 0 0;
+  text-align: center;
+  vertical-align: middle;
 }
 .ui-selectmenu-button:hover {
   background: #e5e5e5;     /*lighter than LightGrey, b 90% */
@@ -246,20 +239,6 @@ article {
   left: 4px;
 }
 
-.button_swap {
-  cursor: pointer;
-  background: transparent;
-  border: none !important;
-  fill: none;
-  stroke-width: 1;
-}
-#blue_area .button_swap {
-  stroke: White;
-}
-#white_area .button_swap {
-  stroke: Grey;
-}
-
 /* Row section End ***************/
 
 /* Columns *************/
@@ -359,16 +338,17 @@ li:not(.ui-draggable-disabled) .widget_title {
   position: relative;
   left: 0px;
 }
-.trees .widget_content {
-  width: 260px;
+#white_area .widget_content {
+  width: 210px;
   position: relative;
-  left: -50px;
+  left: -47px;
 }
 
 .exit_widget {
     width: 80px;
     height: 40px;
     border-radius: 20px;
+    background: #f6bb42;   /* special yellow */
 }
 .exit_widget_title {
   width: 60px;
@@ -389,7 +369,7 @@ li:not(.ui-draggable-disabled) .widget_title {
   position: absolute;
   left: -100px;
   bottom: -80px;
-  background: #2ECC71; /* special GREEN */
+  /*background: #edaf8a; /*  ORANGE 50% */
 }
 .exit_left .exit_arrow {
   position: absolute;
@@ -400,7 +380,7 @@ li:not(.ui-draggable-disabled) .widget_title {
     position: absolute;
     left: 140px;
     bottom: -80px;
-    background: #E74C3C;  /* special RED */
+    /*background: #edaf8a;  /*  ORANGE 50% */
 }
 .exit_right .exit_arrow {
   position: absolute;
@@ -473,11 +453,14 @@ li:not(.ui-draggable-disabled) .widget_title {
   left: 53px;
   top: 9px;
 }
+.exit_widget .button_close:hover {
+  background: #f8cc71;    /* special yellow 75% */
+}
 .exit_left .button_close:hover {
-  background: #62d995;     /*lighter than special GREEN, opacity 75% */
+  /*background: #62d995;     /*lighter than special GREEN, opacity 75% */
 }
 .exit_right .button_close:hover {
-  background: #ed796d;     /*lighter than special RED, opacity 75% */
+  /*background: #ed796d;     /*lighter than special RED, opacity 75% */
 }
 
 input[type=radio] {
@@ -497,6 +480,117 @@ input[type=radio]:checked + label{
 
 /* Button Controls End ***************/
 
+/* Split values **************/
+
+.split_table {
+  border-spacing: 0px;
+  border: 0px solid black;
+  width: 200px;
+  position: relative;
+  left: 10px;
+}
+
+.ui-slider-horizontal {
+  height: 1px;
+}
+.ui-slider .ui-widget-content {
+}
+.ui-slider .ui-slider-handle {
+  height: 12px;
+  width: 12px;
+  border-radius: 7px;
+  top: -7px;
+}
+
+#blue_area .ui-slider-horizontal {
+  background: White;
+}
+#blue_area .ui-slider .ui-widget-content {
+  border: 1px solid White;
+  background: White;
+}
+#blue_area .ui-slider .ui-slider-handle {
+  border: 1px solid White;
+  background: White;
+}
+
+#white_area .ui-slider-horizontal {
+  background: Grey;
+}
+#white_area .ui-slider .ui-widget-content {
+  border: 1px solid Grey;
+  background: Grey;
+}
+#white_area .ui-slider .ui-slider-handle {
+  border: 1px solid Grey;
+  background: Grey;
+}
+
+.ui-slider-handle .ui-state-hover:hover {
+  border: 1px solid Black;
+  background: LightGrey;
+}
+.ui-slider .ui-state-hover:hover {
+  border: 1px solid LightGrey;
+  background: LightGrey;
+}
+
+.cell_exit{
+  width: 40px;
+  border: 0px;
+  text-align: center;
+  font-family: 'Offside', Arial, Sans-Serif;
+  color: Black;
+  background-color: #f6bb42;    /* ORANGE 50% */
+}
+
+input[type=text] {
+    width: inherit;
+    height: inherit;
+    margin: 0px;
+    padding: 1px;
+    border: 0px solid LightGrey;
+    font-size: 10px;
+    text-align: center;
+}
+input[type=text]:hover {
+  //background: #e5e5e5;     /*lighter than LightGrey, b 90% */
+  color: #50ADE1;  /* Special BLUE */
+  font-weight: bold;
+}
+
+.button_swap {
+  height: 20px;
+  width: 40px;
+  border-radius: 10px;
+  cursor: pointer;
+  background: transparent;
+  border: none !important;
+  fill: none;
+  stroke-width: 1;
+  transition: background 1s, stroke 1s, stroke-width 1s;
+}
+#blue_area .button_swap {
+  stroke: White;
+}
+#blue_area .button_swap:hover {
+  background: #7cc2e9;     /*lighter than special BLUE, opacity 75% */
+  transition: background 0s;
+}
+#white_area .button_swap {
+  stroke: Grey;
+}
+#white_area .button_swap:hover {
+  background: #e5e5e5;     /*lighter than LightGrey, b 90% */
+  transition: background 0s;
+}
+.button_swap:active {
+  stroke-width: 2;
+  transition: background 0s, stroke 0s, stroke-width 0s;
+}
+
+/* Split values End *********/
+
 /* Statistics ***************/
 
 .button_stat {
@@ -510,11 +604,13 @@ input[type=radio]:checked + label{
   font-size: 12px;
   color: Black;
   text-align: center;
-  margin: 20px 0px 0px 5px;
 }
 
-.stats {
-  display: inline-block; 
+.stat_cue_header {
+  display: inline-block;
+}
+.stat_inline {
+  display: inline-block;
 }
 
 .eval_table {
@@ -588,6 +684,7 @@ th {
   border-bottom: 0px solid LightGrey;
   border-collapse: collapse;
   width: 40px;
+  padding: 0px;
 }
 #blue_area .cell_values{
   border-top: 1px solid White;
@@ -598,19 +695,19 @@ th {
 
 .success{
     text-align: center;
-    color: white;
-    background-color: #2ECC71;   /* green */
+    color: Black;
+    background-color: #8cc152;   /* green */
 }
 
 .fail{
     text-align: center;
-    color: white;
-    background-color: #E74C3C;  /* red */
+    color: Black;
+    background-color: #fc6e51;  /* red */
 }
 
 .undecided{
     text-align: center;
-    color: white;
+    color: Black;
     background-color: #50ADE1;   /* blue */
 }
 

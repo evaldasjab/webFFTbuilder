@@ -39,9 +39,14 @@ function selectCriterion() {
         updateJsonDataset('tree1'); // update JSON object and tree statistics
         updateStatisticsForSingleCues(); //update statistics in the blue area
         
+        // reset deriv statistics for the criterion
+        resetDerivativeView(criterCueId);
+        
         // show next tooltip
-        console.log('TIP 3');
-        tour.goTo(3);
+        console.log('TIP 2');
+        if (tour.getCurrentStep()<=1) {
+            tour.goTo(2);
+        }
     });
 }
 
@@ -67,13 +72,9 @@ function makeSortable() {                 // This function will make the widgets
             //console.log("origCueId: " + origCueId);
             
             // show next tooltip
-            console.log('TIP 6 or 11');
-            if (tour.getCurrentStep()<=5) {
-                tour.goTo(6);
-            } else if (tour.getCurrentStep()<=10){
-                tour.goTo(11);
-            } else {
-                //tour.goTo(15);
+            console.log('TIP 3 or ');
+            if (tour.getCurrentStep()<=2) {
+                tour.goTo(3);
             }
         },
         drag: function(event,ui){
@@ -118,7 +119,10 @@ function makeSortable() {                 // This function will make the widgets
         receive: function(event,ui) {
             
             // remove "split values" part from the stats table
-            $('#'+dragCueId+' .row_to_delete').remove();
+            //$('#'+dragCueId+' .row_to_delete').remove();
+            
+            // reactivate split value slider, manual change and swap
+            splitValueSliderChangeSwapReactivate(dragCueId, myDataset, trueDataset);
             
             // replace the radio button with close button
             $('#'+dragCueId+' .criterion_class').remove(); // remove the radio button
@@ -129,18 +133,22 @@ function makeSortable() {                 // This function will make the widgets
 
             // add "TREE up to this cue" statistics table
             $('#'+dragCueId+' .stats_header').text('THIS CUE');    // rename the table to "stats of this cue"
+            $('#'+dragCueId+' .stat_cue_header').prepend( htmlButtonStat() ); // add the button "stats of"
             $('#'+dragCueId+' .stat_cue_header').append( htmlStatTreeUpToThisCue() ); // add the table "stats of the tree up to this cue"
-            $('#'+dragCueId+' .widget_content').prepend( htmlButtonStat() ); // add the button "stats of"
+            
             activateButtonStat(dragCueId);            // activate the button "stats of"
             
+            // update JSON dataset for the analysis algorithms
+            updateJsonDataset(dragTreeId);
+            
             // show next tooltip
-            console.log('TIP 7 or 12 or 15');
-            if (tour.getCurrentStep()<=6) {
-                tour.goTo(7);
-            } else if (tour.getCurrentStep()<=12){
-                tour.goTo(12);
-            } else if (tour.getCurrentStep()<=14){ 
-                tour.goTo(15);
+            console.log('TIP 4 or 5 or 18');
+            if (tour.getCurrentStep()<=3) {
+                tour.goTo(4);
+            } else if (tour.getCurrentStep()<=4){
+                tour.goTo(5);
+            } else if (tour.getCurrentStep()<=17){
+                tour.goTo(18);
             }
         },
         update: function (event,ui) {

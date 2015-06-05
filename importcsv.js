@@ -15,8 +15,8 @@ function buttonUploadCsvFile() {
 }
 */
 
-// FIX THIS!!!
-myDataset = {};
+// FIX THIS!!! 
+myDataset = {};  //GLOBAL!
 
 function handleFileSelect(evt) {
   
@@ -46,26 +46,26 @@ function listCues(results){
   //var myDatasetFilter = filterOutNonZerosAndOnes(results);
   //console.log('Filtered Dataset: '+JSON.stringify(myDatasetFilter, null, "  "));
   
-  // DEEP COPY the original dataset!
-  var trueDataset = jQuery.extend(true, {}, results); 
+  // DEEP COPY the original dataset! 
+  trueDataset = jQuery.extend(true, {}, results);   //GLOBAL VARIABLE!
   
   // get split values - means (average of min and max) of every variable's values
   var splitValuesArray = getSplitdValues(results);
     
   // convert values to binary
   var binaryDataset = convertToBinary(results, trueDataset, splitValuesArray);
-  
-    myDataset = binaryDataset;
+    
+    myDataset = binaryDataset;  // GLOBAL VARIABLE!
   
     //split the results equally for TRAINING and TESTING
     var myLength = myDataset.data.length;
     var myHalf = Math.floor(myLength/2);
     var mySecondHalf = myLength - myHalf;
     console.log('myLength: '+myLength+', myHalf: '+myHalf);
-    myDataAllCases = myDataset.data;
-    myDataForTraining = myDataset.data.slice(0,myHalf);
+    myDataAllCases = myDataset.data;  // GLOBAL VARIABLE!
+    myDataForTraining = myDataset.data.slice(0,myHalf);  // GLOBAL VARIABLE!
     //console.log('myDataForTraining: '+JSON.stringify(myDataForTraining, null, "  "));
-    myDataForTesting = myDataset.data.slice(myHalf,myLength);
+    myDataForTesting = myDataset.data.slice(myHalf,myLength);  // GLOBAL VARIABLE!
     //console.log('myDataForTesting: '+JSON.stringify(myDataForTesting, null, "  "));
     
     var noOfFields = Object.keys(myDataAllCases[0]).length;  // get it from the first object in the data array, not from "meta" object, because there are all fields including removed
@@ -87,36 +87,43 @@ function listCues(results){
             <ul class="cues"> \
                 <li id="cue'+i+'" name='+myCueName+' class="widget"> \
                   <div class="widget_head"> \
+                    <div title="Expand/Collapse the Cue"> \
                     <svg class="button_controls button_expand" height="20" width="20"> \
                       <polyline class="down" points="3 7,10 14,17 7"/> \
                       <polyline class="up" points="3 13,10 6,17 13"/> \
                     </svg> \
+                    </div> \
                     <div class="widget_title" > \
                       <span id="title'+i+'" title="'+myCueName+'">'+myCueName+'</span> \
                     </div> \
                     <input type="radio" id="button_radio_'+i+'" class="criterion_class" name="criterion_name" value="cue'+i+'" /> \
-                    <label for="button_radio_'+i+'" class="button_controls criterion_label"> \
+                    <label for="button_radio_'+i+'" class="button_controls criterion_label" title="Select as Criterion"> \
                       <svg class="button_radio" height="20" width="20"> \
                         <circle cx="10" cy="10" r="6"/> \
                       </svg> \
                     </label> \
                   </div> \
                   <div class="widget_content"> \
-                        <ul class="stat_cue_header"> \
-                          <li class="stats stat_cue unsortable">\
+                        <div class="unsortable">\
+                            <table class="split_table"> \
+                                <tr><td class="table_title" colspan="5">SPLIT OF CUE VALUES</td></tr> \
+                                <tr><th>min</th><td class="stats_slider" colspan="3"><div class="split_slider" title="Change the Split Value"></div></td><th>max</th></tr> \
+                                <tr><td class="cell_values" id="min_value" title="Minimum Value">0</td><th class="cell_exit" id="split_label_left" title="Values between MIN (included) and SPLIT (included) are...">no</th><td class="cell_values"><input type="text" id="split_value" value="0" title="Split Value"></input></td><th class="cell_exit" id="split_label_right" title="Values between SPLIT (excluded) and MAX (included) are...">yes</th><td class="cell_values" id="max_value" title="Maximum Value">0</td></tr> \
+                                <tr><th></th><td class="swap" colspan="3" title="Swap YES and NO Ranges"><svg class="button_swap" height="20" width="40"><polyline class="left" points="9 3,2 10,9 17"/><polyline class="right" points="31 3,38 10,31 17"/><line x1="2" y1="10" x2="38" y2="10"/></svg></td><th></th></tr> \
+                            </table> \
+                        </div> \
+                        <ul class="stat_cue_header unsortable"> \
+                          <li class="stat_inline stat_cue unsortable">\
                             <table class="eval_table"> \
-                                <tr class="row_to_delete"><td class="stats_slider" colspan="6"><div class="stat_slider"></div></td></tr> \
-                                <tr class="row_to_delete"><td class="cell_values" id="yes_value" colspan="2">0</td><td class="success">yes</td><td class="cell_values"><input type="text" id="split_value" value="0"></input></td><td class="fail">no</td><td class="cell_values" id="no_value">0</td></tr> \
-                                <tr class="row_to_delete"><th id="yes_label" colspan="2">max</th><td class="swap" colspan="3"><svg class="button_swap" height="20" width="40"><polyline class="left" points="7 6,2 11,7 16"/><polyline class="right" points="34 6,39 11,34 16"/><line x1="2" y1="11" x2="39" y2="11"/></svg></td><th id="no_label">min</th></tr> \
                                 <tr><td class="stats_header table_title" colspan="6">STATS OF SINGLE CUE TREE</td></tr> \
                                 <tr><td class="cell_narrow"></td><td></td><td class="table_header" colspan="4">PREDICTION</td></tr> \
                                 <tr><td></td><td></td><th>yes</th><th>no</th><th>und</th><th>sum</th></tr> \
-                                <tr><td class="table_header_rotated" rowspan="3"><div class="rotate">CRITERION</div></td><th class="cell_narrow">yes</td><td class="success" id="hits">Hit</td><td class="fail" id="misses">Miss</td><td class="undecided" id="undecided_pos">0</td><td class="cell_values" id="crit_yes_sum">0</td></tr> \
-                                <tr><th class="cell_narrow">no</th><td class="fail" id="falsealarms">FA</td><td class="success" id="correctrejections">CR</td><td class="undecided" id="undecided_neg">0</td><td class="cell_values" id="crit_no_sum">0</td></tr> \
+                                <tr><td class="table_header_rotated" rowspan="3"><div class="rotate">CRITERION</div></td><th class="cell_narrow">yes</td><td class="success" id="hits" title="Hits">Hit</td><td class="fail" id="misses" title="Misses">Miss</td><td class="undecided" id="undecided_pos" title="Undecided Positive">0</td><td class="cell_values" id="crit_yes_sum">0</td></tr> \
+                                <tr><th class="cell_narrow">no</th><td class="fail" id="falsealarms" title="False Alarms">FA</td><td class="success" id="correctrejections" title="Correct Rejections">CR</td><td class="undecided" id="undecided_neg" title="Undecided Negative">0</td><td class="cell_values" id="crit_no_sum">0</td></tr> \
                                 <tr><th class="cell_narrow">sum</th><td class="cell_values" id="pred_yes_sum">0</td><td class="cell_values" id="pred_no_sum">0</td><td class="cell_values" id="pred_und_sum">0</td><td class="cell_values" id="pred_sum_sum">0</td></tr> \
                                 <tr><th></th></tr> \
-                                <tr><th colspan="2">p(Hits)</th><th>p(FA)</th><th>d&#8242</th><th>Frug</th><th>Bias</th></tr> \
-                                <tr><td colspan="2" class="cell_values" id="pHits">0</td><td class="cell_values" id="pFA">0</td><td class="cell_values" id="dprime">0</td><td class="cell_values" id="frugality">0</td><td class="cell_values" id="bias">0</td></tr> \
+                                <tr><th colspan="2" title="Probability of Hits">p(Hits)</th><th title="Probability of False Alarms">p(FA)</th><th title="D prime">d&#8242</th><th title="Frugality">Frug</th><th title="C or Bias">Bias</th></tr> \
+                                <tr><td colspan="2" class="cell_values" id="pHits" title="Probability of Hits">0</td><td class="cell_values" id="pFA" title="Probability of False Alarms">0</td><td class="cell_values" id="dprime" title="D prime">0</td><td class="cell_values" id="frugality" title="Frugality">0</td><td class="cell_values" id="bias" title="C or Bias">0</td></tr> \
                             </table> \
                           </li \
                         </ul> \
@@ -141,10 +148,17 @@ function listCues(results){
     document.getElementById("button_testing").textContent = 'Testing: '+mySecondHalf.toString();
     
     // in the beginning, show statistics with TRAINING data
-    myData = myDataAllCases;
+    myData = myDataAllCases;  // GLOBAL VARIABLE!
     
     // reset the statistics
     resetTreeStatistics(); // if there was from previous csv upload
+    
+    // FIX THIS!!!
+    updateStatisticsForSingleCues();
+    $('.widget').each(function() {
+      var myId = $(this).attr('id');
+      resetDerivativeView(myId);
+    });
     
     // activate split value slider, manual change and swap
     splitValueSliderChangeSwap(myDataset, trueDataset, splitValuesArray);
@@ -162,8 +176,9 @@ function listCues(results){
     
     // show next tooltip
     console.log('TIP 1');
-    tour.goTo(1);
-  
+    if (tour.getCurrentStep()<=0) {
+      tour.goTo(1);
+    }
 }
 
 function getSplitdValues(mySet) {
@@ -197,9 +212,10 @@ function getSplitdValues(mySet) {
     var mySplitObj = {};
     mySplitObj.id = 'cue'+i;
     mySplitObj.name = myField;
-    mySplitObj.yes = myFieldMax;
-    mySplitObj.no = myFieldMin;
+    mySplitObj.min = myFieldMin;
+    mySplitObj.max = myFieldMax;
     mySplitObj.split = myFieldMean;
+    mySplitObj.minisno_maxisyes = true;
     mySplitValuesArray.push(mySplitObj);
   }
   
@@ -210,7 +226,9 @@ function getSplitdValues(mySet) {
 
 function convertToBinary(mySet, myTrueSet, mySplitValuesArray) {
    
+  console.log('CONVERT mySplitValuesArray: '+JSON.stringify(mySplitValuesArray, null, "  "));
   //console.log('BEFORE Dataset: '+JSON.stringify(mySet, null, "  "));
+  //console.log('TRUE Dataset: '+JSON.stringify(myTrueSet, null, "  "));
     
   // pick a field
   for (i in mySplitValuesArray) {
@@ -228,16 +246,33 @@ function convertToBinary(mySet, myTrueSet, mySplitValuesArray) {
       var myObj = mySet.data[c];
       //console.log(c+'c LOOP! myTrueObj: '+JSON.stringify(myTrueObj, null, "  "));
       //console.log(c+'c LOOP! myObj: '+JSON.stringify(myObj, null, "  "));
-            
-      // replace value to 0, if it's in range of SPLIT (included) and NO (included) values
-      if ( (myTrueObj[myFieldValues.name] >= Math.min(myFieldValues.split, myFieldValues.no) ) &&
-           (myTrueObj[myFieldValues.name] <= Math.max(myFieldValues.split, myFieldValues.no) ) ) {
-        
-        myObj[myFieldValues.name] = 0;
-        
-      // replace value to 1, if it's in range of YES (included) and SPLIT (excluded) values 
-      } else {
-        myObj[myFieldValues.name] = 1;
+          
+      // replace value to 0, if it's in range of MIN (included) and SPLIT (included)
+      if ( (myTrueObj[myFieldValues.name] >= myFieldValues.min) && (myTrueObj[myFieldValues.name] <= myFieldValues.split) ) {
+        //console.log('MIN-SPLIT');
+        switch (myFieldValues.minisno_maxisyes) {
+          case true:
+            //console.log('TRUE, so 0');
+            myObj[myFieldValues.name] = 0;
+            break;
+          case false:
+            //console.log('FALSE, so 1');
+            myObj[myFieldValues.name] = 1;
+            break;
+        }
+      // replace value to 1, if it's in range of SPLIT (excluded) and MAX (included)
+      } else if ( (myTrueObj[myFieldValues.name] > myFieldValues.split) && (myTrueObj[myFieldValues.name] <= myFieldValues.max) ) {
+        //console.log('SPLIT-MAX');
+        switch (myFieldValues.minisno_maxisyes) {
+          case true:
+            //console.log('TRUE, so 1');
+            myObj[myFieldValues.name] = 1;
+            break;
+          case false:
+            //console.log('FALSE, so 0');
+            myObj[myFieldValues.name] = 0;
+            break;
+        }          
       }
     };
   }

@@ -24,7 +24,7 @@
         <h1>Grow a FAST-and-FRUGAL Tree</h1>       
     </header>
         
-    <button class="button_help" id="button_help_id">?</button>
+    <button class="button_help" id="button_help_id" title="Guiding Tips">?</button>
     
     <button class="buttons_grey button_load_csv" id="button_upload_csv_file">Upload CSV File</button>
     <input type="file" id="csv-file" name="files">
@@ -35,11 +35,11 @@
         <option value="data_ccu_89">data_ccu_89.csv</option>
         <option value="data_ccu_89_rand">data_ccu_89_rand.csv</option>
         <option value="data_ccu_10">data_ccu_10.csv</option>
-        <option value="data_cmc_1cue">data_cmc_1cue.csv</option>
-        <option value="data_cmc_v1_1cue">data_cmc_v1_1cue.csv</option>
-        <option value="data_cmc_FFT">data_cmc_FFT.csv</option>
-        <option value="data_cmc_v1_FFT">data_cmc_v1_FFT.csv</option>
-        <option value="data_cmc_village2">data_cmc_village2.csv</option>
+        <option value="data_cmc_1cue">data_CMC_1cue.csv</option>
+        <option value="data_cmc_v1_1cue">data_CMCv1_1cue.csv</option>
+        <option value="data_cmc_FFT">data_CMC_FFT.csv</option>
+        <option value="data_cmc_v1_FFT">data_CMCv1_FFT.csv</option>
+        <option value="data_cmc_village2">data_CMC_village2.csv</option>
         </optgroup>
     </select>
     
@@ -61,10 +61,12 @@
         </div>
     </div>
     
-    <svg id="button_expand_all_blue" class="buttons_controls button_expand_all disabled" height="20" width="20">
-        <polyline class="down" points="3 7,10 14,17 7"/>
-        <polyline class="up" points="3 13,10 6,17 13"/>
-    </svg>
+    <div title="Expand/Collapse All Cues in the Blue Area">
+        <svg id="button_expand_all_blue" class="buttons_controls button_expand_all disabled" height="20" width="20">
+            <polyline class="down" points="3 7,10 14,17 7"/>
+            <polyline class="up" points="3 13,10 6,17 13"/>
+        </svg>
+    </div>
 </div>
     <!-- row of cues END-->
 
@@ -72,11 +74,13 @@
     <!-- FFTs -->
 
 <div class = "page_area" id="white_area">
-        
-    <svg class="buttons_controls button_expand_all disabled" id="button_expand_all_white" height="20" width="20">
-        <polyline class='down' points="3 7,10 14,17 7"/>
-        <polyline class="up" points="3 13,10 6,17 13"/>
-    </svg>
+
+    <div title="Expand/Collapse All Cues in the White Area">
+        <svg class="buttons_controls button_expand_all disabled" id="button_expand_all_white" height="20" width="20">
+            <polyline class='down' points="3 7,10 14,17 7"/>
+            <polyline class="up" points="3 13,10 6,17 13"/>
+        </svg>
+    </div>
     
     <ul class="columns">        
         <li class="drophere disabled" id="drophere_tree0">Drop the cues here!</li>
@@ -91,12 +95,12 @@
             <tr><td class="table_title" colspan="6">STATISTICS OF TREE 1</td></tr>
             <tr><th class="cell_narrow"></th><th></th><td class="table_header" colspan="4">PREDICTION</td></tr>
             <tr><th></th><th></th><th>yes</th><th>no</th><th>und</th><th>sum</th></tr>
-            <tr><td class="table_header_rotated" rowspan="3"><div class="rotate">CRITERION</div></td><th class="cell_narrow">yes</td><td class="success" id="hits">Hit</td><td class="fail" id="misses">Miss</td><td class="undecided" id="undecided_pos">0</td><td class="cell_values" id="crit_yes_sum">0</td></tr>
-            <tr><th class="cell_narrow">no</td><td class="fail" id="falsealarms">FA</td><td class="success" id="correctrejections">CR</td><td class="undecided" id="undecided_neg">0</td><td class="cell_values" id="crit_no_sum">0</td></tr>
+            <tr><td class="table_header_rotated" rowspan="3"><div class="rotate">CRITERION</div></td><th class="cell_narrow">yes</td><td class="success" id="hits" title="Hits">Hit</td><td class="fail" id="misses" title="Misses">Miss</td><td class="undecided" id="undecided_pos" title="Undecided Positive">0</td><td class="cell_values" id="crit_yes_sum">0</td></tr>
+            <tr><th class="cell_narrow">no</td><td class="fail" id="falsealarms" title="False Alarms">FA</td><td class="success" id="correctrejections" title="Correct Rejections">CR</td><td class="undecided" id="undecided_neg" title="Undecided Negative">0</td><td class="cell_values" id="crit_no_sum">0</td></tr>
             <tr><th class="cell_narrow">sum</th><td class="cell_values" id="pred_yes_sum">0</td><td class="cell_values" id="pred_no_sum">0</td><td class="cell_values" id="pred_und_sum">0</td><td class="cell_values" id="pred_sum_sum">0</td></tr>
             <tr><th></th></tr>
-            <tr><th colspan="2">p(Hits)</th><th>p(FA)</th><th>d'</th><th>Frug</th><th>Bias</th></tr>
-            <tr><td colspan="2" class="cell_values" id="pHits">0</td><td class="cell_values" id="pFA">0</td><td class="cell_values" id="dprime">0</td><td class="cell_values" id="frugality">0</td><td class="cell_values" id="bias">0</td></tr>
+            <tr><th colspan="2" title="Probability of Hits">p(Hits)</th><th title="Probability of False Alarms">p(FA)</th><th title="D prime">d'</th><th title="Frugality">Frug</th><th title="C or Bias">Bias</th></tr>
+            <tr><td colspan="2" class="cell_values" id="pHits" title="Probability of Hits">0</td><td class="cell_values" id="pFA" title="Probability of False Alarms">0</td><td class="cell_values" id="dprime" title="D prime">0</td><td class="cell_values" id="frugality" title="Frugality">0</td><td class="cell_values" id="bias" title="C or Bias">0</td></tr>
             <tr><th></th></tr>
             <tr><th colspan="6"><button class="buttons_grey button_export" value="tree0" disabled>Export Tree 1 to Server</button></th></tr>
         </table>
@@ -106,12 +110,12 @@
             <tr><td class="table_title" colspan="6">STATISTICS OF TREE 2</td></tr>
             <tr><th class="cell_narrow"></th><th></th><td class="table_header" colspan="4">PREDICTION</td></tr>
             <tr><th></th><th></th><th>yes</th><th>no</th><th>und</th><th>sum</th></tr>
-            <tr><td class="table_header_rotated" rowspan="3"><div class="rotate">CRITERION</div></td><th class="cell_narrow">yes</td><td class="success" id="hits">Hit</td><td class="fail" id="misses">Miss</td><td class="undecided" id="undecided_pos">0</td><td class="cell_values" id="crit_yes_sum">0</td></tr>
-            <tr><th class="cell_narrow">no</td><td class="fail" id="falsealarms">FA</td><td class="success" id="correctrejections">CR</td><td class="undecided" id="undecided_neg">0</td><td class="cell_values" id="crit_no_sum">0</td></tr>
+            <tr><td class="table_header_rotated" rowspan="3"><div class="rotate">CRITERION</div></td><th class="cell_narrow">yes</td><td class="success" id="hits" title="Hits">Hit</td><td class="fail" id="misses" title="Misses">Miss</td><td class="undecided" id="undecided_pos" title="Undecided Positive">0</td><td class="cell_values" id="crit_yes_sum">0</td></tr>
+            <tr><th class="cell_narrow">no</td><td class="fail" id="falsealarms" title="False Alarms">FA</td><td class="success" id="correctrejections" title="Correct Rejections">CR</td><td class="undecided" id="undecided_neg" title="Undecided Negative">0</td><td class="cell_values" id="crit_no_sum">0</td></tr>
             <tr><th class="cell_narrow">sum</th><td class="cell_values" id="pred_yes_sum">0</td><td class="cell_values" id="pred_no_sum">0</td><td class="cell_values" id="pred_und_sum">0</td><td class="cell_values" id="pred_sum_sum">0</td></tr>
             <tr><th></th></tr>
-            <tr><th colspan="2">p(Hits)</th><th>p(FA)</th><th>d'</th><th>Frug</th><th>Bias</th></tr>
-            <tr><td colspan="2" class="cell_values" id="pHits">0</td><td class="cell_values" id="pFA">0</td><td class="cell_values" id="dprime">0</td><td class="cell_values" id="frugality">0</td><td class="cell_values" id="bias">0</td></tr>
+            <tr><th colspan="2" title="Probability of Hits">p(Hits)</th><th title="Probability of False Alarms">p(FA)</th><th title="D prime">d'</th><th title="Frugality">Frug</th><th title="C or Bias">Bias</th></tr>
+            <tr><td colspan="2" class="cell_values" id="pHits" title="Probability of Hits">0</td><td class="cell_values" id="pFA" title="Probability of False Alarms">0</td><td class="cell_values" id="dprime" title="D prime">0</td><td class="cell_values" id="frugality" title="Frugality">0</td><td class="cell_values" id="bias" title="C or Bias">0</td></tr>
             <tr><th></th></tr>
             <tr><th colspan="6"><button class="buttons_grey button_export" value="tree1" disabled>Export Tree 2 to Server</button></th></tr>
         </table>
@@ -140,7 +144,6 @@
     <script src="libraries/bootstrap-tour-standalone.js"></script>
     <script src="libraries/jquery.ui.touch-punch.js"></script>
     <script src="libraries/spin.min.js"></script>
-    <script src="libraries/jquery.ui.slider-rtl.pack.js"></script>
     
     <!-- evaldas -->
     <script src="buttonshtmls.js"></script>

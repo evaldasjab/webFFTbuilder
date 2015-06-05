@@ -1,98 +1,91 @@
 // Makes and activates buttons, adds htmls
 
-function splitValueSliderChangeSwap(mySet, myTrueSet, mySplitValuesArray) {
+function splitValueSliderChangeSwap(mySet, myTrueSet) {
     
-    //myDataset.split_values.forEach(function(myObj) {
+    var mySplitValuesArray = mySet.split_values;
+    
     mySplitValuesArray.forEach(function(mySplitObj) {
-      
+        /*CONTENTS of mySplitValuesArray :
+        mySplitObj.id = 'cue'+i;
+        mySplitObj.name = myField;
+        mySplitObj.min = myFieldMin;
+        mySplitObj.max = myFieldMax;
+        mySplitObj.split = myFieldMean;
+        mySplitObj.minisno_maxisyes = true;
+        */
         //console.log('HERE CHECK BEFORE! myObj: '+JSON.stringify(myObj, null, "  "));
       
         var myCueId = mySplitObj.id;
+        var myTrueCueId = mySplitObj.id;
+        var myCueName = mySplitObj.name;
         
         // update the values in the widget content
-        $('#'+myCueId+' #yes_value').text(mySplitObj.yes);
-        $('#'+myCueId+' #no_value').text(mySplitObj.no);
+        $('#'+myCueId+' #min_value').text(mySplitObj.min);
+        $('#'+myCueId+' #max_value').text(mySplitObj.max);
         $('#'+myCueId+' #split_value').val(mySplitObj.split);
         
-        if ((mySplitObj.yes > mySplitObj.no)) {
-            var minVal = mySplitObj.no;
-            var maxVal = mySplitObj.yes;
-            var reverseSlider = true;
-        } else {
-            var minVal = mySplitObj.yes;
-            var maxVal = mySplitObj.no;
-            var reverseSlider = false;
-        }
-        
-        $('#'+myCueId+' .stat_slider').slider({
-            isRTL: true,
-            min: minVal,
-            max: maxVal,
+        $('#'+myCueId+' .split_slider').slider({
+            min: mySplitObj.min,
+            max: mySplitObj.max,
             value: mySplitObj.split,
-            step: 0.1,
+            step: 0.5,
             slide: function(event, ui) {
-                $('#'+myCueId+' #split_value').val(ui.value);
+                $(this).closest('.widget').find('#split_value').val(ui.value);
                 //$( "input" ).val( "$" + ui.value );
+                //$('li[id^='+myTrueCueId+']').find('.split_slider').slider('refresh');
             },
             change: function( event, ui ) {
+                
                 // change binary values of this cue/field in the dataset
                 mySplitObj.split = ui.value;
+                
+                // update slider and input field in ALL cues which start with the same id (cues in the trees), except the original cue (endless loop)
+                $('li[id^='+myTrueCueId+']:not(#'+myCueId+') .split_slider').slider({value: mySplitObj.split});
+                $('li[id^='+myTrueCueId+'] #split_value').val(mySplitObj.split);
+                
                 //console.log('HERE CHECK AFTER! myObj: '+JSON.stringify(myObj, null, "  "));
+                
+                // reconvert the dataset
                 var mySet = convertToBinary(myDataset, myTrueSet, [mySplitObj]);
                 
                 // update statistics, if there a criterion already selected
+                updateStatForOneSingleCue(myTrueCueId); //update statistics in the blue area
+                
                 if (criterCueId != '') {
+                    // reset statistics of the criterion
+                    resetDerivativeView(criterCueId);
                     updateJsonDataset('tree0'); // update JSON object and tree statistics
-                    updateJsonDataset('tree1'); // update JSON object and tree statistics
-                    updateStatForOneSingleCue(myCueId); //update statistics in the blue area
+                    updateJsonDataset('tree1'); // update JSON object and tree statistics 
+                } else {
+                    resetDerivativeView(myTrueCueId);
+                }
+                
+                // show next tooltip
+                console.log('TIP 12');
+                if (tour.getCurrentStep()<=11) {
+                    tour.goTo(12);
                 }
             }
         });
         
-        $('#'+myCueId+' #split_value').change(function () {
+        $('li[id^='+myTrueCueId+'] #split_value').change(function () {
             //var value = this.value.substring(1);
-            var value = $(this).val();
-            $('#'+myCueId+' .stat_slider').slider("value", parseFloat(value));
+            var myValue = $(this).val();
+            $('li[id^='+myTrueCueId+'] .split_slider').slider("value", parseFloat(myValue));
         });
         
-        $('#'+myCueId+' .button_swap').mouseup(function (e) {
+        $('#'+myTrueCueId+' .button_swap').mouseup(function () {
             
-            // swap the MAX and MIN values
-            var myYesValue = mySplitObj.yes;
-            var myNoValue = mySplitObj.no;
-            //var mySplitValue = mySplitObj.split;
-            mySplitObj.yes = myNoValue;
-            mySplitObj.no = myYesValue;
-            //mySplitObj.split = myYesValue - mySplitValue + myNoValue;
+            // change the direction in the mySplitValuesArray
+            mySplitObj.minisno_maxisyes = !mySplitObj.minisno_maxisyes;  // if true then false, if false then true
             
-            //alert( 'mySplitObj: '+JSON.stringify(mySplitObj, null, "  ") );
+            // swap the YES and NO labels
+            //$(this).closest('.widget').find('#split_label_left').toggleText('yes', 'no');
+            //$(this).closest('.widget').find('#split_label_right').toggleText('no', 'yes');
             
-            $('#'+myCueId+' #yes_value').text(mySplitObj.yes);
-            $('#'+myCueId+' #no_value').text(mySplitObj.no);
-            //$('#'+myCueId+' #split_value').val(mySplitObj.split);
-                                             
-            // swap the MAX and MIN labels
-            var myYesLabel = $('#'+myCueId+' #yes_label').text();
-            var myNoLabel = $('#'+myCueId+' #no_label').text();
-            $('#'+myCueId+' #yes_label').text(myNoLabel);
-            $('#'+myCueId+' #no_label').text(myYesLabel);
-            
-            // swap slider
-            if ((mySplitObj.yes > mySplitObj.no)) {
-                var minVal = mySplitObj.no;
-                var maxVal = mySplitObj.yes;
-                var reverseSlider = true;
-            } else {
-                var minVal = mySplitObj.yes;
-                var maxVal = mySplitObj.no;
-                var reverseSlider = false;
-            }
-            $('#'+myCueId+' .stat_slider').slider({
-                isRTL: reverseSlider,
-                min: minVal,
-                max: maxVal,
-                value: mySplitObj.split,
-            });
+            // swap the YES and NO labels in ALL cues which start with the same id (orig cue + cues in the trees)
+            $('li[id^='+myTrueCueId+']').find('#split_label_left').toggleText('yes', 'no');
+            $('li[id^='+myTrueCueId+']').find('#split_label_right').toggleText('no', 'yes');
             
             // update the dataset
             var mySet = convertToBinary(myDataset, myTrueSet, [mySplitObj]);
@@ -101,31 +94,136 @@ function splitValueSliderChangeSwap(mySet, myTrueSet, mySplitValuesArray) {
             if (criterCueId != '') {
                 updateJsonDataset('tree0'); // update JSON object and tree statistics
                 updateJsonDataset('tree1'); // update JSON object and tree statistics
-                //updateStatForOneSingleCue(myCueId); //update statistics in the blue area
+                updateStatForOneSingleCue(myTrueCueId); //update statistics in the blue area
             }
-             
+            
+            // show next tooltip
+            console.log('TIP 13');
+            if (tour.getCurrentStep()<=12) {
+                tour.goTo(13);
+            }
+            
         });
+        $.fn.toggleText = function(t1, t2){
+            if (this.text() == t1) this.text(t2);
+            else                   this.text(t1);
+            return this;
+        };
     });
 }
-
-function changeBinaryValues(myFieldValues) {
+function splitValueSliderChangeSwapReactivate(myCueId, mySet, myTrueSet) {
     
-    // go through every object (case/row) in the data array
-    // and replace value to 0 or 1, based on the split value
-    myDataset.data.forEach(function(myObj) {
-      
-      //console.log('HERE CHECK! myObj: '+JSON.stringify(myObj, null, "  "));
-      
-      // replace value to 0, if it's in range of SPLIT (included) and NO (included) values
-      if ( (myObj[myFieldValues.name] >= Math.min(myFieldValues.split, myFieldValues.no) ) && (myObj[myFieldValues.name] <= Math.max(myFieldValues.split, myFieldValues.no) ) ) {
-        myObj[myFieldValues.name] = 0;
-      // replace value to 1, if it's in range of YES (included) and SPLIT (excluded) values 
-      } else {
-        myObj[myFieldValues.name] = 1;
-      }
-    });
+    var mySplitValuesArray = mySet.split_values;
+    var myTrueCueId = getTrueCueId(myCueId);
+    
+    // find in the array the object by the key
+    var foundObjectsByKey = $.grep(mySplitValuesArray, function(e){ return e.id == myTrueCueId; });
+    var mySplitObj = foundObjectsByKey[0];
+    
+    //console.log('mySplitObj: '+JSON.stringify(mySplitObj, null, "  "));
+    
+    /*CONTENTS of mySplitValuesArray :
+    mySplitObj.id = 'cue'+i;
+    mySplitObj.name = myField;
+    mySplitObj.min = myFieldMin;
+    mySplitObj.max = myFieldMax;
+    mySplitObj.split = myFieldMean;
+    mySplitObj.minisno_maxisyes = true;
+    */
+    //console.log('HERE CHECK BEFORE! myObj: '+JSON.stringify(myObj, null, "  "));
 
-    console.log('UPDATED BINARY! myDataset: '+JSON.stringify(myDataset, null, "  "));
+    $('#'+myCueId+' .split_slider').slider({
+        min: mySplitObj.min,
+        max: mySplitObj.max,
+        value: mySplitObj.split,
+        step: 0.5,
+        slide: function(event, ui) {
+            $(this).closest('.widget').find('#split_value').val(ui.value);
+            //$('#'+myCueId+' #split_value').val(ui.value);
+            //$( "input" ).val( "$" + ui.value );
+        },
+        change: function( event, ui ) {
+            
+            // find in the array the object by the key - true/orig cue id
+            var mySplitValuesArray = myDataset.split_values;
+            var myTrueCueId = getTrueCueId(myCueId);
+            var foundObjectsByKey = $.grep(mySplitValuesArray, function(e){ return e.id == myTrueCueId; });
+            var mySplitObj = foundObjectsByKey[0];
+            
+            if (mySplitObj.split != ui.value) {
+                // change split value of this cue/field in the dataset
+                mySplitObj.split = ui.value;
+                //console.log('HERE CHECK AFTER! myObj: '+JSON.stringify(myObj, null, "  "));
+                
+                // update slider and input field in ALL cues which start with the same id (orig cue and cues in the trees), except the self (endless loop)
+                $('li[id^='+myTrueCueId+'] #split_value').val(mySplitObj.split);
+                $('li[id^='+myTrueCueId+']:not(#'+myCueId+') .split_slider').slider({value: mySplitObj.split});                        
+            
+                // update the dataset
+                var mySet = convertToBinary(myDataset, myTrueSet, [mySplitObj]);
+                
+                // update statistics, if there a criterion already selected
+                if (criterCueId != '') {
+                    updateJsonDataset('tree0'); // update JSON object and tree statistics
+                    updateJsonDataset('tree1'); // update JSON object and tree statistics
+                    updateStatForOneSingleCue(myTrueCueId); //update statistics of the original cue in the blue area
+                }
+            }
+        }
+    });
+    
+    $('#'+myCueId+' #split_value').change(function () {
+        //var value = this.value.substring(1);
+        var myValue = $(this).val();
+        $('li[id^='+myTrueCueId+'] .split_slider').slider("value", parseFloat(myValue));
+    });
+    
+    $('#'+myCueId+' .button_swap').mouseup(function () {
+                
+        // find in the array the object by the key - true/orig cue id
+        var mySplitValuesArray = myDataset.split_values;
+        var myTrueCueId = getTrueCueId(myCueId);
+        var foundObjectsByKey = $.grep(mySplitValuesArray, function(e){ return e.id == myTrueCueId; });
+        var mySplitObj = foundObjectsByKey[0];
+        
+        //var myCueId = $(this).closest('.widget').attr('id');
+        
+        // change the direction in the mySplitValuesArray
+        mySplitObj.minisno_maxisyes = !mySplitObj.minisno_maxisyes;  // if true then false, if false then true
+                
+        // swap the YES and NO labels in ALL cues which start with the same id (orig cue + cues in the trees)
+        $('li[id^='+myTrueCueId+']').find('#split_label_left').toggleText('yes', 'no');
+        $('li[id^='+myTrueCueId+']').find('#split_label_right').toggleText('no', 'yes');
+        
+        // swap the labels of the original cue in the blue area
+        //$('#'+myTrueCueId+' #split_label_left').toggleText('yes', 'no');
+        //$('#'+myTrueCueId+' #split_label_right').toggleText('no', 'yes');
+        
+        // update slider and input field of the original cue in the blue area
+        //$('#'+myTrueCueId+' .split_slider').slider({value: mySplitObj.split});
+        //$('#'+myTrueCueId+' #split_value').val(mySplitObj.split);
+        
+        // update the dataset
+        var mySet = convertToBinary(myDataset, myTrueSet, [mySplitObj]);
+            
+        // update statistics, if a criterion is already selected
+        if (criterCueId != '') {
+            var myTreeId = $(this).closest('.trees').attr('id');
+            updateJsonDataset('tree0'); // update JSON object and tree statistics
+            updateJsonDataset('tree1'); // update JSON object and tree statistics
+            updateStatForOneSingleCue(myTrueCueId); //update statistics of the original cue in the blue area
+        }
+         
+    });
+    $.fn.toggleText = function(t1, t2){
+        if (this.html() == t1) this.text(t2);
+        else                   this.text(t1);
+        return this;
+    };
+}
+function getTrueCueId(myCueId) {
+    var mySlice = myCueId.slice(0,4);  // leave only the original cue id e.g."cue1" in "cue1-0"
+    return mySlice;
 }
 
 function buttonHelp() {
@@ -181,8 +279,10 @@ function buttonsAllcasesTrainingTesting() {
         updateStatisticsForSingleCues(); //update statistics in the blue area
         
         // show next tooltip
-        console.log('TIP 2');
-        tour.goTo(2);
+        console.log('TIP 9');
+        if (tour.getCurrentStep()<=8) {
+            tour.goTo(9);
+        }
     });
     
      $('#button_testing').mouseup(function (e) {  
@@ -199,8 +299,10 @@ function buttonsAllcasesTrainingTesting() {
         updateStatisticsForSingleCues(); //update statistics in the blue area
         
         // show next tooltip
-        console.log('TIP 16');
-        tour.goTo(16);
+        console.log('TIP 10');
+        if (tour.getCurrentStep()<=9) {
+            tour.goTo(10);
+        }
     });
 }
 function deactivateButtonsAllcasesTrainingTesting() {
@@ -287,11 +389,11 @@ function buttonExpandAll(myButtonId) {
             $(this).find('.down').show(300);
             
             // show next tooltip
-            console.log('TIP 5 or 10');
-            if (tour.getCurrentStep()<=4) {
-                tour.goTo(5);
-            } else {
-                tour.goTo(10);
+            console.log('TIP 14 or 17');
+            if (tour.getCurrentStep()<=13) {
+                tour.goTo(14);
+            } else if (tour.getCurrentStep()<=16){
+                tour.goTo(17);
             }
         }
     });
@@ -303,7 +405,7 @@ function deactivateButtonExpandAll(myButtonId) {
     $('#'+myButtonId).unbind('mouseup');
     
     // add class 'disabled'
-    $('#'+myButtonId).attr('class', 'buttons_controls button_expand_all disabled'); 
+    //$('#'+myButtonId).attr('class', 'buttons_controls button_expand_all disabled'); 
     
 }
 
@@ -342,8 +444,10 @@ function buttonsExpand() {
         }
         
         // show next tooltip
-        console.log('TIP 4');
-        tour.goTo(4);
+        console.log('TIP 11');
+        if (tour.getCurrentStep()<=10) {
+            tour.goTo(11);
+        }
     });
     
     // hide the content by default
@@ -387,16 +491,18 @@ function activateButtonExpand(myCueId) {
         }
         
         // show next tooltip
-        console.log('TIP 8');
-        tour.goTo(8);
+        console.log('TIP 15');
+        if (tour.getCurrentStep()<=14) {
+            tour.goTo(15);
+        }
     });
 }
 
 function htmlButtonClose() {
-    var myHtml = '<svg class="button_controls button_close" height="20" width="20"> \
+    var myHtml = '<div title="Remove"><svg class="button_controls button_close" height="20" width="20"> \
                           <line x1="6" y1="6" x2="15" y2="15"/> \
                           <line x1="6" y1="15" x2="15" y2="6"/> \
-                        </svg>'
+                        </svg></div>'
     return myHtml;
 }
 
@@ -422,9 +528,10 @@ function activateButtonCloseCue(myCueId) {
         });
         
         // show next tooltip
-        console.log('TIP 14');
-        tour.goTo(14);
-                
+        console.log('TIP 8');
+        if (tour.getCurrentStep()<=7) {
+            tour.goTo(8);
+        }
         return false;                                            // Return false, prevent default action
     })
 }
@@ -443,9 +550,10 @@ function activateButtonCloseExit(myCueId, myExitClass) {
         updateJsonDataset(myTreeId); // update the changed exit direction
         
         // show next tooltip
-        console.log('TIP 13');
-        tour.goTo(13);
-                
+        console.log('TIP 7');
+        if (tour.getCurrentStep()<=6) {
+            tour.goTo(7);
+        }    
         return false;                                            // Return false, prevent default action
     })
 }
@@ -455,17 +563,17 @@ function htmlButtonStat() {
     return myHtml;
 }
 function htmlStatTreeUpToThisCue() {
-    var myHtml = '<li class="stats stat_tree">\
+    var myHtml = '<li class="stat_inline stat_tree">\
                     <table class="eval_table"> \
                         <tr><td class="table_title" colspan="6">TREE UP TO THIS CUE</td></tr> \
                         <tr><td class="cell_narrow"></td><td></td><td class="table_header" colspan="4">PREDICTION</td></tr> \
                         <tr><td></td><td></td><th>yes</th><th>no</th><th>und</th><th>sum</th></tr> \
-                        <tr><td class="table_header_rotated" rowspan="3"><div class="rotate">CRITERION</div></td><th class="cell_narrow">yes</td><td class="success" id="hits">0</td><td class="fail" id="misses">0</td><td class="undecided" id="undecided_pos">0</td><td class="cell_values" id="crit_yes_sum">0</td></tr> \
-                        <tr><th class="cell_narrow">no</th><td class="fail" id="falsealarms">0</td><td class="success" id="correctrejections">0</td><td class="undecided" id="undecided_neg">0</td><td class="cell_values" id="crit_no_sum">0</td></tr> \
+                        <tr><td class="table_header_rotated" rowspan="3"><div class="rotate">CRITERION</div></td><th class="cell_narrow">yes</td><td class="success" id="hits" title="Hits">0</td><td class="fail" id="misses" title="Misses">0</td><td class="undecided" id="undecided_pos" title="Undecided Positive">0</td><td class="cell_values" id="crit_yes_sum">0</td></tr> \
+                        <tr><th class="cell_narrow">no</th><td class="fail" id="falsealarms" title="False Alarms">0</td><td class="success" id="correctrejections" title="Correct Rejections">0</td><td class="undecided" id="undecided_neg" title="Undecided Negative">0</td><td class="cell_values" id="crit_no_sum">0</td></tr> \
                         <tr><th class="cell_narrow">sum</th><td class="cell_values" id="pred_yes_sum">0</td><td class="cell_values" id="pred_no_sum">0</td><td class="cell_values" id="pred_und_sum">0</td><td class="cell_values" id="pred_sum_sum">0</td></tr> \
                         <tr><th></th></tr> \
-                        <tr><th colspan="2">p(Hits)</th><th>p(FA)</th><th>d&#8242</th><th>Frug</th><th>Bias</th></tr> \
-                        <tr><td colspan="2" class="cell_values" id="pHits">0</td><td class="cell_values" id="pFA">0</td><td class="cell_values" id="dprime">0</td><td class="cell_values" id="frugality">0</td><td class="cell_values" id="bias">0</td></tr> \
+                        <tr><th colspan="2" title="Probability of Hits">p(Hits)</th><th title="Probability of False Alarms">p(FA)</th><th title="D prime">d&#8242</th><th title="Frugality">Frug</th><th title="C of Bias">Bias</th></tr> \
+                        <tr><td colspan="2" class="cell_values" id="pHits" title="Probability of Hits">0</td><td class="cell_values" id="pFA" title="Probability of False Alarms">0</td><td class="cell_values" id="dprime" title="D prime">0</td><td class="cell_values" id="frugality" title="Frugality">0</td><td class="cell_values" id="bias" title="C or Bias">0</td></tr> \
                     </table> \
                   </li>';
     return myHtml;
@@ -480,8 +588,10 @@ function activateButtonStat(myCueId) {
         $(this).parent().find('.stat_tree').animate({width: 'toggle'});
         
         // show next tooltip
-        console.log('TIP 9');
-        tour.goTo(9);
+        console.log('TIP 16');
+        if (tour.getCurrentStep()<=15) {
+            tour.goTo(16);
+        }
     });
 }
 
@@ -491,8 +601,10 @@ function buttonsExportToServer() {
         console.log('EXPORT TO SERVER!');
         
         // show next tooltip
-        console.log('TIP 17');
-        tour.goTo(17);
+        console.log('TIP 19');
+        if (tour.getCurrentStep()<=18) {
+            tour.goTo(19);
+        }
         
         var myTreeId = $(this).attr('value');
         console.log('myTreeId: '+myTreeId);
@@ -517,7 +629,6 @@ function buttonsExportToServer() {
         
         // Johannes code
         DecisionWebTree.Common.SaveTree(myTreeObj);  
-    
     });
 }
 

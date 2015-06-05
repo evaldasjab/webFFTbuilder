@@ -262,26 +262,17 @@ function resetTreeStatistics() {
     updateAnalysisView('stat_tree1');
 }
 
-/*
-function updateSplitValuesView(myCueId) {
+function resetDerivativeView(myId) {
     
-    //myDataset.split_values.forEach(function(myObj) {
-      
-        //console.log('HERE CHECK! myObj: '+JSON.stringify(myObj, null, "  "));
-      
-        //myCueId = myObj.id;
-        YES_VALUE = myObj.yes;
-        NO_VALUE = myObj.no;
-        SPLIT_VALUE = myObj.split;
-        
-        $('#'+myCueId+' #yes_value').text(YES_VALUE.toString());
-        $('#'+myCueId+' #no_value').text(NO_VALUE.toString());
-        $('#'+myCueId+' #split_value').text(SPLIT_VALUE.toString());
-        
-    //});
-    
+    $('#'+myId+' #pHits').text('0');
+    $('#'+myId+' #pFA').text('0');
+    $('#'+myId+' #dprime').text('0');
+    $('#'+myId+' #frugality').text('0');
+    $('#'+myId+' #aprime').text('0');
+    $('#'+myId+' #bprime').text('0');
+    $('#'+myId+' #bdprime').text('0');
+    $('#'+myId+' #bias').text('0');
 }
-*/
 
 function updateAnalysisView(myId) {
     

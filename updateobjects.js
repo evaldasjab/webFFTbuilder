@@ -51,7 +51,7 @@ function createTreeObj(myTreeId, myTreeCuesArray) {
     if (criterCueId != '') {
         myTreeObj.criterion = Object.keys(myDataset.data[0])[getInt(criterCueId)];  // get the name of criterion cue by id
     } else {
-        myTreeObj.criterion = '';
+        myTreeObj.criterion = getCueName(myTreeCuesArray[0]);   // buvo  
     }
     
     myTreeObj.cues = [];
@@ -114,8 +114,7 @@ function updateStatisticsForSingleCues() {
         //console.log('SINGLECUE myCueId: '+myCueId);
       
         var myOneCueTreeObj = createTreeObj(myCueId, [myCueId]);
-        //console.log('SINGLECUE myOneCueTreeObj: '+JSON.stringify(myOneCueTreeObj, null, "  ") );
-    
+        console.log('SINGLECUE myOneCueTreeObj: '+JSON.stringify(myOneCueTreeObj, null, "  ") );
         analyzeDataset(myOneCueTreeObj);
     });   
 }

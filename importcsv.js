@@ -398,6 +398,10 @@ $(document).ready(function(){
         change: function() {
           var selectedSample = $(this).val();
           switch (selectedSample) {
+            case 'data_ccu_FFTorg':
+              //var myUrl = './data/data_ccu_FFTorg.csv';
+              var myUrl = 'https://dl.dropboxusercontent.com/u/15758787/data_csv/data_ccu_FFTorg.csv';
+              break;
             case 'data_ccu_89':
               //var myUrl = './data/data_ccu_89.csv';
               var myUrl = 'https://dl.dropboxusercontent.com/u/15758787/data_csv/data_ccu_89.csv';

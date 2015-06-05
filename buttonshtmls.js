@@ -405,7 +405,7 @@ function deactivateButtonExpandAll(myButtonId) {
     $('#'+myButtonId).unbind('mouseup');
     
     // add class 'disabled'
-    //$('#'+myButtonId).attr('class', 'buttons_controls button_expand_all disabled'); 
+    $('#'+myButtonId).attr('class', 'buttons_controls button_expand_all disabled'); 
     
 }
 

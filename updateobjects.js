@@ -76,6 +76,10 @@ function createTreeObj(myTreeId, myTreeCuesArray) {
             myCueObj.yes = myExitValues.myLeft;   // returns .myLeft and .myRight
             //myCueObj.no = getExitValue( myCueId, 'no' );      // getExitValue(myCueId, myDir)
             myCueObj.no = myExitValues.myRight;   // returns .myLeft and .myRight
+            myCueObj.minValue = 0;
+            myCueObj.maxValue = 0;
+            myCueObj.splitValue = 0;
+            myCueObj.isFlipped = 0;
             myCueObj.hits = 0;
             myCueObj.miss = 0;
             myCueObj.fals = 0;

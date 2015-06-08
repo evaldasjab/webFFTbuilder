@@ -237,7 +237,7 @@ function getDerivativeStatistics() {
     
     PHITS = Math.round(ts.getHitsProbability() * 1000) / 1000;
     PFA = Math.round(ts.getFalseAlarmsProbability() * 1000) / 1000;
-    PHITSMINUSPFA = PHITS - PFA;
+    PHITSMINUSPFA = Math.round((PHITS - PFA) * 1000) / 1000;
     DPRIME = Math.round(ts.getDPrime() * 1000) / 1000;
     FRUGALITY = Math.round(ts.frugality() * 1000) / 1000;
     APRIME = Math.round(ts.getAPrime() * 1000) / 1000;

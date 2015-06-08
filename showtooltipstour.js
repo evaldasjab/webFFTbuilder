@@ -26,7 +26,7 @@ function showTooltipsTour() {
           placement: "top",
         },
         {  // step 3
-          element: '#drophere_tree0',
+          element: '#drophere_tree0:not(.disabled)',
           title: 'Step 4 of 5:',
           content: 'Drop the cue in the tree area.',
           placement: "right",
@@ -34,21 +34,22 @@ function showTooltipsTour() {
         {  // step 4
           element: '#blue_area .widget_head:eq(2) .widget_title',
           title: 'Step 5 of 5:',
-          content: 'Drop another cue to the tree area, above or below the existing cue.',
+          content: 'Drag and drop another cue to the tree area, above or below the existing cue.',
           placement: "top",
         },
         {  // step 5
           //delay: 500,
-          orphan: true,
+          element: '.trees .widget:first',
+          //orphan: true,
           title: 'Congratulations!!!',
           content: 'You have built your first Fast-and-Frugal Tree! Click "Next" to see optional and helpful features.',
-          //placement: "bottom",
+          placement: "top",
         },
         {  // step 6
           //delay: 500,
-          element: '.exit_widget:first .button_close',
+          element: '.exit_widget:first .button_switch',
           title: 'Optional:',
-          content: 'Click "X" to change the direction of the EXIT node. You can change it back anytime.',
+          content: 'Click "<" or ">" to switch the direction of the EXIT node. You can change it back anytime.',
           placement: "bottom",
         },
         {  // step 7
@@ -58,13 +59,13 @@ function showTooltipsTour() {
           placement: "top",
         },
         {  // step 8
-          element: '#button_training',
+          element: '#button_training:not(.disabled)',
           title: 'Optional:',
           content: 'Choose "Training", if you want to use half of the data to build the tree and later another half (choose "Testing") to cross-validate it.',
           placement: "bottom",
         },
         {  // step 9
-          element: '#button_testing',
+          element: '#button_testing:not(.disabled)',
           title: 'Optional:',
           content: 'When you finish building the tree(-s), choose "Testing" to cross-validate it with the second half of the data.',
           placement: "bottom",
@@ -83,13 +84,13 @@ function showTooltipsTour() {
         },
         {
           // step 12
-          element: '#blue_area .button_swap:eq(1)',
+          element: '#blue_area .button_swap:eq(1):visible',
           title: 'Optional:',
           content: 'Click the arrow to swap "yes" and "no" of the divided ranges of cue&#8242s values.',
           placement: "bottom",
         },
         {  // step 13
-          element: '#button_expand_all_blue',
+          element: '#button_expand_all_blue:not(.disabled)',
           title: 'Helpful:',
           content: 'Click "V" to show & hide statistics of ALL cues as single-cue trees. You can also do it for every cue individually.',
           placement: "right",
@@ -107,20 +108,20 @@ function showTooltipsTour() {
           placement: "right",
         },
         {  // step 16
-          element: '#button_expand_all_white',
+          element: '#button_expand_all_white:not(.disabled)',
           title: 'Helpful:',
           content: 'Click "V" to show & hide statistics of ALL cues.',
           placement: "right",
         },
         {  // step 17
-          element: '#drophere_tree1',
+          element: '#drophere_tree1:not(.disabled)',
           title: 'Optional:',
           content: 'Drag and drop cues to the RIGHT tree area to build the SECOND tree and compare the statistics.',
           placement: "left",
         },
         
         {  // step 18
-          element: '.button_export:first',
+          element: '.button_export:first:not(.disabled)',
           title: 'Optional:',
           content: 'You can export the created tree to Server for further analysis.',
           placement: "bottom",

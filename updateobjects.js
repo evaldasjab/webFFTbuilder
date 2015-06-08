@@ -16,14 +16,14 @@ function updateJsonDataset(myTreeId) {
         buttonExpandAll('button_expand_all_white');
         
         // enable EXPORT TO SERVER buttons
-        $('#stat_'+myTreeId+' .button_export').removeAttr('disabled');
+        $('#stat_'+myTreeId+' .button_export').removeClass('disabled');
     } else {
         
         // de-activate the EXPAND ALL button in the white area
         deactivateButtonExpandAll('button_expand_all_white');
         
         // disable EXPORT TO SERVER buttons
-        $('#stat_'+myTreeId+' .button_export').attr('disabled','disabled');
+        $('#stat_'+myTreeId+' .button_export').addClass('disabled');
     }
     
     var myTreeObj = createTreeObj(myTreeId, myTreeCuesArray);
@@ -73,9 +73,9 @@ function createTreeObj(myTreeId, myTreeCuesArray) {
             
             myCueObj.name = getCueName(myCueId);  // getCueName(myCueId)
             //myCueObj.yes = getExitValue( myCueId, 'yes' );      // getExitValue(myCueId, myDir)
-            myCueObj.yes = myExitValues.myLeft;   // returns .myLeft and .myRight
+            myCueObj.yes = myExitValues.myRight;   // returns .myLeft and .myRight
             //myCueObj.no = getExitValue( myCueId, 'no' );      // getExitValue(myCueId, myDir)
-            myCueObj.no = myExitValues.myRight;   // returns .myLeft and .myRight
+            myCueObj.no = myExitValues.myLeft;   // returns .myLeft and .myRight
             myCueObj.minValue = 0;
             myCueObj.maxValue = 0;
             myCueObj.splitValue = 0;

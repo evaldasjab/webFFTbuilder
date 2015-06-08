@@ -499,11 +499,28 @@ function activateButtonExpand(myCueId) {
 }
 
 function htmlButtonClose() {
-    var myHtml = '<div title="Remove"><svg class="button_controls button_close" height="20" width="20"> \
+    var myHtml = '<div title="Remove Cue from the Tree"><svg class="button_controls button_close" height="20" width="20"> \
                           <line x1="6" y1="6" x2="15" y2="15"/> \
                           <line x1="6" y1="15" x2="15" y2="6"/> \
                         </svg></div>'
     return myHtml;
+}
+
+function htmlButtonSwitch(myExitClass) {
+    
+    switch(myExitClass) {
+        case 'exit_left':
+            var myIconHtml =  '<div title="Switch EXIT Direction"><svg class="button_controls button_switch switch_to_right" height="20" width="20"> \
+                                    <polyline class="right" points="7 3,14 10,7 17"/> \
+                               </svg></div>';
+            break;
+        case 'exit_right':
+            var myIconHtml =  '<div title="Switch EXIT Direction"><svg class="button_controls button_switch switch_to_left" height="20" width="20"> \
+                                    <polyline class="left" points="13 3,6 10,13 17"/> \
+                               </svg></div>';
+            break;
+    }
+    return myIconHtml;
 }
 
 
@@ -535,10 +552,10 @@ function activateButtonCloseCue(myCueId) {
         return false;                                            // Return false, prevent default action
     })
 }
-function activateButtonCloseExit(myCueId, myExitClass) {
+function activateButtonSwitchExit(myCueId, myExitClass) {
     
     //$('.close_exit').mousedown(function (e) {  // Create new anchor element with class of 'remove'
-    $('#'+myCueId+' .'+myExitClass+' .button_close').mouseup(function (e) {  // Create new anchor element with class of 'remove'
+    $('#'+myCueId+' .'+myExitClass+' .button_switch').mouseup(function (e) { 
         console.log('EXIT BUTTON! myCueId: '+myCueId);
     
         e.stopPropagation();                                                // Stop event bubbling (don't initiate other actions triggered by "mousedown", e.g. dragging)
@@ -572,6 +589,8 @@ function htmlStatTreeUpToThisCue() {
                         <tr><th class="cell_narrow">no</th><td class="fail" id="falsealarms" title="False Alarms">0</td><td class="success" id="correctrejections" title="Correct Rejections">0</td><td class="undecided" id="undecided_neg" title="Undecided Negative">0</td><td class="cell_values" id="crit_no_sum">0</td></tr> \
                         <tr><th class="cell_narrow">sum</th><td class="cell_values" id="pred_yes_sum">0</td><td class="cell_values" id="pred_no_sum">0</td><td class="cell_values" id="pred_und_sum">0</td><td class="cell_values" id="pred_sum_sum">0</td></tr> \
                         <tr><th></th></tr> \
+                    </table> \
+                    <table class="eval_table"> \
                         <tr><th colspan="2" title="Probability of Hits">p(H)</th><th title="Probability of Hits - Probability of False Alarms">p(H)-p(FA)</th><th title="D prime">d&#8242</th><th title="Frugality">Frug</th><th title="C or Bias">Bias</th></tr> \
                         <tr><td colspan="2" class="cell_values" id="pHits" title="Probability of Hits">0</td><td class="cell_values" id="pHitsMinuspFA" title="Probability of Hits - Probability of False Alarms">0</td><td class="cell_values" id="dprime" title="D prime">0</td><td class="cell_values" id="frugality" title="Frugality">0</td><td class="cell_values" id="bias" title="C or Bias">0</td></tr> \
                     </table> \

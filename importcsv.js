@@ -122,6 +122,8 @@ function listCues(results){
                                 <tr><th class="cell_narrow">no</th><td class="fail" id="falsealarms" title="False Alarms">FA</td><td class="success" id="correctrejections" title="Correct Rejections">CR</td><td class="undecided" id="undecided_neg" title="Undecided Negative">0</td><td class="cell_values" id="crit_no_sum">0</td></tr> \
                                 <tr><th class="cell_narrow">sum</th><td class="cell_values" id="pred_yes_sum">0</td><td class="cell_values" id="pred_no_sum">0</td><td class="cell_values" id="pred_und_sum">0</td><td class="cell_values" id="pred_sum_sum">0</td></tr> \
                                 <tr><th></th></tr> \
+                            </table> \
+                            <table class="eval_table"> \
                                 <tr><th colspan="2" title="Probability of Hits">p(H)</th><th title="Probability of Hits - Probability of False Alarms">p(H)-p(FA)</th><th title="D prime">d&#8242</th><th title="Frugality">Frug</th><th title="C or Bias">Bias</th></tr> \
                                 <tr><td colspan="2" class="cell_values" id="pHits" title="Probability of Hits">0</td><td class="cell_values" id="pHitsMinuspFA" title="Probability of Hits - Probability of False Alarms">0</td><td class="cell_values" id="dprime" title="D prime">0</td><td class="cell_values" id="frugality" title="Frugality">0</td><td class="cell_values" id="bias" title="C or Bias">0</td></tr> \
                             </table> \
@@ -430,9 +432,9 @@ $(document).ready(function(){
               //var myUrl = './data/data_cmc_v1_FFT.csv';
               var myUrl = 'https://dl.dropboxusercontent.com/u/15758787/data_csv/data_cmc_v1_FFT.csv';
               break;
-            case 'data_cmc_village2':
-              //var myUrl = './data/data_cmc_village2.csv';
-              var myUrl = 'https://dl.dropboxusercontent.com/u/15758787/data_csv/data_cmc_village2.csv';
+            case 'data_cmc_villages_FFT':
+              //var myUrl = './data/data_cmc_villages_FFT.csv';
+              var myUrl = 'https://dl.dropboxusercontent.com/u/15758787/data_csv/data_cmc_villages_FFT.csv';
               break;
             default:
               return false;  // if none is selected

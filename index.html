@@ -18,6 +18,7 @@
 
 <body>
         
+<div id="blue_width_infinitely">
 <div class="page_area noselect" id="blue_area">
         
     <header>
@@ -40,7 +41,7 @@
         <option value="data_cmc_v1_1cue">data_CMCv1_1cue.csv</option>
         <option value="data_cmc_FFT">data_CMC_FFT.csv</option>
         <option value="data_cmc_v1_FFT">data_CMCv1_FFT.csv</option>
-        <option value="data_cmc_village2">data_CMC_village2.csv</option>
+        <option value="data_cmc_villages_FFT">data_CMC_villages_FFT.csv</option>
         </optgroup>
     </select>
     
@@ -62,13 +63,12 @@
         </div>
     </div>
     
-<!--    <div title="Expand/Collapse All Cues in the Blue Area">
--->        <svg id="button_expand_all_blue" class="buttons_controls button_expand_all disabled" height="20" width="20">
+        <svg id="button_expand_all_blue" class="buttons_controls button_expand_all disabled" height="20" width="20">
             <polyline class="down" points="3 7,10 14,17 7"/>
             <polyline class="up" points="3 13,10 6,17 13"/>
         </svg>
-<!--    </div>
---></div>
+</div>
+</div>
     <!-- row of cues END-->
 
     
@@ -91,8 +91,8 @@
     </ul>
     <ul class="columns">
     </ul>
-    <div class="stat_columns">
-        <table class="eval_table" id="stat_tree0">
+    <div class="stat_columns" id="stat_tree0">
+        <table class="eval_table" >
             <tr><td class="table_title" colspan="6">STATISTICS OF TREE 1</td></tr>
             <tr><th class="cell_narrow"></th><th></th><td class="table_header" colspan="4">PREDICTION</td></tr>
             <tr><th></th><th></th><th>yes</th><th>no</th><th>und</th><th>sum</th></tr>
@@ -100,14 +100,16 @@
             <tr><th class="cell_narrow">no</td><td class="fail" id="falsealarms" title="False Alarms">FA</td><td class="success" id="correctrejections" title="Correct Rejections">CR</td><td class="undecided" id="undecided_neg" title="Undecided Negative">0</td><td class="cell_values" id="crit_no_sum">0</td></tr>
             <tr><th class="cell_narrow">sum</th><td class="cell_values" id="pred_yes_sum">0</td><td class="cell_values" id="pred_no_sum">0</td><td class="cell_values" id="pred_und_sum">0</td><td class="cell_values" id="pred_sum_sum">0</td></tr>
             <tr><th></th></tr>
+        </table>
+        <table class="eval_table" >
             <tr><th colspan="2" title="Probability of Hits">p(H)</th><th title="Probability of Hits - Probability of False Alarms">p(H)-p(FA)</th><th title="D prime">d'</th><th title="Frugality">Frug</th><th title="C or Bias">Bias</th></tr>
             <tr><td colspan="2" class="cell_values" id="pHits" title="Probability of Hits">0</td><td class="cell_values" id="pHitsMinuspFA" title="Probability of Hits - Probability of False Alarms">0</td><td class="cell_values" id="dprime" title="D prime">0</td><td class="cell_values" id="frugality" title="Frugality">0</td><td class="cell_values" id="bias" title="C or Bias">0</td></tr>
             <tr><th></th></tr>
-            <tr><th colspan="6"><button class="buttons_grey button_export" value="tree0" disabled>Export Tree 1 to Server</button></th></tr>
+            <tr><th colspan="6"><button class="buttons_grey button_export disabled" value="tree0">Export Tree 1 to Server</button></th></tr>
         </table>
     </div>
-    <div class="stat_columns">
-        <table class="eval_table"  id="stat_tree1">
+    <div class="stat_columns" id="stat_tree1">
+        <table class="eval_table">
             <tr><td class="table_title" colspan="6">STATISTICS OF TREE 2</td></tr>
             <tr><th class="cell_narrow"></th><th></th><td class="table_header" colspan="4">PREDICTION</td></tr>
             <tr><th></th><th></th><th>yes</th><th>no</th><th>und</th><th>sum</th></tr>
@@ -115,10 +117,12 @@
             <tr><th class="cell_narrow">no</td><td class="fail" id="falsealarms" title="False Alarms">FA</td><td class="success" id="correctrejections" title="Correct Rejections">CR</td><td class="undecided" id="undecided_neg" title="Undecided Negative">0</td><td class="cell_values" id="crit_no_sum">0</td></tr>
             <tr><th class="cell_narrow">sum</th><td class="cell_values" id="pred_yes_sum">0</td><td class="cell_values" id="pred_no_sum">0</td><td class="cell_values" id="pred_und_sum">0</td><td class="cell_values" id="pred_sum_sum">0</td></tr>
             <tr><th></th></tr>
+        </table>
+        <table class="eval_table">
             <tr><th colspan="2" title="Probability of Hits">p(H)</th><th title="Probability of Hits - Probability of False Alarms">p(H)-p(FA)</th><th title="D prime">d'</th><th title="Frugality">Frug</th><th title="C or Bias">Bias</th></tr>
             <tr><td colspan="2" class="cell_values" id="pHits" title="Probability of Hits">0</td><td class="cell_values" id="pHitsMinuspFA" title="Probability of Hits - Probability of False Alarms">0</td><td class="cell_values" id="dprime" title="D prime">0</td><td class="cell_values" id="frugality" title="Frugality">0</td><td class="cell_values" id="bias" title="C or Bias">0</td></tr>
             <tr><th></th></tr>
-            <tr><th colspan="6"><button class="buttons_grey button_export" value="tree1" disabled>Export Tree 2 to Server</button></th></tr>
+            <tr><th colspan="6"><button class="buttons_grey button_export disabled" value="tree1">Export Tree 2 to Server</button></th></tr>
         </table>
     </div>
     <ul class="columns">
@@ -132,11 +136,11 @@
     
     
 </div>
-    
+
     <footer id="footer">
        <p>&copy; 2015 Max Planck Institute For Human Development, ABC Group. All rights reserved.</p>
     </footer>
-    
+
     <!-- Bottom of document -->
     
     <script src="libraries/jquery-1.11.3.min.js"></script>

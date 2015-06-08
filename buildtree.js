@@ -207,8 +207,8 @@ function updateExitsAndArrowsForAllCues(myTreeId) {
                 setExitNodes(myCueId, myExits.myYes, myExits.myNo);
                 
                 // add close EXIT button to the Exit node
-                $('#'+myCueId+' .exit_widget').append( htmlButtonClose() );  // add close button
-                activateButtonCloseExit(myCueId, myExits.myExitClass);
+                $('#'+myCueId+' .exit_widget').append( htmlButtonSwitch(myExits.myExitClass) );  // add close button
+                activateButtonSwitchExit(myCueId, myExits.myExitClass);
                 
                 // draw arrow to the next cue
                 drawArrowToNextCue(myCueId, myExits.myYes, myExits.myNo);
@@ -218,7 +218,7 @@ function updateExitsAndArrowsForAllCues(myTreeId) {
             // add the second EXIT node
             setExitNodes(myLastCueId, 'exit', 'exit');
             // remove CLOSE buttons from EXIT nodes of the last cue
-            $('#'+myLastCueId+' .exit_widget .button_close').remove();
+            $('#'+myLastCueId+' .exit_widget .button_switch').remove();
             // remove the arrow to the next cue
             $('#'+myLastCueId+' .cue_arrow').remove();
         } 
@@ -262,12 +262,12 @@ function setExitDirection(myTreeId) {
         case 'tree0':
             var myYes = 'exit';
             var myNo = 'continue';
-            var myExitClass = 'exit_left';
+            var myExitClass = 'exit_right';
             break;
         case 'tree1':
             var myYes = 'continue';
             var myNo = 'exit';
-            var myExitClass = 'exit_right';
+            var myExitClass = 'exit_left';
             break;
     }
     return {
@@ -285,27 +285,27 @@ function setExitNodes(myCueId, myYes, myNo) {
     //console.log('myExitLeft: '+myExitLeftId);
     //console.log('myExitRight: '+myExitRightId);
 
-    switch (myYes) {  // node/arrow to the left
-        case 'exit':                                        // if exit should be to the left/yes node
-            if (myExitLeftId == undefined) {                // and if there is NO left/yes exit node
-                addExitNode(myCueId, 'exit_left');    // creare the left/yes exit node
+    switch (myYes) {  // arrow YES goes to...
+        case 'exit':                                        // if YES arrow should go to EXIT on RIGHT
+            if (myExitRightId == undefined) {                // and if there is NO exit node on RIGHT
+                addExitNode(myCueId, 'exit_right');    // creare the exit node on RIGHT
             }
         break;
-        case 'continue':                                    // if NO exit should be to the left/yes
-            if (myExitLeftId != undefined) {                // and if there is left/yes exit node
-            removeExitNode(myCueId, 'exit_left');     // remove the left/yes exit node
+        case 'continue':                                    // if YES arrow should go to the next cue
+            if (myExitRightId != undefined) {                // and if there IS exit node to RIGHT
+            removeExitNode(myCueId, 'exit_right');     // remove RIGHT exit node
             }
         break;
     }
-    switch (myNo) {    // node/arrow to the right        
-        case 'exit':                                        // if exit should be to the right/no node
-            if (myExitRightId == undefined) {               // and if there is NO right/no exit node
-                addExitNode(myCueId, 'exit_right');     // creare the right/no exit node
+    switch (myNo) {    // arrow NO goes to...
+        case 'exit':                                        // if NO arrow should go to EXIT on LEFT
+            if (myExitLeftId == undefined) {               // and if there is NO exit node on LEFT
+                addExitNode(myCueId, 'exit_left');     // creare the exit node on LEFT
             }
         break;
-        case 'continue':                                    // if NO exit should be to the right/no
-            if (myExitRightId != undefined) {                // and if there is right/no exit node
-            removeExitNode(myCueId, 'exit_right');      // remove the right/no exit node
+        case 'continue':                                    // if NO arrow should go to the next cue
+            if (myExitLeftId != undefined) {                // and if there IS exit node to LEFT
+            removeExitNode(myCueId, 'exit_left');      // remove LEFT exit node
             }
         break;
     }
@@ -328,19 +328,21 @@ function addExitNode(myCueId, myExitClass) {
     switch(myExitClass) {
         case 'exit_left':
             //var myExitDir = 'exit_left';
-            var myExitText = 'Yes';
+            var myExitText = 'no';
             var myArrowHtml =  '<line x1="0" y1="45" x2="45" y2="0"/> \
                                 <line x1="1" y1="25" x2="1" y2="44"/> \
                                 <line x1="1" y1="44" x2="20" y2="44"/> \
-                                <text x="15" y="25" stroke-width="1" stroke="none" fill="black">yes</text>';
+                                <text x="15" y="25" stroke-width="1" stroke="none" fill="black">'+myExitText+'</text>';
+            
             break;
         case 'exit_right':
             //var myExitDir = 'exit_right';
-            var myExitText = 'No';
+            var myExitText = 'yes';
             var myArrowHtml =  '<line x1="0" y1="0" x2="45" y2="45"/> \
                                 <line x1="44" y1="25" x2="44" y2="44"/> \
                                 <line x1="25" y1="44" x2="44" y2="44"/> \
-                                <text x="17" y="25" stroke-width="1" stroke="none" fill="black">no</text>';
+                                <text x="17" y="25" stroke-width="1" stroke="none" fill="black">'+myExitText+'</text>';
+            
             break;
     }
     
@@ -348,7 +350,7 @@ function addExitNode(myCueId, myExitClass) {
     var myExitNodeId = 'exit_'+d+'-'+c;  // d - the same as cueID, c - unique for exit nodes
     
     var exitNode =  '<li id='+myExitNodeId+' class="'+myExitClass+' exit_widget unsortable"> \
-                        '+htmlButtonClose()+' \
+                        '+htmlButtonSwitch(myExitClass)+' \
                         <div class="exit_widget_title"> \
                             <span>EXIT</span> \
                         </div> \
@@ -360,7 +362,7 @@ function addExitNode(myCueId, myExitClass) {
     $(exitNode).hide().appendTo('#'+myCueId+' .exits').fadeIn(300);
     
     // activate the EXIT close button
-    activateButtonCloseExit(myCueId, myExitClass);  // activate the close button
+    activateButtonSwitchExit(myCueId, myExitClass);  // activate the close button
 }
 function getTreeInt(myTreeId) {
     var mySlice = myTreeId.slice(4,5);  // leave only the number e.g."1" in "cue1-0"
@@ -386,11 +388,11 @@ function switchExitDirection(myCueId, myExitClass) {
     //console.log('SWITCH EXIT DIRECTION! myCueId: '+myCueId);
     
     switch(myExitClass) {   // depending on which EXIT close button was clicked
-        case 'exit_left':  
+        case 'exit_right':  
             setExitNodes(myCueId, 'continue', 'exit'); // yes , no
             drawArrowToNextCue(myCueId, 'continue', 'exit');  // redraw the arrow and the label to the next cue
             break;
-        case 'exit_right':
+        case 'exit_left':
             setExitNodes(myCueId, 'exit', 'continue'); // yes , no
             drawArrowToNextCue(myCueId, 'exit', 'continue');  // redraw the arrow and the label to the next cue
             break;
@@ -430,6 +432,10 @@ function getExitValues(myCueId, cameFrom) {
         myRight: myRight
     }
 }
+
+$(window).scroll(function(){
+  $('#footer').css('left',394-$(window).scrollLeft());    // css position left: 394px
+});
 
 // Right at the very end of buildtree.js
 //init();

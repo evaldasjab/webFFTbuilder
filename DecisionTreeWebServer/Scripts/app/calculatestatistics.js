@@ -26,7 +26,7 @@ function analyzeDataset(myTreeObj) {
     //var myList = TREE.treeCuesListAll.filter(function(n){ return n });  // remove empty elements in array
     //console.log('TREE.treeCuesList: '+ JSON.stringify(TREE.treeCuesList, null, "  "));
     //console.log('TREE.treeCuesList.length: '+ JSON.stringify(TREE.treeCuesList.length, null, "  "));
-    
+        
     DATASET.records.forEach(function (rec) {
                     
         // first count undecided cases
@@ -35,6 +35,8 @@ function analyzeDataset(myTreeObj) {
         else if (rec[myCriterionName] === 0) 
             UNDECIDED_NEG++;
     });
+    
+    var mySplitValuesArray = myDataset.split_values;
     
     // for each record
     DATASET.records.forEach(function (rec) {
@@ -54,6 +56,15 @@ function analyzeDataset(myTreeObj) {
         
             var treeCue = TREE.treeCuesList[c].name;
             //console.log('TREE LOOP treeCue: '+treeCue);
+            
+            // find in the array the object by the key
+            var foundObjectsByKey = $.grep(mySplitValuesArray, function(e){ return e.name == treeCue; });
+            var mySplitObj = foundObjectsByKey[0];
+            //console.log('HERE: '+JSON.stringify(mySplitObj, null, "  "));
+            TREE.treeCuesList[c].minValue = mySplitObj.min;
+            TREE.treeCuesList[c].maxValue = mySplitObj.max;
+            TREE.treeCuesList[c].splitValue = mySplitObj.split;
+            TREE.treeCuesList[c].isFlipped = !mySplitObj.minisno_maxisyes;   // reverse true to false
             
             innerStep++;
             // STEPS++;
@@ -147,10 +158,12 @@ function analyzeDataset(myTreeObj) {
     
     getDerivativeStatistics();
     
-    updateAnalysisView('stat_'+myTreeId);
+    updateAnalysisView(myTreeId);
     
     // do it only for the tree analysis (not individual cues in the cue list)
     if ( (myTreeId=='tree0') || (myTreeId=='tree1') ) {
+        
+        updateAnalysisView('stat_'+myTreeId);
         
         // calculate and display statistics for the cues in the tree
         for (var c = 0; c < TREE.treeCuesList.length; c++) {
@@ -224,6 +237,7 @@ function getDerivativeStatistics() {
     
     PHITS = Math.round(ts.getHitsProbability() * 1000) / 1000;
     PFA = Math.round(ts.getFalseAlarmsProbability() * 1000) / 1000;
+    PHITSMINUSPFA = Math.round((PHITS - PFA) * 1000) / 1000;
     DPRIME = Math.round(ts.getDPrime() * 1000) / 1000;
     FRUGALITY = Math.round(ts.frugality() * 1000) / 1000;
     APRIME = Math.round(ts.getAPrime() * 1000) / 1000;
@@ -233,6 +247,7 @@ function getDerivativeStatistics() {
 }
 
 function resetTreeStatistics() {
+    
     STEPS = 0;
     HITS = 'Hit';
     MISS = 'Miss';
@@ -248,6 +263,7 @@ function resetTreeStatistics() {
     PRED_SUM_SUM = 0;
     PHITS = 0;
     PFA = 0;
+    PHITSMINUSPFA = 0;
     DPRIME = 0;
     FRUGALITY = 0;
     APRIME = 0;
@@ -259,8 +275,22 @@ function resetTreeStatistics() {
     updateAnalysisView('stat_tree1');
 }
 
+function resetDerivativeView(myId) {
+    
+    $('#'+myId+' #pHits').text('0');
+    $('#'+myId+' #pFA').text('0');
+    $('#'+myId+' #pHitsMinuspFA').text('0');
+    $('#'+myId+' #dprime').text('0');
+    $('#'+myId+' #frugality').text('0');
+    $('#'+myId+' #aprime').text('0');
+    $('#'+myId+' #bprime').text('0');
+    $('#'+myId+' #bdprime').text('0');
+    $('#'+myId+' #bias').text('0');
+}
 
 function updateAnalysisView(myId) {
+    
+    //alert('updateAnalysisView: '+myId);
     
     $('#'+myId+' #hits').text(HITS.toString());
     $('#'+myId+' #misses').text(MISS.toString());
@@ -277,6 +307,7 @@ function updateAnalysisView(myId) {
 
     $('#'+myId+' #pHits').text(PHITS.toString());
     $('#'+myId+' #pFA').text(PFA.toString());
+    $('#'+myId+' #pHitsMinuspFA').text(PHITSMINUSPFA.toString());
     $('#'+myId+' #dprime').text(DPRIME.toString());
     $('#'+myId+' #frugality').text(FRUGALITY.toString());
     $('#'+myId+' #aprime').text(APRIME.toString());

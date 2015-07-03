@@ -7,6 +7,7 @@ using ABCUniverse.Portable.Trees;
 using DecisionTreeWeb.Model;
 using ABCUniverse.DataAccess;
 using ABCUniverse.Portable;
+using ABCUniverse.Portable.Trees.Interfaces;
 
 namespace DecisionTreeWebServer.Controllers
 {
@@ -31,35 +32,48 @@ namespace DecisionTreeWebServer.Controllers
                 {
                     DecisionTree t = new DecisionTree();
                     t.IsFFTree = true;
-
+                    t.SelectedCriterion = new WorldAttribute(tree.criterion);
+ 
                     // transform jsontree to decision-fft-tree
                     Node prnt = null;
                     foreach (var c in tree.cues)
                     {
-                        var n = new Node(new WorldAttribute(c.name));
-                        
-                        if (prnt == null)
+                        // splitvalue in wa
+                        var wa = new WorldAttribute(c.name);
+                        wa.MaximumValue = c.maxValue;
+                        wa.MinimumValue = c.minValue;
+                        wa.BinarySplitValue = c.splitValue;
+                        wa.IsFlipped = c.isFlipped;
+
+                        var n = new Node(wa);
+
+                        if (c.yes == "exit" && c.no != "exit")
                         {
-                            t.SetRoot(n);
-                            prnt = n;
+                            n.NodeChildren = new List<IDecisionTreeItem>(2) { 
+                                new Node(),
+                                new Exit()
+                            };
+                        }
+                        else if (c.yes != "exit" && c.no == "exit")
+                        {
+                            n.NodeChildren = new List<IDecisionTreeItem>(2) {  
+                                new Exit(),
+                                new Node()
+                            };
                         }
                         else
                         {
-                            n.ParentNode = prnt;
-                            if (c.yes == "exit" && c.no != "exit")
-                            {
-                                t.AppendChildren(new Exit(), n);
-                            }
-                            else if (c.yes == "exit" && c.no == "exit")
-                            {
-                                t.AppendChildren(new Exit(), new Exit());
-                            }
-                            else
-                            {
-                                t.AppendChildren(n, new Exit());
-                            }
-                            prnt = n;
+                            n.NodeChildren = new List<IDecisionTreeItem>(2) { 
+                                new Exit(), 
+                                new Exit()
+                            };
                         }
+
+                        if (prnt != null)
+                            n.ParentNode = prnt;
+
+                        t.SetNode(n);
+                        prnt = n;
                     }
 
                     // save to db
@@ -68,6 +82,7 @@ namespace DecisionTreeWebServer.Controllers
                         string name = ctx.SaveTree(t);
                         return Json(string.Format("{0} saved!", name));
                     }
+                    //return null;
                 }
                 catch (Exception e)
                 {

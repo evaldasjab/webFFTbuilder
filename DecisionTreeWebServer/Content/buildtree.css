@@ -11,14 +11,18 @@ body {font-size:0.8em; font-family:Arial,Verdana,Sans-Serif; background: white;}
 a {color:black;}
 
 
+/* BLUE AREA section ****************/
 
-
-/* Row section ****************/
-
+#blue_width_infinitely {
+  background:#50ADE1;  /* Special BLUE */
+  width: 100%;
+}
 #blue_area {
   background:#50ADE1;  /* Special BLUE */
   height: auto;
-  padding: 20px 20px 0px 20px;
+  width: 1200px;
+  padding: 20px 20px 0px 25px;
+  margin-bottom: -20px;
 }
 #blue_area h1 {
   font-family: 'Offside', Arial, Sans-Serif;
@@ -26,6 +30,10 @@ a {color:black;}
   color: white;
   white-space: nowrap;
   margin: 0px 0px 10px 0px;
+}
+
+.disabled {
+  opacity: 0;
 }
 
 .button_help {
@@ -40,12 +48,19 @@ a {color:black;}
   color: White;
   text-align: center;
   position: absolute;
+  left: 25px;
+  transition: 1s;
+}
+.button_help:hover {
+  background: #7cc2e9;     /*lighter than special BLUE, opacity 75% */
+  transition: background 0s, color 1s;
+}
+.button_help:active {
+  color: #50ADE1;  /* Special BLUE */
+  transition: color 0s;
 }
 
-input[type=file] {
-    display: none;
-}
-.button_load_csv {
+.ui-selectmenu-button {
   cursor: pointer;
   width: 150px;
   height: 20px;
@@ -55,9 +70,73 @@ input[type=file] {
   font-size: 12px;
   color: Black;
   text-align: center;
-  background: LightGrey;
+  background: LightGrey;    /* or d4d4d4, b 83% */
+  color: Black;
+  position: absolute;
+  left: 195px;
+  z-index: 0;
+  transition: color 1s;
+}
+.ui-selectmenu-button span.ui-selectmenu-text {
+  padding: 2px 0 0 0;
+  text-align: center;
+  vertical-align: middle;
+}
+.ui-selectmenu-button:hover {
+  background: #e5e5e5;     /*lighter than LightGrey, b 90% */
+  color: Black;
+  z-index: 1;
+}
+.ui-selectmenu-button:active {
+  color: #50ADE1;  /* Special BLUE */
+  transition: color 0s;
+}
+.ui-widget {
+	font-family: 'Offside', Arial, Sans-Serif;
+	font-size: 12px;
+}
+.ui-state-default {
+	border: 0px solid #cccccc;
+	background: LightGrey url("images/ui-bg_glass_100_f6f6f6_1x400.png") 50% 50% repeat-x;
+	font-weight: inherit;
+	color: Black;
+}
+.ui-state-focus {
+	border: 0px solid #fbcb09;
+	background: #e5e5e5 url("images/ui-bg_glass_100_fdf5ce_1x400.png") 50% 50% repeat-x;
+	font-weight: inherit;
+	color: Black;
+}
+
+#csv-file {
+    display: none;
+}
+.buttons_grey {
+  cursor: pointer;
+  width: 150px;
+  height: 20px;
+  border-radius: 10px;
+  border: 0px solid black;
+  font-family: 'Offside', Arial, Sans-Serif;
+  font-size: 12px;
+  color: Black;
+  text-align: center;
+  background: LightGrey;    /* or d4d4d4, b 83% */
   color: Black;
   z-index: 0;
+  transition: color 1s;
+}
+.buttons_grey:disabled {
+  opacity: 0.2;
+}
+.buttons_grey:hover {
+  background: #e5e5e5;     /*lighter than LightGrey, b 90% */
+  color: Black;
+  z-index: 1;
+}
+.buttons_grey:active {
+  color: #50ADE1;  /* Special BLUE */
+  transition: color 0s;
 }
 #button_upload_csv_file {
   position: absolute;
@@ -68,34 +147,37 @@ input[type=file] {
   left: 195px;
 }
 
-.button_selectdata {
-  width: 120px;
-  height: 20px;
-  border-radius: 10px;
-  border: 0px solid black;
-  font-family: 'Offside', Arial, Sans-Serif;
-  font-size: 12px;
-  text-align: center;
-  background: LightGrey;
-  color: Black;
-  z-index: 0;
-}
 #button_allcases {
   position: absolute;
   left: 365px;
 }
 #button_training {
   position: absolute;
-  left: 470px;
+  left: 500px;
 }
 #button_testing {
   position: absolute;
-  left: 575px;
+  left: 635px;
 }
 .button_on {
   background: White;
   color: Black;
   z-index: 1;
+}
+#loading_spinner_all {
+  position: relative;
+  top: 10px;
+  left: -116px;
+}
+#loading_spinner_train {
+  position: relative;
+  top: 10px;
+  left: 14px;
+}
+#loading_spinner_test {
+  position: relative;
+  top: 10px;
+  left: 148px;
 }
 
 .noselect {
@@ -110,6 +192,7 @@ input[type=file] {
 /* This container element gives us the scrollbars we want.*/
 div.horiz_scroll {
   margin: 50px 0px 0px 0px;
+  padding-bottom: 20px;
   width: 100%;
   height: 100%;
   overflow: auto;
@@ -146,8 +229,8 @@ article {
 #blue_area .button_expand_all {
   stroke: White;
   position: relative;
-  top: 0px;
-  left: -17px;
+  top: -20px;
+  left: -21px;
 }
 #white_area .button_expand_all {
   stroke: Grey;
@@ -157,20 +240,30 @@ article {
   left: 4px;
 }
 
-/* Row section End ***************/
+#mpib_logo {
+  height: 34px;
+  width: 360px;
+  position: absolute;
+  left: 867px;
+  top: 36px;
+}
 
-/* Columns *************/
+/* BLUE AREA End ***************/
+
+/* WHITE AREA *************/
 
 #white_area {
   background: white;
+  /*background-color: transparent;*/
   padding: 20px 0px 0px 0px;
+  margin-top:20px;
   width: 1200px;
 }
 
 .trees {
   width:120px;
   display: inline-block; 
-  height: 600px;
+  height: 455px;
   vertical-align: top;
 }
 
@@ -194,7 +287,7 @@ article {
   left: 130px;
   top: 14px;
 }
-/* Columns End *************/
+/* WHITE AREA End *************/
 
 
 /* Widgets ***************/
@@ -218,13 +311,17 @@ article {
   width: 120px;
   height: 40px;
   border-radius: 20px;
+  border: 1px solid #50ADE1;   /* Special BLUE */;
   background: White;
   position: relative;
   margin-left: auto;
   margin-right: auto;
 }
+li:not(.ui-draggable-disabled) .widget_head {
+  border: 1px solid #50ADE1;   /* Special BLUE */;
+}
 .trees .widget_head {
-  background: #50ADE1;
+  background: #50ADE1;   /* Special BLUE */
 }
 
 .widget_title {
@@ -232,7 +329,7 @@ article {
   line-height: 40px;
   margin-left: auto;
   margin-right: auto;
-  color: black;
+  color: Grey;
   font-family: 'Offside', Arial, Sans-Serif;
   font-size: 20px;
   text-align: center;
@@ -241,76 +338,28 @@ article {
 }
 li:not(.ui-draggable-disabled) .widget_title {
   cursor: move;
+  color: Black;
+}
+.criterion_cue .widget_title {
+  color: #50ADE1;   /* Special BLUE */
 }
 
 #blue_area .widget_content {
+  width: 220px;
   position: relative;
-  left: -22px;
+  left: 0px;
 }
-.trees .widget_content {
-  width: 260px;
+#white_area .widget_content {
+  width: 220px;
   position: relative;
-  left: -70px;
-}
-
-label {
-  cursor: pointer;
-}
-
-.button_expand {
-  cursor: pointer;
-  background: transparent;
-  border: none !important;
-  fill: none;
-  stroke: Grey;
-  stroke-width: 1;
-  position: absolute;
-  left: 6px;
-  top: 10px;
-}
-.trees .button_expand{
-  stroke: White;
-}
-
-.button_close {
-  cursor: pointer;
-  background: transparent;
-  border: none !important;
-  stroke: white;
-  stroke-width: 1;
-  fill: none;
-  position: absolute;
-  left: 93px;
-  top: 10px;
-}
-.exit_widget .button_close {
-  position: absolute;
-  left: 53px;
-  top: 9px;
-}
-
-input[type=radio] {
-    display: none;
-}
-input[type=radio] + label {
-  stroke: grey;
-  stroke-width: 1;
-  fill: none;
-  position: absolute;
-  left: 93px;
-  top: 10px;
-}
-input[type=radio]:checked + label{
-  fill: grey;
-}
-.trees .button_radio{
-  stroke: white;
+  left: -47px;
 }
 
 .exit_widget {
     width: 80px;
     height: 40px;
     border-radius: 20px;
+    background: #f6bb42;   /* special yellow */
 }
 .exit_widget_title {
   width: 60px;
@@ -331,23 +380,31 @@ input[type=radio]:checked + label{
   position: absolute;
   left: -100px;
   bottom: -80px;
-  background: #2ECC71; /* green */
+  /*background: #edaf8a; /*  ORANGE 50% */
 }
 .exit_left .exit_arrow {
   position: absolute;
   left: 70px;
   top: -42px;
 }
+.exit_left .exit_widget_title {
+  position: absolute;
+  left: 3px;
+}
 .exit_right {
     position: absolute;
     left: 140px;
     bottom: -80px;
-    background: #E74C3C;  /* red */
+    /*background: #edaf8a;  /*  ORANGE 50% */
 }
 .exit_right .exit_arrow {
   position: absolute;
   left: -34px;
   top: -42px;
+}
+.exit_right .exit_widget_title {
+  position: absolute;
+  left: 14px;
 }
 
 .cue_arrow {
@@ -368,11 +425,204 @@ input[type=radio]:checked + label{
 
 /* Widgets End ***************/
 
+/* Button Controls ***************/
+
+.button_controls {
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  border: none;
+  background: transparent;
+  fill: none;
+  stroke: Grey;
+  stroke-width: 1;
+  transition: background 1s, stroke 1s, stroke-width 1s;
+}
+.button_controls:hover {
+  background: #e5e5e5;     /*lighter than LightGrey, b 90% */
+  transition: background 0s;
+}
+.trees .button_controls:hover {
+  background: #7cc2e9;     /*lighter than special BLUE, opacity 75% */
+  transition: background 0s;
+}
+.button_controls:active {
+  background: transparent;
+  stroke: #50ADE1;  /* Special BLUE */
+  stroke-width: 2;
+  transition: background 0s, stroke 0s, stroke-width 0s;
+}
+
+.button_expand {
+  position: absolute;
+  left: 6px;
+  top: 10px;
+}
+.button_close {
+  position: absolute;
+  left: 93px;
+  top: 10px;
+}
+.trees .button_expand, .trees .button_radio, .trees .button_close{
+  stroke: White;
+}
+.exit_widget .button_switch {
+  stroke: White;
+}
+.exit_left .button_switch {
+  position: absolute;
+  left: 55px;
+  top: 10px;
+}
+.exit_right .button_switch {
+  position: absolute;
+  left: 5px;
+  top: 10px;
+}
+.exit_widget .button_switch:hover {
+  background: #f8cc71;    /* special yellow 75% */
+}
+.exit_left .button_switch:hover {
+  /*background: #62d995;     /*lighter than special GREEN, opacity 75% */
+}
+.exit_right .button_switch:hover {
+  /*background: #ed796d;     /*lighter than special RED, opacity 75% */
+}
+
+input[type=radio] {
+    display: none;
+}
+input[type=radio] + label {
+  stroke: grey;
+  stroke-width: 1;
+  fill: none;
+  position: absolute;
+  left: 93px;
+  top: 10px;
+}
+input[type=radio]:checked + label{
+  fill: grey;
+}
+
+/* Button Controls End ***************/
+
+/* Split values **************/
+
+.split_table {
+  border-spacing: 0px;
+  border: 0px solid black;
+  width: 200px;
+  position: relative;
+  left: 10px;
+}
+
+.ui-slider-horizontal {
+  height: 1px;
+}
+.ui-slider .ui-widget-content {
+}
+.ui-slider .ui-slider-handle {
+  height: 12px;
+  width: 12px;
+  border-radius: 7px;
+  top: -7px;
+}
+
+#blue_area .ui-slider-horizontal {
+  background: White;
+}
+#blue_area .ui-slider .ui-widget-content {
+  border: 1px solid White;
+  background: White;
+}
+#blue_area .ui-slider .ui-slider-handle {
+  border: 1px solid White;
+  background: White;
+}
+
+#white_area .ui-slider-horizontal {
+  background: Grey;
+}
+#white_area .ui-slider .ui-widget-content {
+  border: 1px solid Grey;
+  background: Grey;
+}
+#white_area .ui-slider .ui-slider-handle {
+  border: 1px solid Grey;
+  background: Grey;
+}
+
+.ui-slider-handle .ui-state-hover:hover {
+  border: 1px solid Black;
+  background: LightGrey;
+}
+.ui-slider .ui-state-hover:hover {
+  border: 1px solid LightGrey;
+  background: LightGrey;
+}
+
+.cell_exit{
+  width: 40px;
+  border: 0px;
+  text-align: center;
+  font-family: 'Offside', Arial, Sans-Serif;
+  color: Black;
+  background-color: #f6bb42;    /* ORANGE 50% */
+}
+
+input[type=text] {
+    width: inherit;
+    height: inherit;
+    margin: 0px;
+    padding: 1px;
+    border: 0px solid LightGrey;
+    font-size: 10px;
+    text-align: center;
+}
+input[type=text]:hover {
+  //background: #e5e5e5;     /*lighter than LightGrey, b 90% */
+  color: #50ADE1;  /* Special BLUE */
+  font-weight: bold;
+}
+
+.button_swap {
+  height: 20px;
+  width: 40px;
+  border-radius: 10px;
+  cursor: pointer;
+  background: transparent;
+  border: none !important;
+  fill: none;
+  stroke-width: 1;
+  transition: background 1s, stroke 1s, stroke-width 1s;
+}
+#blue_area .button_swap {
+  stroke: White;
+}
+#blue_area .button_swap:hover {
+  background: #7cc2e9;     /*lighter than special BLUE, opacity 75% */
+  transition: background 0s;
+}
+#white_area .button_swap {
+  stroke: Grey;
+}
+#white_area .button_swap:hover {
+  background: #e5e5e5;     /*lighter than LightGrey, b 90% */
+  transition: background 0s;
+}
+.button_swap:active {
+  stroke-width: 2;
+  transition: background 0s, stroke 0s, stroke-width 0s;
+}
+
+/* Split values End *********/
+
 /* Statistics ***************/
 
 .button_stat {
   cursor: pointer;
-  width: 170px;
+  width: 230px;
   height: 20px;
   border-radius: 10px;
   border: 0px solid black;
@@ -381,11 +631,13 @@ input[type=radio]:checked + label{
   font-size: 12px;
   color: Black;
   text-align: center;
-  margin: 20px 0px 0px 45px;
 }
 
-.stats {
-  display: inline-block; 
+.stat_cue_header {
+  display: inline-block;
+}
+.stat_inline {
+  display: inline-block;
 }
 
 .eval_table {
@@ -459,6 +711,7 @@ th {
   border-bottom: 0px solid LightGrey;
   border-collapse: collapse;
   width: 40px;
+  padding: 0px;
 }
 #blue_area .cell_values{
   border-top: 1px solid White;
@@ -469,19 +722,19 @@ th {
 
 .success{
     text-align: center;
-    color: white;
-    background-color: #2ECC71;   /* green */
+    color: Black;
+    background-color: #8cc152;   /* green */
 }
 
 .fail{
     text-align: center;
-    color: white;
-    background-color: #E74C3C;  /* red */
+    color: Black;
+    background-color: #fc6e51;  /* red */
 }
 
 .undecided{
     text-align: center;
-    color: white;
+    color: Black;
     background-color: #50ADE1;   /* blue */
 }
 
@@ -500,3 +753,15 @@ th {
 
 /* Statistics End ***************/
 
+#footer {
+  width: 435px;
+  background: White;
+  font-size: 10px;
+  color: Grey;
+  text-align: center;
+  white-space: nowrap;
+  position: fixed;
+  left: 394px;
+  padding: 10px 10px 20px 10px;
+  bottom: 0px;
+}

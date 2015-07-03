@@ -4,30 +4,49 @@
 
 var d = 9;  // for unique cue IDs, not 0 to have always two characters for removal (3 characters with '-')
 var c = 9;  // for unique exit IDs, not 0 to have always two characters for removal (3 characters with '-')
-var criterCue = '';
+var criterCueId = '';
 
 function init() {                        // Function, which initialises methods to be run when page has loaded
-    // The method which starts it all...
-    //this.attachStylesheet('buildtree.js.css');
-    this.selectCriterion();
-    this.makeSortable();
+    // activate draggable and sortable
+    makeSortable();
+    selectCriterion();
+    
 }
 
 function selectCriterion() {
     $('.criterion_class').change(function(){
-        criterCue = $( 'input:radio[name=criterion_name]:checked' ).val();
-        console.log('criterCue: ' + criterCue);
-        // ENABLE dragging of all cues
-        $('.widget').draggable('enable'); 
-        $('#'+criterCue).draggable('disable'); // DISABLE draggable of the cue, which is selected as criterion
+        
+        criterCueId = $( 'input:radio[name=criterion_name]:checked' ).val();
+        criterCueName = $('#'+criterCueId).attr('name');
+        console.log('criterCueId: '+criterCueId+', criterCueName: '+criterCueName);
+        
+        // remove the criterion cue from the trees, if there are some
+        $('[name="'+criterCueName+'"] .button_close').click();
+        
+        // mark the cue adding the 'criterion_cue' class
+        $('.widget').toggleClass('criterion_cue', false); // remove the class from other cues if previously was selected
+        $('#'+criterCueId).toggleClass('criterion_cue', true);
+        
+        // ENABLE dragging of all cues except criterion
+        makeSortable(); // RERUN - workaround, otherwise gives error
+        $('.widget').draggable('enable');
+        $('#'+criterCueId).draggable('disable');
+        
+        // show 'Drop the cues here!'
+        $('.drophere').removeClass('disabled');
         
         updateJsonDataset('tree0'); // update JSON object and tree statistics
         updateJsonDataset('tree1'); // update JSON object and tree statistics
         updateStatisticsForSingleCues(); //update statistics in the blue area
         
+        // reset deriv statistics for the criterion
+        resetDerivativeView(criterCueId);
+        
         // show next tooltip
-        console.log('TIP 3');
-        tour.goTo(3);
+        console.log('TIP 2');
+        if (tour.getCurrentStep()<=1) {
+            tour.goTo(2);
+        }
     });
 }
 
@@ -40,7 +59,7 @@ function makeSortable() {                 // This function will make the widgets
     //var orderTree0 = [];  // variable knows what's in the tree0
     //var orderTree1 = [];  // variable knows what's in the tree1
     
-    $('#cues_list').find('.widget').draggable({
+    $('.widget').draggable({   
         connectToSortable: ".trees",
         helper: 'clone',
         handle: '.widget_title',        // Set the handle to the top bar
@@ -53,13 +72,9 @@ function makeSortable() {                 // This function will make the widgets
             //console.log("origCueId: " + origCueId);
             
             // show next tooltip
-            console.log('TIP 6 or 11');
-            if (tour.getCurrentStep()<=5) {
-                tour.goTo(6);
-            } else if (tour.getCurrentStep()<=10){
-                tour.goTo(11);
-            } else {
-                //tour.goTo(15);
+            console.log('TIP 3 or ');
+            if (tour.getCurrentStep()<=2) {
+                tour.goTo(3);
             }
         },
         drag: function(event,ui){
@@ -103,39 +118,37 @@ function makeSortable() {                 // This function will make the widgets
         },
         receive: function(event,ui) {
             
+            // remove "split values" part from the stats table
+            //$('#'+dragCueId+' .row_to_delete').remove();
+            
+            // reactivate split value slider, manual change and swap
+            splitValueSliderChangeSwapReactivate(dragCueId, myDataset, trueDataset);
+            
             // replace the radio button with close button
             $('#'+dragCueId+' .criterion_class').remove(); // remove the radio button
             $('#'+dragCueId+' .criterion_label').remove(); // remove the radio button label
-            $('#'+dragCueId+' .widget_head').append( closeButtonHtml() );  // add close button
-            activateExpandButton(dragCueId);  // reactivate EXPAND BUTTON - bug workaround
-            activateCloseCueButton(dragCueId); // activate close button
-            
-            //hide the content, if expanded
-            //$('#'+dragCueId).find('.widget_content').hide();
-                        
-            // add EXIT nodes, depending on which tree is dropped on
-            //$('#'+dragCueId+' #hidden-exit_yes').val('continue'); // 'reset' exit values - bug workaround
-            //$('#'+dragCueId+' #hidden-exit_no').val('continue'); // 'reset' exit values - bug workaround
-            //var dragExits = setExitDirection(dragTreeId);
-            //setExitValues(dragCueId, dragExits.yes, dragExits.no);
-            
-            // draw the arrow to the next cue
-            //drawArrowToNextCue(dragCueId);
+            $('#'+dragCueId+' .widget_head').append( htmlButtonClose() );  // add close button
+            activateButtonExpand(dragCueId);  // reactivate EXPAND BUTTON - bug workaround
+            activateButtonCloseCue(dragCueId); // activate close button
 
             // add "TREE up to this cue" statistics table
             $('#'+dragCueId+' .stats_header').text('THIS CUE');    // rename the table to "stats of this cue"
-            $('#'+dragCueId+' .stat_cue_header').append( statTreeUpToThisCueHtml() ); // add the table "stats of the tree up to this cue"
-            $('#'+dragCueId+' .widget_content').prepend( statButtonHtml() ); // add the button "stats of"
-            activateStatButton(dragCueId);            // activate the button "stats of"
+            $('#'+dragCueId+' .stat_cue_header').prepend( htmlButtonStat() ); // add the button "stats of"
+            $('#'+dragCueId+' .stat_cue_header').append( htmlStatTreeUpToThisCue() ); // add the table "stats of the tree up to this cue"
+            
+            activateButtonStat(dragCueId);            // activate the button "stats of"
+            
+            // update JSON dataset for the analysis algorithms
+            updateJsonDataset(dragTreeId);
             
             // show next tooltip
-            console.log('TIP 7 or 12 or 15');
-            if (tour.getCurrentStep()<=6) {
-                tour.goTo(7);
-            } else if (tour.getCurrentStep()<=12){
-                tour.goTo(12);
-            } else if (tour.getCurrentStep()<=14){ 
-                tour.goTo(15);
+            console.log('TIP 4 or 5 or 18');
+            if (tour.getCurrentStep()<=3) {
+                tour.goTo(4);
+            } else if (tour.getCurrentStep()<=4){
+                tour.goTo(5);
+            } else if (tour.getCurrentStep()<=17){
+                tour.goTo(18);
             }
         },
         update: function (event,ui) {
@@ -170,8 +183,8 @@ function updateExitsAndArrowsForAllCues(myTreeId) {
 
     myTreeArray.forEach(function(myCueId){
         
-        console.log('UPDATE EXITS AN ARROWS myCueId: '+myCueId);
-        console.log('myLastCueId: '+myLastCueId);
+        //console.log('UPDATE EXITS AN ARROWS myCueId: '+myCueId);
+        //console.log('myLastCueId: '+myLastCueId);
         
         // do for each cue in the tree, except the last cue
         if (myCueId != myLastCueId) {
@@ -194,8 +207,8 @@ function updateExitsAndArrowsForAllCues(myTreeId) {
                 setExitNodes(myCueId, myExits.myYes, myExits.myNo);
                 
                 // add close EXIT button to the Exit node
-                $('#'+myCueId+' .exit_widget').append( closeButtonHtml() );  // add close button
-                activateCloseExitButton(myCueId, myExits.myExitClass);
+                $('#'+myCueId+' .exit_widget').append( htmlButtonSwitch(myExits.myExitClass) );  // add close button
+                activateButtonSwitchExit(myCueId, myExits.myExitClass);
                 
                 // draw arrow to the next cue
                 drawArrowToNextCue(myCueId, myExits.myYes, myExits.myNo);
@@ -205,7 +218,7 @@ function updateExitsAndArrowsForAllCues(myTreeId) {
             // add the second EXIT node
             setExitNodes(myLastCueId, 'exit', 'exit');
             // remove CLOSE buttons from EXIT nodes of the last cue
-            $('#'+myLastCueId+' .exit_widget .button_close').remove();
+            $('#'+myLastCueId+' .exit_widget .button_switch').remove();
             // remove the arrow to the next cue
             $('#'+myLastCueId+' .cue_arrow').remove();
         } 
@@ -216,9 +229,9 @@ function drawArrowToNextCue(myCueId, myYes, myNo) {
     //get info about Exit nodes
     //var myExitLeftId = $('#'+myCueId+' .exit_left').attr('id');
     //var myExitRightId = $('#'+myCueId+' .exit_right').attr('id');
-    console.log('DRAW ARROW myCueId: '+myCueId);
-    console.log('myEes: '+myYes);
-    console.log('myNo: '+myNo);
+    //console.log('DRAW ARROW myCueId: '+myCueId);
+    //console.log('myEes: '+myYes);
+    //console.log('myNo: '+myNo);
     //var myYes = $('#'+myCueId+' #hidden-exit_yes').val();
     //var myNo = $('#'+myCueId+' #hidden-exit_no').val();  // we don't need that actually
     
@@ -249,12 +262,12 @@ function setExitDirection(myTreeId) {
         case 'tree0':
             var myYes = 'exit';
             var myNo = 'continue';
-            var myExitClass = 'exit_left';
+            var myExitClass = 'exit_right';
             break;
         case 'tree1':
             var myYes = 'continue';
             var myNo = 'exit';
-            var myExitClass = 'exit_right';
+            var myExitClass = 'exit_left';
             break;
     }
     return {
@@ -272,27 +285,27 @@ function setExitNodes(myCueId, myYes, myNo) {
     //console.log('myExitLeft: '+myExitLeftId);
     //console.log('myExitRight: '+myExitRightId);
 
-    switch (myYes) {  // node/arrow to the left
-        case 'exit':                                        // if exit should be to the left/yes node
-            if (myExitLeftId == undefined) {                // and if there is NO left/yes exit node
-                addExitNode(myCueId, 'exit_left');    // creare the left/yes exit node
+    switch (myYes) {  // arrow YES goes to...
+        case 'exit':                                        // if YES arrow should go to EXIT on RIGHT
+            if (myExitRightId == undefined) {                // and if there is NO exit node on RIGHT
+                addExitNode(myCueId, 'exit_right');    // creare the exit node on RIGHT
             }
         break;
-        case 'continue':                                    // if NO exit should be to the left/yes
-            if (myExitLeftId != undefined) {                // and if there is left/yes exit node
-            removeExitNode(myCueId, 'exit_left');     // remove the left/yes exit node
+        case 'continue':                                    // if YES arrow should go to the next cue
+            if (myExitRightId != undefined) {                // and if there IS exit node to RIGHT
+            removeExitNode(myCueId, 'exit_right');     // remove RIGHT exit node
             }
         break;
     }
-    switch (myNo) {    // node/arrow to the right        
-        case 'exit':                                        // if exit should be to the right/no node
-            if (myExitRightId == undefined) {               // and if there is NO right/no exit node
-                addExitNode(myCueId, 'exit_right');     // creare the right/no exit node
+    switch (myNo) {    // arrow NO goes to...
+        case 'exit':                                        // if NO arrow should go to EXIT on LEFT
+            if (myExitLeftId == undefined) {               // and if there is NO exit node on LEFT
+                addExitNode(myCueId, 'exit_left');     // creare the exit node on LEFT
             }
         break;
-        case 'continue':                                    // if NO exit should be to the right/no
-            if (myExitRightId != undefined) {                // and if there is right/no exit node
-            removeExitNode(myCueId, 'exit_right');      // remove the right/no exit node
+        case 'continue':                                    // if NO arrow should go to the next cue
+            if (myExitLeftId != undefined) {                // and if there IS exit node to LEFT
+            removeExitNode(myCueId, 'exit_left');      // remove LEFT exit node
             }
         break;
     }
@@ -315,19 +328,21 @@ function addExitNode(myCueId, myExitClass) {
     switch(myExitClass) {
         case 'exit_left':
             //var myExitDir = 'exit_left';
-            var myExitText = 'Yes';
+            var myExitText = 'no';
             var myArrowHtml =  '<line x1="0" y1="45" x2="45" y2="0"/> \
                                 <line x1="1" y1="25" x2="1" y2="44"/> \
                                 <line x1="1" y1="44" x2="20" y2="44"/> \
-                                <text x="15" y="25" stroke-width="1" stroke="none" fill="black">yes</text>';
+                                <text x="15" y="25" stroke-width="1" stroke="none" fill="black">'+myExitText+'</text>';
+            
             break;
         case 'exit_right':
             //var myExitDir = 'exit_right';
-            var myExitText = 'No';
+            var myExitText = 'yes';
             var myArrowHtml =  '<line x1="0" y1="0" x2="45" y2="45"/> \
                                 <line x1="44" y1="25" x2="44" y2="44"/> \
                                 <line x1="25" y1="44" x2="44" y2="44"/> \
-                                <text x="17" y="25" stroke-width="1" stroke="none" fill="black">no</text>';
+                                <text x="17" y="25" stroke-width="1" stroke="none" fill="black">'+myExitText+'</text>';
+            
             break;
     }
     
@@ -335,7 +350,7 @@ function addExitNode(myCueId, myExitClass) {
     var myExitNodeId = 'exit_'+d+'-'+c;  // d - the same as cueID, c - unique for exit nodes
     
     var exitNode =  '<li id='+myExitNodeId+' class="'+myExitClass+' exit_widget unsortable"> \
-                        '+closeButtonHtml()+' \
+                        '+htmlButtonSwitch(myExitClass)+' \
                         <div class="exit_widget_title"> \
                             <span>EXIT</span> \
                         </div> \
@@ -347,7 +362,7 @@ function addExitNode(myCueId, myExitClass) {
     $(exitNode).hide().appendTo('#'+myCueId+' .exits').fadeIn(300);
     
     // activate the EXIT close button
-    activateCloseExitButton(myCueId, myExitClass);  // activate the close button
+    activateButtonSwitchExit(myCueId, myExitClass);  // activate the close button
 }
 function getTreeInt(myTreeId) {
     var mySlice = myTreeId.slice(4,5);  // leave only the number e.g."1" in "cue1-0"
@@ -373,11 +388,11 @@ function switchExitDirection(myCueId, myExitClass) {
     //console.log('SWITCH EXIT DIRECTION! myCueId: '+myCueId);
     
     switch(myExitClass) {   // depending on which EXIT close button was clicked
-        case 'exit_left':  
+        case 'exit_right':  
             setExitNodes(myCueId, 'continue', 'exit'); // yes , no
             drawArrowToNextCue(myCueId, 'continue', 'exit');  // redraw the arrow and the label to the next cue
             break;
-        case 'exit_right':
+        case 'exit_left':
             setExitNodes(myCueId, 'exit', 'continue'); // yes , no
             drawArrowToNextCue(myCueId, 'exit', 'continue');  // redraw the arrow and the label to the next cue
             break;
@@ -385,13 +400,13 @@ function switchExitDirection(myCueId, myExitClass) {
 }
 
 function getExitValues(myCueId, cameFrom) {
-    console.log('FUNCTION getExitValues, came: '+cameFrom);
+    //console.log('FUNCTION getExitValues, came: '+cameFrom);
     
     // check if Exit nodes exist
     var myExitLeftId = $('#'+myCueId+' .exit_left').attr('id');
     var myExitRightId = $('#'+myCueId+' .exit_right').attr('id');
     
-    console.log('CHECK myCueId: '+myCueId+' myExitLeftId: '+myExitLeftId+' myExitRightId: '+myExitRightId);
+    //console.log('CHECK myCueId: '+myCueId+' myExitLeftId: '+myExitLeftId+' myExitRightId: '+myExitRightId);
     
     //alert('stop');
     
@@ -417,6 +432,10 @@ function getExitValues(myCueId, cameFrom) {
         myRight: myRight
     }
 }
+
+$(window).scroll(function(){
+  $('#footer').css('left',394-$(window).scrollLeft());    // css position left: 394px
+});
 
 // Right at the very end of buildtree.js
 //init();

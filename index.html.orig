@@ -1,0 +1,167 @@
+<!-- 'HTML-style' HTML5 -->
+<!DOCTYPE html>
+
+<html lang="en">
+        
+<head>
+        <meta charset="utf-8">    
+        <!--[if lt IE 9]>
+                <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+        <title>Grow a FAST-and-FRUGAL Tree</title>
+        <link href='http://fonts.googleapis.com/css?family=Offside' rel='stylesheet' type='text/css'>
+        <link rel=" stylesheet" type="text/css" href="libraries/jquery-ui.css">
+        <link rel=" stylesheet" type="text/css" href="libraries/bootstrap-tour-standalone.css">
+        <link href="buildtree.css" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+        
+<div class="page_area noselect" id="blue_area">
+        
+    <header>
+        <h1>Grow a FAST-and-FRUGAL Tree</h1>       
+    </header>
+        
+    <button class="button_help" id="button_help_id" title="Guiding Tips">?</button>
+    
+    <button class="buttons_grey button_load_csv" id="button_upload_csv_file">Upload CSV File</button>
+    <input type="file" id="csv-file" name="files">
+    <!--<button class="buttons_grey button_load_csv" id="button_load_csv_sample">Load CSV Sample</button>-->
+    
+    <select class="buttons_grey button_load_csv" id="button_load_csv_sample">
+        <option>Load CSV Sample</option>
+        <option value="data_ccu_FFTorg">data_ccu_FFTorg.csv</option>
+        <!--<option value="data_ccu_89_rand">data_ccu_89_rand.csv</option>
+        <option value="data_ccu_10">data_ccu_10.csv</option>-->
+        <option value="data_cmc_1cue">data_CMC_1cue.csv</option>
+        <option value="data_cmc_v1_1cue">data_CMCv1_1cue.csv</option>
+        <option value="data_cmc_FFT">data_CMC_FFT.csv</option>
+        <option value="data_cmc_v1_FFT">data_CMCv1_FFT.csv</option>
+        <option value="data_cmc_village2">data_CMC_village2.csv</option>
+        </optgroup>
+    </select>
+    
+    <button class="buttons_grey button_selectdata button_on disabled" id="button_allcases"></button>
+    <button class="buttons_grey button_selectdata disabled" id="button_training"></button>
+    <button class="buttons_grey button_selectdata disabled" id="button_testing"></button>
+    
+    
+    <!-- row of cues -->
+    <div class="horiz_scroll">
+        <div id="cues_list">
+            
+            <!-- here will go html elements from importcsv.js -->
+            
+            <!-- FOR TESTING ONLY! BEGIN -->
+
+            <!-- FOR TESTING ONLY! END -->
+            
+        </div>
+    </div>
+    
+<!--    <div title="Expand/Collapse All Cues in the Blue Area">
+-->        <svg id="button_expand_all_blue" class="buttons_controls button_expand_all disabled" height="20" width="20">
+            <polyline class="down" points="3 7,10 14,17 7"/>
+            <polyline class="up" points="3 13,10 6,17 13"/>
+        </svg>
+<!--    </div>
+--></div>
+    <!-- row of cues END-->
+
+    
+    <!-- FFTs -->
+
+<div class = "page_area" id="white_area">
+
+<!--    <div title="Expand/Collapse All Cues in the White Area">
+-->        <svg class="buttons_controls button_expand_all disabled" id="button_expand_all_white" height="20" width="20">
+            <polyline class='down' points="3 7,10 14,17 7"/>
+            <polyline class="up" points="3 13,10 6,17 13"/>
+        </svg>
+<!--    </div>
+-->    
+    <ul class="columns">        
+        <li class="drophere disabled" id="drophere_tree0">Drop the cues here!</li>
+    </ul>
+    <ul class="trees" id="tree0">
+        <!-- here will go the cues -->
+    </ul>
+    <ul class="columns">
+    </ul>
+    <div class="stat_columns">
+        <table class="eval_table" id="stat_tree0">
+            <tr><td class="table_title" colspan="6">STATISTICS OF TREE 1</td></tr>
+            <tr><th class="cell_narrow"></th><th></th><td class="table_header" colspan="4">PREDICTION</td></tr>
+            <tr><th></th><th></th><th>yes</th><th>no</th><th>und</th><th>sum</th></tr>
+            <tr><td class="table_header_rotated" rowspan="3"><div class="rotate">CRITERION</div></td><th class="cell_narrow">yes</td><td class="success" id="hits" title="Hits">Hit</td><td class="fail" id="misses" title="Misses">Miss</td><td class="undecided" id="undecided_pos" title="Undecided Positive">0</td><td class="cell_values" id="crit_yes_sum">0</td></tr>
+            <tr><th class="cell_narrow">no</td><td class="fail" id="falsealarms" title="False Alarms">FA</td><td class="success" id="correctrejections" title="Correct Rejections">CR</td><td class="undecided" id="undecided_neg" title="Undecided Negative">0</td><td class="cell_values" id="crit_no_sum">0</td></tr>
+            <tr><th class="cell_narrow">sum</th><td class="cell_values" id="pred_yes_sum">0</td><td class="cell_values" id="pred_no_sum">0</td><td class="cell_values" id="pred_und_sum">0</td><td class="cell_values" id="pred_sum_sum">0</td></tr>
+            <tr><th></th></tr>
+            <tr><th colspan="2" title="Probability of Hits">p(Hits)</th><th title="Probability of False Alarms">p(FA)</th><th title="D prime">d'</th><th title="Frugality">Frug</th><th title="C or Bias">Bias</th></tr>
+            <tr><td colspan="2" class="cell_values" id="pHits" title="Probability of Hits">0</td><td class="cell_values" id="pFA" title="Probability of False Alarms">0</td><td class="cell_values" id="dprime" title="D prime">0</td><td class="cell_values" id="frugality" title="Frugality">0</td><td class="cell_values" id="bias" title="C or Bias">0</td></tr>
+            <tr><th></th></tr>
+            <tr><th colspan="6"><button class="buttons_grey button_export" value="tree0" disabled>Export Tree 1 to Server</button></th></tr>
+        </table>
+    </div>
+    <div class="stat_columns">
+        <table class="eval_table"  id="stat_tree1">
+            <tr><td class="table_title" colspan="6">STATISTICS OF TREE 2</td></tr>
+            <tr><th class="cell_narrow"></th><th></th><td class="table_header" colspan="4">PREDICTION</td></tr>
+            <tr><th></th><th></th><th>yes</th><th>no</th><th>und</th><th>sum</th></tr>
+            <tr><td class="table_header_rotated" rowspan="3"><div class="rotate">CRITERION</div></td><th class="cell_narrow">yes</td><td class="success" id="hits" title="Hits">Hit</td><td class="fail" id="misses" title="Misses">Miss</td><td class="undecided" id="undecided_pos" title="Undecided Positive">0</td><td class="cell_values" id="crit_yes_sum">0</td></tr>
+            <tr><th class="cell_narrow">no</td><td class="fail" id="falsealarms" title="False Alarms">FA</td><td class="success" id="correctrejections" title="Correct Rejections">CR</td><td class="undecided" id="undecided_neg" title="Undecided Negative">0</td><td class="cell_values" id="crit_no_sum">0</td></tr>
+            <tr><th class="cell_narrow">sum</th><td class="cell_values" id="pred_yes_sum">0</td><td class="cell_values" id="pred_no_sum">0</td><td class="cell_values" id="pred_und_sum">0</td><td class="cell_values" id="pred_sum_sum">0</td></tr>
+            <tr><th></th></tr>
+            <tr><th colspan="2" title="Probability of Hits">p(Hits)</th><th title="Probability of False Alarms">p(FA)</th><th title="D prime">d'</th><th title="Frugality">Frug</th><th title="C or Bias">Bias</th></tr>
+            <tr><td colspan="2" class="cell_values" id="pHits" title="Probability of Hits">0</td><td class="cell_values" id="pFA" title="Probability of False Alarms">0</td><td class="cell_values" id="dprime" title="D prime">0</td><td class="cell_values" id="frugality" title="Frugality">0</td><td class="cell_values" id="bias" title="C or Bias">0</td></tr>
+            <tr><th></th></tr>
+            <tr><th colspan="6"><button class="buttons_grey button_export" value="tree1" disabled>Export Tree 2 to Server</button></th></tr>
+        </table>
+    </div>
+    <ul class="columns">
+        <div class="drophere disabled" id="drophere_tree1">Drop the cues here!</div>
+    </ul>
+    <ul class="trees" id="tree1">
+        <!-- here will go the cues -->
+    </ul>
+    <ul class="columns">
+    </ul>
+    
+    
+</div>
+    
+    <footer>
+       <!-- <p>&copy; 2015 MPIB. All rights reserved.</p> -->
+    </footer>
+    
+    <!-- Bottom of document -->
+    
+    <script src="libraries/jquery-1.11.3.min.js"></script>
+    <script src="libraries/jquery-ui-1.11.4.min.js"></script>
+    <script src="libraries/papaparse.min.js"></script>
+    <script src="libraries/bootstrap-tour-standalone.js"></script>
+    <script src="libraries/jquery.ui.touch-punch.js"></script>
+    <script src="libraries/spin.min.js"></script>
+    
+    <!-- evaldas -->
+    <script src="buttonshtmls.js"></script>
+    <script src="showtooltipstour.js"></script>
+    <script src="importcsv.js"></script>
+    <script src="updateobjects.js"></script>
+    <script src="calculatestatistics.js"></script>
+    <script src="buildtree.js"></script>
+
+    <!-- uwe -->
+    <script src="fftreeStatistics/TreeStatistics.js"></script>
+    <!--
+    <script src="fftreeStatistics/fftreeStatistics.js"></script>
+    <script src="fftreeStatistics/app.js"></script>
+    
+    <script src="fftreeStatistics/fftree.js"></script>
+    <script src="fftreeStatistics/fftreeview.js"></script>
+    -->
+
+</body>
+</html>

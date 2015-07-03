@@ -5,17 +5,29 @@
             "cues": [{
                 "name": "CP",
                 "yes": "exit",
-                "no": "continue"
+                "no": "continue",
+                "splitValue": "0.5",
+                "maxValue": "1.0",
+                "minValue": "0.0",
+                "isFlipped": "false"
             },
             {
                 "name": "ST",
                 "yes": "exit",
-                "no": "continue"
+                "no": "continue",
+                "splitValue": 0.5,
+                "maxValue": "1.1",
+                "minValue": "0.0",
+                "isFlipped": "1"
             },
             {
                 "name": "OC",
                 "yes": "exit",
-                "no": "exit"
+                "no": "exit",
+                "splitValue": 0.5,
+                "maxValue": 1,
+                "minValue": 0,
+                "isFlipped": "True"
             }
         ]
         }

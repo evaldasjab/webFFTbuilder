@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>TypeScript HTML App</title>
+    <link rel="stylesheet" href="app.css" type="text/css" />
+    <script src="app.js"></script>
+    <script src="fftreeStatistics.js"></script>
+    <script src="fftree.js"></script>
+    <script src="fftreeview.js"></script>
+</head>
+<body>
+    <h1>TypeScript-based 'FFTreeBuilder' HTML App</h1>
+
+    <div id="content">
+    </div>
+
+    <p>To create a tree, first choose the criterion, then </p>
+
+    <div id="cuetable">
+        <table border=1>
+            <tr>
+                <th>Cue name</th>
+                <td><input type="checkbox" id='chkCue1' onchange='addCueByNumberToTree(this, 1)'/><span id="cue1"></span></td>
+                <td><input type="checkbox" id='chkCue2' onchange='addCueByNumberToTree(this, 2)' /><span id="cue2"></span></td>
+                <td><input type="checkbox" id='chkCue3' onchange='addCueByNumberToTree(this, 3)' /><span id="cue3"></span></td>
+                <td><input type="checkbox" id='chkCue4' onchange='addCueByNumberToTree(this, 4)' /><span id="cue4"></span></td>
+                <td><input type="checkbox" id='chkCue5' onchange='addCueByNumberToTree(this, 5)' /><span id="cue5"></span></td>
+                <td align='center' rowspan="2"><button disabled="true" id='btnFinalize' onclick='finalizeTree(); showTree();'>Finalize tree</button></td>
+            </tr>
+            <tr>
+                <th>Choose criterion</th>
+                <td align='center'><input type='radio' id='chkCritCue1' name='chkCriterion' onclick='chooseCriterion(1)' /></td>
+                <td align='center'><input type='radio' id='chkCritCue2' name='chkCriterion' onclick='chooseCriterion(2)' /></td>
+                <td align='center'><input type='radio' id='chkCritCue3' name='chkCriterion' onclick='chooseCriterion(3)' /></td>
+                <td align='center'><input type='radio' id='chkCritCue4' name='chkCriterion' onclick='chooseCriterion(4)' /></td>
+                <td align='center'><input type='radio' id='chkCritCue5' name='chkCriterion' onclick='chooseCriterion(5)' /></td>            
+            </tr>
+        </table>
+    </div>
+
+    <br />
+    <button id="btnDatasetInfo" onclick="createRandomTestDataset(); updateDatasetView();" disabled="true">Create dataset</button>
+    <button id="btnResultInfo" onclick="analyzeDataset(); updateAnalysisView(); updateDatasetView();" disabled="true">Analyze dataset</button>
+    <button id="btnReset" onclick="resetAll()">Reset</button>
+    <br />
+
+    <details>
+        <summary>Tree information</summary>
+        <div id="treeinfo"></div>
+    </details>
+    <br />
+    <details>
+        <summary>Dataset info</summary>
+        <br />
+        <div id="datasetinfo"></div>
+    </details>
+    <br />
+    <details>
+        <summary>2x2 result table</summary>
+        <br />
+        <div id="resultinfo">
+            <table border="1">
+                <tr><th colspan="4" align="center">2x2 table</th></tr>
+                <tr><th></th><th>Criterion: 1</th><th>Criterion: 0</th><th>Undecided</th></tr>
+                <tr><th>Prediction: 1</th><td class="success" id='hits'></td><td class="fail" id='falsealarms'></td><td class="undecided" id="undecided_pos"></td></tr>
+                <tr><th>Prediction: 0</th><td class="fail" id='misses'></td><td class="success" id='correctrejections'></td><td class="undecided" id="undecided_neg"></td></tr>
+            </table>
+        </div>
+    </details>
+    <br />
+    <details>
+        <summary>Statistics</summary>
+        <br />
+        <div id="statistics">
+            <table border="1">
+                <tr><th colspan="2" align="center">Statistics</th></tr>
+                <tr><th>p(Hits)</th><td id="pHits" align="center"></td></tr>
+                <tr><th>p(FA)</th><td id="pFA" align="center"></td></tr>
+                <tr><th>d'</th><td id="dprime" align="center"></td></tr>
+                <tr><th>Frugality</th><td id="frugality" align="center"></td></tr>
+                <tr><th>A'</th><td id="aprime" align="center"></td></tr>
+                <tr><th>B'</th><td id="bprime" align="center"></td></tr>
+                <tr><th>B''</th><td id="bdprime" align="center"></td></tr>
+                <tr><th>Bias</th><td id="bias" align="center"></td></tr>
+            </table>
+        </div>
+    </details>
+</body>
+</html>

@@ -16,10 +16,10 @@ namespace DecisionTreeWebGeneral.Areas.Project.Controllers
             return View("Index");
         }
 
-        public ActionResult CreateProject()
-        {
-            return View("Index");
-        }
+        //public JsonResult CreateProject(World w)
+        //{
+        //    return null;
+        //}
 
         
     }

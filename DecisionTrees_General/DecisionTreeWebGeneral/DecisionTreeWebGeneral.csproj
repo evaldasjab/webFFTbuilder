@@ -138,6 +138,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Content Include="Anforderungen.txt" />
+    <Content Include="Areas\Project\Scripts\project.js" />
     <Content Include="Content\Learning\css\learningtheme.css" />
     <Content Include="Content\Project\css\buildtree.css" />
     <Content Include="Content\Project\css\jquery-ui.css" />
@@ -156,6 +157,7 @@
     <Content Include="Content\Project\images\ui-icons_ef8c08_256x240.png" />
     <Content Include="Content\Project\images\ui-icons_ffd27a_256x240.png" />
     <Content Include="Content\Project\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="index.html" />
     <Content Include="Scripts\Project\analysiscontroller.js" />
     <Content Include="Scripts\Project\dataset\datasetcontroller.js" />
     <Content Include="Scripts\Project\lib\bootstrap-tour-standalone.js" />
@@ -208,7 +210,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Learning\Models\" />
-    <Folder Include="Areas\Project\Scripts\" />
     <Folder Include="Content\Learning\images\" />
     <Folder Include="Models\" />
     <Folder Include="Scripts\Learning\" />
@@ -238,20 +239,6 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\ABCUniverse_2014\ABCUniverse.DataAccess\ABCUniverse.DataAccess.csproj">
-      <Project>{9a8cb268-f4ad-44f0-b323-f48cb7d17d49}</Project>
-      <Name>ABCUniverse.DataAccess</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\ABCUniverse_2014\ABCUniverse.DataStorage\ABCUniverse.DataStorage.csproj">
-      <Project>{bdd4e608-85f9-4665-a4cd-69408dc905fa}</Project>
-      <Name>ABCUniverse.DataStorage</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\ABCUniverse_2014\ABCUniverse.Portable.Base\ABCUniverse.Portable.Base.csproj">
-      <Project>{add9b617-7c92-4c21-bfe8-59967e0c0a9c}</Project>
-      <Name>ABCUniverse.Portable.Base</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Content\Learning\documents\FFTworkshop_SI2015_08June2015_PRESENT.pdf" />
   </ItemGroup>
   <ItemGroup>
@@ -259,6 +246,20 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Project\data\data_infarction10.csv" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Libs\ABCUniverse.DataAccess\ABCUniverse.DataAccess.csproj">
+      <Project>{9a8cb268-f4ad-44f0-b323-f48cb7d17d49}</Project>
+      <Name>ABCUniverse.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Libs\ABCUniverse.DataStorage\ABCUniverse.DataStorage.csproj">
+      <Project>{bdd4e608-85f9-4665-a4cd-69408dc905fa}</Project>
+      <Name>ABCUniverse.DataStorage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Libs\ABCUniverse.Portable.Base\ABCUniverse.Portable.Base.csproj">
+      <Project>{add9b617-7c92-4c21-bfe8-59967e0c0a9c}</Project>
+      <Name>ABCUniverse.Portable.Base</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

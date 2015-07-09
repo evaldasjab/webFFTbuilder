@@ -9,27 +9,20 @@ namespace DecisionTreeWebGeneral.Areas.Project.Controllers
 {
     public class DatasetController : Controller
     {
-        //
-        // GET: /Project/Dataset/
-
-        public ActionResult Index()
+        [HttpPost]
+        public JsonResult LoadDataset()
         {
-            return View();
+            throw new NotImplementedException();
         }
-
-        public JsonResult SaveTree(Tree tree)
+        [HttpPost]
+        public JsonResult SaveDataset()
         {
-            return null;
+            throw new NotImplementedException();
         }
-
-        public JsonResult LoadTree(Guid id)
+        [HttpPost]
+        public JsonResult EditDataset()
         {
-            return null;
-        }
-
-        public JsonResult LoadTrees(List<Guid> ids)
-        {
-            return null;
+            throw new NotImplementedException();
         }
     }
 }

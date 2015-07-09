@@ -126,6 +126,7 @@
     <Compile Include="Areas\Project\Models\ABCDBContext.cs" />
     <Compile Include="Areas\Project\Models\Cue.cs" />
     <Compile Include="Areas\Project\Models\Tree.cs" />
+    <Compile Include="Areas\Project\Models\WorldPOCO.cs" />
     <Compile Include="Areas\Project\ProjectAreaRegistration.cs" />
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Global.asax.cs">
@@ -192,6 +193,9 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\Project\Views\Project\Index.cshtml" />
+    <Content Include="Areas\Project\Views\Project\Tree.cshtml" />
+    <Content Include="Areas\Project\Views\Project\Dataset.cshtml" />
+    <Content Include="Areas\Project\Views\Project\Analysis.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />

@@ -10,16 +10,16 @@ using DecisionTreeWebGeneral.Areas.Project.Models;
 
 namespace DecisionTreeWebGeneral.Areas.Project.Controllers
 {
+    /// <summary>
+    /// Controller for all ajax actions on treepage.
+    /// </summary>
     public class TreeController : Controller
     {
-        //
-        // GET: /Project/Tree/
-
-        public ActionResult Index()
-        {
-            return View();
-        }
-
+        /// <summary>
+        /// Save an single fftdecisiontree.
+        /// </summary>
+        /// <param name="tree">Tree which should be save</param>
+        /// <returns>true if success, else false</returns>
         [HttpPost]
         public JsonResult SaveTree(Tree tree)
         {
@@ -95,6 +95,42 @@ namespace DecisionTreeWebGeneral.Areas.Project.Controllers
         private bool validateTree(Tree t)
         {
             return t != null && t.cues.Count != 0;
+        }
+
+        /// <summary>
+        /// Load a single tree.
+        /// </summary>
+        /// <param name="id">Guid of the tree</param>
+        /// <returns>Tree in json</returns>
+        [HttpPost]
+        public JsonResult LoadTree(Guid id)
+        {
+            if (!ABCDBContext.ServerConnectionAvailable()) return Json("No connection to server! Your tree wasn't saved!");
+            if (validateTreeRequest(id)) {
+                throw new NotImplementedException();
+            }
+            return Json("Not access to load trees");
+        }
+
+        /// <summary>
+        /// Returns an dictionary with load trees.
+        /// </summary>
+        /// <param name="ids">Treeguids witch should be loaded</param>
+        /// <returns>Dictionary of loaded trees in json</returns>
+        [HttpPost]
+        public JsonResult LoadTrees(List<Guid> ids)
+        {
+            Dictionary<Guid, JsonResult> result = new Dictionary<Guid, JsonResult>();
+            foreach (Guid g in ids)
+            {
+                result.Add(g, LoadTree(g));
+            }
+            return Json(result);
+        }
+
+        private bool validateTreeRequest(Guid id)
+        {
+            return false;
         }
     }
 }

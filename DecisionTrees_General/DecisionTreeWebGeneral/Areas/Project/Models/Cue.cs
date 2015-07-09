@@ -6,6 +6,9 @@ using System.Web;
 
 namespace DecisionTreeWebGeneral.Areas.Project.Models
 {
+    /// <summary>
+    /// Class for attributes
+    /// </summary>
     [DataContract(IsReference = true)]
     public class Cue
     {

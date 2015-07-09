@@ -3,24 +3,76 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using DecisionTreeWebGeneral.Areas.Project.Models;
 
 namespace DecisionTreeWebGeneral.Areas.Project.Controllers
 {
     public class ProjectController : Controller
     {
-        //
-        // GET: /Project/Project/
-
+        #region linkcontrol
         public ActionResult Index()
         {
             return View("Index");
         }
 
-        //public JsonResult CreateProject(World w)
-        //{
-        //    return null;
-        //}
+        public ActionResult Dataset()
+        {
+            return View("Dataset");
+        }
 
-        
+        public ActionResult Tree()
+        {
+            return View("Dataset");
+        }
+
+        public ActionResult Analysis()
+        {
+            return View("Analysis");
+        }
+        #endregion
+
+        #region Project fcts
+        [HttpPost]
+        public JsonResult ListProjects()
+        {
+            throw new NotImplementedException();
+        }
+        [HttpPost]
+        public JsonResult LoadProject(Guid g)
+        {
+            throw new NotImplementedException();
+        }
+        [HttpPost]
+        public JsonResult CreateProject(WorldPOCO w)
+        {
+            throw new NotImplementedException();
+        }
+        [HttpPost]
+        public JsonResult EditProject(WorldPOCO w)
+        {
+            throw new NotImplementedException();
+        }
+        [HttpPost]
+        public JsonResult DeleteProject(Guid g)
+        {
+            throw new NotImplementedException();
+        }
+        [HttpPost]
+        public JsonResult ListAttributes()
+        {
+            throw new NotImplementedException();
+        }
+        [HttpPost]
+        public JsonResult CreateAttribute(object att)
+        {
+            throw new NotImplementedException();
+        }
+        [HttpPost]
+        public JsonResult RemoveAttribute(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
     }
 }

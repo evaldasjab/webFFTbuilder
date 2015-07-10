@@ -9,10 +9,22 @@ namespace DecisionTreeWebGeneral.Areas.Project.Controllers
 {
     public class AnalysisController : Controller
     {
-        public JsonResult analyse(Tree t)
+        [HttpPost]
+        public JsonResult analyse(Guid treeId, Guid datasetId)
+        {
+            throw new NotImplementedException();
+        }
+        [HttpPost]
+        public JsonResult analyse(Guid treeId, List<Guid> datasetId)
+        {
+            throw new NotImplementedException();
+        }
+        [HttpPost]
+        public JsonResult analyse(List<Guid> treeId, List<Guid> datasetId)
         {
             throw new NotImplementedException();
         }
 
+        
     }
 }

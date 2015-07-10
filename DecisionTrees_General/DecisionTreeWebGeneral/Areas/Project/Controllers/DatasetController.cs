@@ -10,17 +10,27 @@ namespace DecisionTreeWebGeneral.Areas.Project.Controllers
     public class DatasetController : Controller
     {
         [HttpPost]
-        public JsonResult LoadDataset()
+        public JsonResult LoadDataset(Guid id)
         {
             throw new NotImplementedException();
         }
         [HttpPost]
-        public JsonResult SaveDataset()
+        public JsonResult LoadDatasets(List<Guid> id)
         {
             throw new NotImplementedException();
         }
         [HttpPost]
-        public JsonResult EditDataset()
+        public JsonResult EditDataset(DatasetPOCO dataset)
+        {
+            throw new NotImplementedException();
+        }
+        [HttpPost]
+        public JsonResult AddAttributeToDataset(Guid attId, Guid datasetId)
+        {
+            throw new NotImplementedException();
+        }
+        [HttpPost]
+        public JsonResult RemoveAttributeFromDataset(Guid attId, Guid datasetId)
         {
             throw new NotImplementedException();
         }

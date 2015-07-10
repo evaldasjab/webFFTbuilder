@@ -132,5 +132,13 @@ namespace DecisionTreeWebGeneral.Areas.Project.Controllers
         {
             return false;
         }
+    
+        #region Creation algs
+        [HttpPost]
+        public JsonResult createTree(Guid worldId)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
     }
 }

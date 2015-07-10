@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Web;
+using ABCUniverse.Portable.Trees.Interfaces;
 
 namespace DecisionTreeWebGeneral.Areas.Project.Models
 {
     [DataContract(IsReference = true)]
-    public class Tree
+    public class Tree : IDecisionTree
     {
         [DataMember(IsRequired = true)]
-        public string criterion { get; set; }
+        public Cue criterion { get; set; }
         [DataMember(IsRequired = true)]
         public List<Cue> cues { get; set; }
 

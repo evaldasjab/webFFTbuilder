@@ -22,7 +22,7 @@ namespace DecisionTreeWebGeneral.Areas.Project.Controllers
 
         public ActionResult Tree()
         {
-            return View("Dataset");
+            return View("Tree");
         }
 
         public ActionResult Analysis()
@@ -63,7 +63,16 @@ namespace DecisionTreeWebGeneral.Areas.Project.Controllers
             throw new NotImplementedException();
         }
         [HttpPost]
-        public JsonResult CreateAttribute(object att)
+        public JsonResult CreateAttribute(AttributePOCO att)
+        {
+            throw new NotImplementedException();
+        }
+        [HttpPost]
+        public JsonResult AddAttributeToProject(Guid pjId, Guid attId) {
+            throw new NotImplementedException();
+        }
+        [HttpPost]
+        public JsonResult RemoveAttributeFromProject(Guid pjId, Guid attId)
         {
             throw new NotImplementedException();
         }

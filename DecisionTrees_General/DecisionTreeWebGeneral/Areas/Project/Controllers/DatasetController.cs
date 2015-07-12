@@ -15,11 +15,6 @@ namespace DecisionTreeWebGeneral.Areas.Project.Controllers
             throw new NotImplementedException();
         }
         [HttpPost]
-        public JsonResult LoadDatasets(List<Guid> id)
-        {
-            throw new NotImplementedException();
-        }
-        [HttpPost]
         public JsonResult EditDataset(DatasetPOCO dataset)
         {
             throw new NotImplementedException();

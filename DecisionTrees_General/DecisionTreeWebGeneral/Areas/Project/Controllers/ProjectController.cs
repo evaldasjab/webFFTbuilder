@@ -33,7 +33,7 @@ namespace DecisionTreeWebGeneral.Areas.Project.Controllers
 
         #region Project fcts
         [HttpPost]
-        public JsonResult ListProjects()
+        public JsonResult ListProjects(int page)
         {
             throw new NotImplementedException();
         }

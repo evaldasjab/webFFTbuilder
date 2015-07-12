@@ -7,6 +7,6 @@ namespace DecisionTreeWebGeneral.Areas.Project.Models
 {
     public class DatasetPOCO : POCO
     {
-        public Guid Id { get; set; }
+
     }
 }

@@ -31,28 +31,7 @@ GeneralDecisionTree.Common = {
     }
 };
 
-var testProject = {
-    "Id": 0000 - 0000 - 0000 - 0000 - 0000,
-    "Name": "TestProject",
-    "Description": "Simple testproject",
-    "Attributes": [
-        {
-        "Id": 0000 - 0000 - 0000 - 0000 - 0000,
-        "Name": "testatt 1",
-        "Description": "Fst testatt.",
-        "DataType": UNDEFINED
-        },
-        {
-            "Id": 0000 - 0000 - 0000 - 0000 - 0000,
-            "Name": "testatt 2",
-            "Description": "Snd testatt.",
-            "DataType": UNDEFINED
-        }
-    ],
-    AttachedDataset: []
-};
-
-GeneralDecisionTree.Project.ProjectList = {
+GeneralDecisionTree.ProjectList = {
     model: function () {
         var projectList = [];
         var currentPage = 0;
@@ -61,13 +40,13 @@ GeneralDecisionTree.Project.ProjectList = {
         var getProjectPage = function () {
             $.ajax({
                 type: 'POST',
-                url: '',
-                data: JSON.stringify(currentPage),
+                url: './Project/ListProjects',
+                data: JSON.stringify({ page : currentPage}),
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 success: function (msg) {
                     console.log("projectpage loaded!");
-                    projectList.concat(msg);
+                    projectList = msg;
                 },
                 error: function (msg) {
                     new GeneralDecisionTree.Common.Error(msg.responseText).display();
@@ -134,8 +113,8 @@ GeneralDecisionTree.Project = {
             loadProject: function (id) {
                 $.ajax({
                     type: 'POST',
-                    url: '',
-                    data: "{}",
+                    url: './Project/LoadProject',
+                    data: JSON.stringify({ id : id }),
                     contentType: 'application/json; charset=utf-8',
                     dataType: 'json',
                     success: function (msg) {
@@ -150,8 +129,8 @@ GeneralDecisionTree.Project = {
             updateProject: function() {
                 $.ajax({
                     type: 'POST',
-                    url: '',
-                    data: "{}",
+                    url: './Project/EditProject',
+                    data: JSON.stringify({w : project}),
                     contentType: 'application/json; charset=utf-8',
                     dataType: 'json',
                     success: function (msg) {
@@ -182,39 +161,7 @@ GeneralDecisionTree.Project = {
     }
 }
 
-var testdataset = {
-    Id: 0000 - 0000 - 0000 - 0000 - 0000,
-    "Name": "testdataset",
-    "AlternativesList": [{
-        "Id": 0000 - 0000 - 0000 - 0000 - 0000,
-        "DataString": "Testdata",
-        "AttributeInstance": [{
-            "Value": 0 
-        },
-        {
-            "Value": 0.1
-        },
-        {
-            "Value": "Test cat value"
-        }]
-    },
-    {
-        "Id": 0000 - 0000 - 0000 - 0000 - 0001,
-        "DataString": "Testdata2",
-        "AttributeInstance": [{
-            "Value": 0
-        },
-        {
-            "Value": 0.1
-        },
-        {
-            "Value": "Test cat value"
-        }]
-    }
-    ]
-};
-
-GeneralDecisionTree.Project.DatasetList = {
+GeneralDecisionTree.DatasetList = {
     model: function () {
         var datasetList = [];
         var currentPage = 0;
@@ -223,13 +170,13 @@ GeneralDecisionTree.Project.DatasetList = {
         var getDatasetPage = function () {
             $.ajax({
                 type: 'POST',
-                url: '',
-                data: JSON.stringify(currentPage),
+                url: './Dataset/ListDatasets',
+                data: JSON.stringify({ page: currentPage }),
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 success: function (msg) {
                     console.log("projectpage loaded!");
-                    datasetList.concat(msg);
+                    datasetList = msg;
                 },
                 error: function (msg) {
                     new GeneralDecisionTree.Common.Error(msg.responseText).display();
@@ -268,7 +215,7 @@ GeneralDecisionTree.Project.DatasetList = {
     }
 }
 
-GeneralDecisionTree.Project.Dataset = {
+GeneralDecisionTree.Dataset = {
     // model for dataset
     model: function (project) {
         var crrProject = project;
@@ -285,8 +232,8 @@ GeneralDecisionTree.Project.Dataset = {
             loadDataset: function (id) {
                 $.ajax({
                     type: 'POST',
-                    url: '',
-                    data: JSON.stringify(id),
+                    url: './Dataset/LoadDataset',
+                    data: JSON.stringify({ id: id }),
                     contentType: 'application/json; charset=utf-8',
                     dataType: 'json',
                     success: function (msg) {
@@ -328,7 +275,7 @@ GeneralDecisionTree.Project.Dataset = {
     }
 }
 
-GeneralDecisionTree.Project.TreeList = {
+GeneralDecisionTree.TreeList = {
     model: function () {
         var treeList = [];
         var currentPage = 0;
@@ -337,13 +284,13 @@ GeneralDecisionTree.Project.TreeList = {
         var getTreePage = function () {
             $.ajax({
                 type: 'POST',
-                url: '',
-                data: JSON.stringify(currentPage),
+                url: './Tree/ListTrees',
+                data: JSON.stringify({ page: currentPage }),
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 success: function (msg) {
                     console.log("treepage loaded!");
-                    treeList.concat(msg);
+                    treeList = msg;
                 },
                 error: function (msg) {
                     new GeneralDecisionTree.Common.Error(msg.responseText).display();
@@ -382,7 +329,7 @@ GeneralDecisionTree.Project.TreeList = {
     }
 }
 
-GeneralDecisionTree.Project.Tree = {
+GeneralDecisionTree.Tree = {
     // model for trees
     model: function () {
         var tree = {
@@ -399,8 +346,8 @@ GeneralDecisionTree.Project.Tree = {
             loadTree: function(id) {
                 $.ajax({
                     type: 'POST',
-                    url: '',
-                    data: JSON.stringify(id),
+                    url: './Tree/LoadTree',
+                    data: JSON.stringify({ id: id }),
                     contentType: 'application/json; charset=utf-8',
                     dataType: 'json',
                     success: function (msg) {
@@ -415,13 +362,13 @@ GeneralDecisionTree.Project.Tree = {
             updateTree: function () {
                 $.ajax({
                     type: 'POST',
-                    url: '',
-                    data: "{}",
+                    url: './Tree/EditTree',
+                    data: JSON.stringify({tree : tree}),
                     contentType: 'application/json; charset=utf-8',
                     dataType: 'json',
                     success: function (msg) {
                         console.log("dataset loaded!");
-                        analysisresult = msg;
+                        tree = msg;
                     },
                     error: function (msg) {
                         new GeneralDecisionTree.Common.Error(msg.responseText).display();
@@ -436,7 +383,7 @@ GeneralDecisionTree.Project.Tree = {
     }
 }
 
-GeneralDecisionTree.Project.AttributeList = {
+GeneralDecisionTree.AttributeList = {
     model: function () {
         var attributeList = [];
         var currentPage = 0;
@@ -445,13 +392,13 @@ GeneralDecisionTree.Project.AttributeList = {
         var getAttributePage = function () {
             $.ajax({
                 type: 'POST',
-                url: '',
-                data: JSON.stringify(currentPage),
+                url: './Project/ListAttributes',
+                data: JSON.stringify({ page: currentPage }),
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 success: function (msg) {
                     console.log("treepage loaded!");
-                    attributeList.concat(msg);
+                    attributeList = msg;
                 },
                 error: function (msg) {
                     new GeneralDecisionTree.Common.Error(msg.responseText).display();
@@ -490,7 +437,7 @@ GeneralDecisionTree.Project.AttributeList = {
     }
 }
 
-GeneralDecisionTree.Project.Attribute = {
+GeneralDecisionTree.Attribute = {
     model: function (project) {
         var project = project;
         var att;
@@ -500,7 +447,10 @@ GeneralDecisionTree.Project.Attribute = {
                 Id: 0000 - 0000 - 0000 - 0000,
                 Name: null,
                 Description: null,
-                DataType: null
+                DataType: null,
+                MinValue: 0.0,
+                MaxValue: 0.0,
+                Values: []
             };
         }
 
@@ -511,8 +461,8 @@ GeneralDecisionTree.Project.Attribute = {
             loadAttribute: function (id) {
                 $.ajax({
                     type: 'POST',
-                    url: '',
-                    data: JSON.stringify(id),
+                    url: './Project/LoadAttribute',
+                    data: JSON.stringify({ id: id }),
                     contentType: 'application/json; charset=utf-8',
                     dataType: 'json',
                     success: function (msg) {
@@ -528,8 +478,8 @@ GeneralDecisionTree.Project.Attribute = {
             updateAttribute: function () {
                 $.ajax({
                     type: 'POST',
-                    url: '',
-                    data: JSON.stringify(att),
+                    url: './Project/EditAttribute',
+                    data: JSON.stringify({ att: att }),
                     contentType: 'application/json; charset=utf-8',
                     dataType: 'json',
                     success: function (msg) {
@@ -549,7 +499,7 @@ GeneralDecisionTree.Project.Attribute = {
     }
 }
 
-GeneralDecisionTree.Project.Analysis = {
+GeneralDecisionTree.Analysis = {
     // model for analsis
     model: function () {
         var analysisresult = {};
@@ -562,7 +512,7 @@ GeneralDecisionTree.Project.Analysis = {
                 $.ajax({
                     type: 'POST',
                     url: '',
-                    data: "{}",
+                    data: JSON.stringify({ treeId: treeId, datasetId : datasetId }),
                     contentType: 'application/json; charset=utf-8',
                     dataType: 'json',
                     success: function (msg) {

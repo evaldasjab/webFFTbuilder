@@ -7,6 +7,9 @@ using DecisionTreeWebGeneral.Areas.Project.Models;
 
 namespace DecisionTreeWebGeneral.Areas.Project.Controllers
 {
+    /// <summary>
+    /// Controller to provide different function for anaylsiscalculations on the server.
+    /// </summary>
     public class AnalysisController : Controller
     {
         [HttpPost]

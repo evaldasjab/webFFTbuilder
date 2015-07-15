@@ -31,7 +31,7 @@ namespace DecisionTreeWebGeneral.Areas.Project.Controllers
                 {
                     DecisionTree t = new DecisionTree();
                     t.IsFFTree = true;
-                    t.SelectedCriterion = new WorldAttribute(tree.criterion);
+                    t.SelectedCriterion = new WorldAttribute(tree.criterion.ToString());
 
                     // transform jsontree to decision-fft-tree
                     Node prnt = null;
@@ -85,6 +85,7 @@ namespace DecisionTreeWebGeneral.Areas.Project.Controllers
                 }
                 catch (Exception e)
                 {
+                    Console.WriteLine(e.Message);
                     return Json("Error! Your tree wasn't saved!");
                 }
             }

@@ -29,6 +29,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -120,6 +121,7 @@
     <Compile Include="Areas\Learning\Controllers\LearningController.cs" />
     <Compile Include="Areas\Learning\LearningAreaRegistration.cs" />
     <Compile Include="Areas\Project\Controllers\AnalysisController.cs" />
+    <Compile Include="Areas\Project\Models\AlternativePOCO.cs" />
     <Compile Include="Areas\Project\Models\AttributePOCO.cs" />
     <Compile Include="Areas\Project\Controllers\DatasetController.cs" />
     <Compile Include="Areas\Project\Models\DatasetPOCO.cs" />
@@ -144,6 +146,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Content Include="Anforderungen.txt" />
     <Content Include="Areas\Project\Scripts\project.js" />
+    <Content Include="Areas\Project\Scripts\testobjs.js" />
     <Content Include="Content\Learning\css\learningtheme.css" />
     <Content Include="Content\Project\css\buildtree.css" />
     <Content Include="Content\Project\css\jquery-ui.css" />

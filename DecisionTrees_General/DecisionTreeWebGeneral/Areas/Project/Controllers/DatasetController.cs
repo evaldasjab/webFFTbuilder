@@ -7,8 +7,16 @@ using DecisionTreeWebGeneral.Areas.Project.Models;
 
 namespace DecisionTreeWebGeneral.Areas.Project.Controllers
 {
+    /// <summary>
+    /// Controller to provide different function manageing dataset on the server.
+    /// </summary>
     public class DatasetController : Controller
     {
+        [HttpPost]
+        public JsonResult ListDatasets(int page)
+        {
+            throw new NotImplementedException();
+        }
         [HttpPost]
         public JsonResult LoadDataset(Guid id)
         {

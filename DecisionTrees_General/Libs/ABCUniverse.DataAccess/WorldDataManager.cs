@@ -1095,6 +1095,7 @@ namespace ABCUniverse.DataAccess
             }
             catch(Exception e)
             {
+                Console.WriteLine(e.Message);
                 result = false;
             }  
 
@@ -1217,7 +1218,7 @@ namespace ABCUniverse.DataAccess
                 }
             }
 
-            long totalSize = 0;
+            //long totalSize = 0;
 
             bool res = true;
 

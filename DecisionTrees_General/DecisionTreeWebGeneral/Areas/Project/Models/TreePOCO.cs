@@ -11,12 +11,12 @@ namespace DecisionTreeWebGeneral.Areas.Project.Models
     {
         #region Properties
         [DataMember(IsRequired = true)]
-        public Guid Id { get; set; }
+        public Guid Id { get; private set; }
         [DataMember(IsRequired = true)]
-        public string Name { get; set; }
+        public string Name { get; private set; }
         [DataMember]
-        public string Description { get; set; }
-        public ICollection<WorldPOCO> attributes { get; set; }
+        public string Description { get; private set; }
+        public ICollection<WorldPOCO> attributes { get; private set; }
         #endregion
 
         #region C'tor

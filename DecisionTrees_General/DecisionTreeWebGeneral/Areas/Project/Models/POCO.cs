@@ -7,6 +7,6 @@ namespace DecisionTreeWebGeneral.Areas.Project.Models
 {
     public abstract class POCO
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; protected set; }
     }
 }

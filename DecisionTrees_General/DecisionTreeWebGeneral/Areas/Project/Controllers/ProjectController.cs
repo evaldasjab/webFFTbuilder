@@ -7,6 +7,10 @@ using DecisionTreeWebGeneral.Areas.Project.Models;
 
 namespace DecisionTreeWebGeneral.Areas.Project.Controllers
 {
+    /// <summary>
+    /// Controller to provide different function manageing project on the server 
+    /// & manageing the different pages for projects, like datasets, attributes, trees etc.
+    /// </summary>
     public class ProjectController : Controller
     {
         #region linkcontrol
@@ -35,7 +39,7 @@ namespace DecisionTreeWebGeneral.Areas.Project.Controllers
         [HttpPost]
         public JsonResult ListProjects(int page)
         {
-            throw new NotImplementedException();
+            return Json("Listing...");
         }
         [HttpPost]
         public JsonResult LoadProject(Guid g)
@@ -58,12 +62,17 @@ namespace DecisionTreeWebGeneral.Areas.Project.Controllers
             throw new NotImplementedException();
         }
         [HttpPost]
-        public JsonResult ListAttributes()
+        public JsonResult ListAttributes(int page)
         {
             throw new NotImplementedException();
         }
         [HttpPost]
-        public JsonResult CreateAttribute(AttributePOCO att)
+        public JsonResult LoadAttribute(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+        [HttpPost]
+        public JsonResult EditAttribute(AttributePOCO att)
         {
             throw new NotImplementedException();
         }

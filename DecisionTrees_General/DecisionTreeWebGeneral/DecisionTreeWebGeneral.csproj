@@ -121,6 +121,7 @@
     <Compile Include="Areas\Learning\Controllers\LearningController.cs" />
     <Compile Include="Areas\Learning\LearningAreaRegistration.cs" />
     <Compile Include="Areas\Project\Controllers\AnalysisController.cs" />
+    <Compile Include="Areas\Project\Models\AttributeListPOCO.cs" />
     <Compile Include="Areas\Project\Models\AlternativePOCO.cs" />
     <Compile Include="Areas\Project\Models\AttributePOCO.cs" />
     <Compile Include="Areas\Project\Controllers\DatasetController.cs" />
@@ -128,10 +129,12 @@
     <Compile Include="Areas\Project\Controllers\ProjectController.cs" />
     <Compile Include="Areas\Project\Controllers\TreeController.cs" />
     <Compile Include="Areas\Project\Models\ABCDBContext.cs" />
+    <Compile Include="Areas\Project\Models\ListPOCO.cs" />
     <Compile Include="Areas\Project\Models\old\Cue.cs" />
     <Compile Include="Areas\Project\Models\POCO.cs" />
     <Compile Include="Areas\Project\Models\old\Tree.cs" />
     <Compile Include="Areas\Project\Models\TreePOCO.cs" />
+    <Compile Include="Areas\Project\Models\WorldItemPOCO.cs" />
     <Compile Include="Areas\Project\Models\WorldPOCO.cs" />
     <Compile Include="Areas\Project\ProjectAreaRegistration.cs" />
     <Compile Include="Controllers\MainController.cs" />

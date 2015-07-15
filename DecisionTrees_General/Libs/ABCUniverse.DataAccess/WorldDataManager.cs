@@ -353,6 +353,16 @@ namespace ABCUniverse.DataAccess
             return result;
         }
 
+        public static List<AttributeInfo> GetLocalAttributeInfoList()
+        {
+            List<AttributeInfo> result = new List<AttributeInfo>();
+            using (var ctx = new ABCLocalContext())
+            {
+                result = ctx.AttributeInfos.ToList();
+            }
+            return result;
+        }
+
         public static WorldAttribute GetLocalAttributeByGuid(Guid id)
         {
             if (_localAttributesList == null)
@@ -689,6 +699,69 @@ namespace ABCUniverse.DataAccess
             return listWorldNames;
         }
 
+        public static List<WorldInfo> GetLocalWorldList()
+        {
+            List<WorldInfo> result = new List<WorldInfo>();
+
+            using (var db = new ABCLocalContext())
+            {
+                var query = from worlds in db.WorldInfos
+                            select worlds;
+
+                foreach (var item in query)
+                {
+                    result.Add(item);                    
+                }
+            }
+
+            return result;
+        }
+
+        public static World LoadLocalWorld(Guid id)
+        {
+            World selectedWorld = null;
+
+            try
+                {
+                    using (var db = new ABCLocalContext())
+                    {
+                        var query = from world in db.WorldInfos
+                                    where world.WorldInfoId.Equals(id)
+                                    select world.Data;
+
+                        // BinaryFormatter bf = new BinaryFormatter();
+                        DataContractSerializer dcs = 
+                            new DataContractSerializer(typeof(World));
+                        foreach (var item in query)
+                        {
+                            using (MemoryStream ms = new MemoryStream(item))
+                            {
+                                // selectedWorld = bf.Deserialize(ms) as World;
+                                selectedWorld = dcs.ReadObject(ms) as World;
+                                selectedWorld.AttachedDatasets = new List<WorldDataset>();
+                            }
+                        }
+
+                        var query2 = from dataset in db.DatasetInfos
+                                     where dataset.WorldID.Equals(selectedWorld.UniqueWorldID)
+                                     select dataset;
+
+                        foreach (var item in query2)
+                        {
+                            string csvData = DecompressString(item.Data);
+                            WorldDataset instance = new WorldDataset(selectedWorld, item.Name, csvData);
+                            selectedWorld.AttachedDatasets.Add(instance);
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    return null;
+                }
+            
+                return selectedWorld;        
+        }
+        
         public static World LoadLocalWorld(string worldname, ref bool result, 
             ref string resultInfo)
         {
@@ -1003,6 +1076,103 @@ namespace ABCUniverse.DataAccess
             }
 
             return null;
+        }
+
+        public static bool RemoveLocalWorld(Guid id, ref string info)
+        {
+            bool result = true;
+
+            List<Guid> attributesToDelete = new List<Guid>();
+            List<WorldAttribute> attributeListCopy = new List<WorldAttribute>();
+
+            World worldToDelete = LoadLocalWorld(id);
+
+            if (worldToDelete == null)
+            {
+                info = "World not found";
+                return false;
+            }
+
+            foreach (WorldAttribute wa in worldToDelete.AttributesList)
+                attributesToDelete.Add(wa.UniqueWorldAttributeID);
+
+            if (attributesToDelete.Count <= 0)
+            {
+                info = "Attribute list for world not found";
+                return false;
+            }
+
+            foreach (World w in _localWorldsList)
+            {
+                if (w.UniqueWorldID.Equals(worldToDelete.UniqueWorldID))
+                    continue;
+
+                foreach (WorldAttribute wa in w.AttributesList)
+                {
+                    if (attributesToDelete.Contains(wa.UniqueWorldAttributeID))
+                        attributesToDelete.Remove(wa.UniqueWorldAttributeID);
+                }
+            }
+
+            try
+            {
+                using (var db = new ABCLocalContext())
+                {
+                    var query = from world in db.WorldInfos
+                                where world.WorldInfoId.Equals(id)
+                                select world;
+
+                    WorldInfo removeWI = query.First();
+
+                    if (removeWI != null)
+                    {
+                        db.WorldInfos.Remove(removeWI);
+                        db.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                if (!_localWorldsList.Contains(worldToDelete))
+                    _localWorldsList.Add(worldToDelete);
+
+                info = e.Message;
+                result = false;
+            }
+
+            _localWorldsList.Remove(worldToDelete);
+
+            try
+            {
+                using (var db = new ABCLocalContext())
+                {
+                    foreach (Guid g in attributesToDelete)
+                    {
+
+                        var query2 = from att in db.AttributeInfos
+                                     where att.AttributeInfoId.Equals(g)
+                                     select att;
+
+                        AttributeInfo removeAI = query2.FirstOrDefault();
+
+                        if (removeAI != null)
+                        {
+                            db.AttributeInfos.Remove(removeAI);
+                            db.SaveChanges();
+                        }
+
+                        _localAttributesList.Remove(GetLocalAttributeByGuid(g));
+                    }
+                }
+                result = true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                result = false;
+            }
+
+            return result; 
         }
 
         public static bool RemoveLocalWorldByName(string selectedWorld, ref string info)

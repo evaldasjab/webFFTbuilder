@@ -14,6 +14,7 @@ namespace DecisionTreeWebGeneral.Areas.Project.Models
         public DataType DataType { get; private set; }
         public double MaximumValue { get; private set; }
         public double MinimumValue { get; private set; }
+        public List<double> Values { get; private set; }
 
         #region C'tor
         public AttributePOCO() { }
@@ -25,6 +26,7 @@ namespace DecisionTreeWebGeneral.Areas.Project.Models
             this.DataType = wa.Datatype;
             this.MaximumValue = wa.MaximumValue;
             this.MinimumValue = wa.MinimumValue;
+            this.Values = wa.Values;
         }
         #endregion
     }

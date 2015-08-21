@@ -1,0 +1,7 @@
+Hey Evaldas,
+
+i splitted both projects in different folders. The old stuff is in DecisionTrees_SummerInsitut.
+The new project is in DecisionTrees_General. There you can find the specification. 
+
+Best
+Johannes

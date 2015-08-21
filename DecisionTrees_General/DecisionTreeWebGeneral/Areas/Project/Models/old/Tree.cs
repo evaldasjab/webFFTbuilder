@@ -10,14 +10,18 @@ namespace DecisionTreeWebGeneral.Areas.Project.Models
     [DataContract(IsReference = true)]
     public class Tree : IDecisionTree
     {
+        #region Properties
         [DataMember(IsRequired = true)]
         public Cue criterion { get; set; }
         [DataMember(IsRequired = true)]
-        public List<Cue> cues { get; set; }
+        public ICollection<Cue> cues { get; set; }
+        #endregion
 
+        #region C'tor
         public Tree()
         {
             cues = new List<Cue>();
         }
+        #endregion
     }
 }

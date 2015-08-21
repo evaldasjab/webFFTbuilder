@@ -56,3 +56,13 @@ Die Grundverwaltung der Datenstrukturen ist schon vorhande
 - Aufschreiben der Spezifikationen für evaldas
 - aufsetzen eines servers unter einer public domain
 - entwickeln der server-skripte für die clientseite
+
+
+Änderungen
+----------
+
+- Umsetzen der Bäume nur auf cues
+- datensätze besitzen auch ques
+- speichern einer mapping db für splitvalues etc.
+
+- umstellen der server seite

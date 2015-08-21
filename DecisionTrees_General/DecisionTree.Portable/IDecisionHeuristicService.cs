@@ -77,34 +77,34 @@ namespace DecisionTree.Portable
         public List<Tree> LoadDatasets(List<long> ids);
 
         /// <summary>
-        /// 
+        /// Load an existing cue.
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">Cueid</param>
+        /// <returns>The Cueobject</returns>
         public Cue LoadCue(long id);
 
         /// <summary>
-        /// 
+        /// Load an existing cuess.
         /// </summary>
-        /// <param name="ids"></param>
-        /// <returns></returns>
+        /// <param name="ids">Cueids</param>
+        /// <returns>List of cues</returns>
         public Cue LoadCues(List<long> ids);
 
         /// <summary>
-        /// 
+        /// Add an existing Cue to a dataset. If the cue or dataset not exist, then will be throw an error.
         /// </summary>
-        /// <param name="cueId"></param>
-        /// <param name="dsId"></param>
-        /// <returns></returns>
+        /// <param name="cueId">Cueid</param>
+        /// <param name="dsId">Datasetid</param>
+        /// <returns>true if successfull added - false otherwise</returns>
 
         public bool AddCueToDataset(long cueId, long dsId);
 
         /// <summary>
-        /// 
+        /// Add an existing Cue to a tree. If the cue or dataset not exist, then will be throw an error.
         /// </summary>
-        /// <param name="cueId"></param>
-        /// <param name="tId"></param>
-        /// <returns></returns>
+        /// <param name="cueId">Cueid</param>
+        /// <param name="tId">Treeid</param>
+        /// <returns>true if successfull added - false otherwise</returns>
         public bool AddCueToTree(long cueId, long tId);
     }
 }
